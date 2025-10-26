@@ -15,10 +15,9 @@ do-extract: std-extract
 do-patch: #fix-configure
 
 do-config:
-	cd $(WORKDIR) && CPPFLAGS="-D_ALL_SOURCE -I$(PKGDEST)/include" LDFLAGS=-Wl,-R$(PKGDEST)/lib ./configure --prefix=$(PKGDEST) --target=$(ARCH_PREFIX)
-
+	cd $(WORKDIR) && CPPFLAGS="-D_ALL_SOURCE -I$(PKGDEST)/include -Wno-error=implicit-fallthrough -Wno-error=unused-value -Wno-error=format-overflow= -Wno-error=cast-function-type -Wno-error=unused-but-set-parameter -Wno-error=unused-but-set-variable -Wno-error=stringop-truncation -Wno-error=shift-negative-value -Wno-error=maybe-uninitialized" LDFLAGS=-Wl,-R$(PKGDEST)/lib ./configure --prefix=$(PKGDEST) --target=$(ARCH_PREFIX)
 do-build:
-	cd $(WORKDIR) && CPPFLAGS="-D_ALL_SOURCE -I$(PKGDEST)/include" LDFLAGS=-Wl,-R$(PKGDEST)/lib make
+	cd $(WORKDIR) && CPPFLAGS="-D_ALL_SOURCE -I$(PKGDEST)/include -Wno-error=implicit-fallthrough -Wno-error=unused-value -Wno-error=format-overflow= -Wno-error=cast-function-type -Wno-error=unused-but-set-parameter -Wno-error=unused-but-set-variable -Wno-error=stringop-truncation -Wno-error=shift-negative-value -Wno-error=maybe-uninitialized" LDFLAGS=-Wl,-R$(PKGDEST)/lib make
 
 do-pkginst:
 	cd $(WORKDIR) && make prefix=`pwd`/../dest install

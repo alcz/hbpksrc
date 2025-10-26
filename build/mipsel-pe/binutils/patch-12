@@ -1,0 +1,11 @@
+--- gas/stabs.c.orig	2025-10-26 02:17:07.586712800 +0200
++++ gas/stabs.c	2025-10-26 02:17:16.305975700 +0200
+@@ -2690,7 +2690,7 @@
+ 	      ++*pp;
+ 	      voffset &= 0x7fffffff;
+ 
+-	      if (**pp == ';' || *pp == '\0')
++	      if (**pp == ';' || **pp == '\0')
+ 		{
+ 		  /* Must be g++ version 1.  */
+ 		  context = DEBUG_TYPE_NULL;

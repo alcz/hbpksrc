@@ -1,0 +1,10 @@
+--- gprof/gprof.c.orig	2009-06-12 17:33:30.000000000 +0200
++++ gprof/gprof.c	2025-10-26 02:47:29.522555000 +0200
+@@ -40,6 +40,7 @@
+ #include "corefile.h"
+ #include "gmon_io.h"
+ #include "hertz.h"
++#define _HIST_EXTERN
+ #include "hist.h"
+ #include "sym_ids.h"
+ #include "demangle.h"

@@ -1,0 +1,11 @@
+--- binutils/readelf.c.orig	2025-10-26 02:25:04.530125600 +0200
++++ binutils/readelf.c	2025-10-26 02:25:14.711214700 +0200
+@@ -149,7 +149,7 @@
+ #include "filenames.h"
+ 
+ char * program_name = "readelf";
+-int do_wide;
++extern int do_wide;
+ static long archive_file_offset;
+ static unsigned long archive_file_size;
+ static unsigned long dynamic_addr;

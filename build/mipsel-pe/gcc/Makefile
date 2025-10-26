@@ -17,10 +17,10 @@ do-patch: #fix-configure
 
 do-config:
 	mkdir -p $(WORKDIR)/build
-	cd $(WORKDIR)/build && CPPFLAGS="-D_ALL_SOURCE -I$(PKGDEST)/include" LDFLAGS="-L$(PKGDEST)/lib -Wl,-R$(PKGDEST)/lib" ../configure --prefix=$(PKGDEST) --target=$(ARCH_PREFIX)
+	cd $(WORKDIR)/build && CPPFLAGS="-fgnu89-inline -D_ALL_SOURCE -I$(PKGDEST)/include" LDFLAGS="-L$(PKGDEST)/lib -Wl,-R$(PKGDEST)/lib" ../configure --prefix=$(PKGDEST) --target=$(ARCH_PREFIX)
 
 do-build:
-	cd $(WORKDIR)/build && make CPPFLAGS="-D_ALL_SOURCE -I$(PKGDEST)/include" LDFLAGS="-L$(PKGDEST)/lib -Wl,-R$(PKGDEST)/lib" all-gcc
+	cd $(WORKDIR)/build && make CPPFLAGS="-fgnu89-inline -D_ALL_SOURCE -I$(PKGDEST)/include" LDFLAGS="-L$(PKGDEST)/lib -Wl,-R$(PKGDEST)/lib" all-gcc
 
 do-pkginst:
 	cd $(WORKDIR)/build && make prefix=`pwd`/../../dest install-gcc

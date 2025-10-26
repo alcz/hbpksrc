@@ -1,0 +1,16 @@
+--- gprof/hist.h.orig	2025-10-26 02:32:38.337143900 +0200
++++ gprof/hist.h	2025-10-26 02:47:41.683654500 +0200
+@@ -30,8 +30,13 @@
+   int *sample;           /* Histogram samples (shorts in the file!).  */
+ } histogram;
+ 
++#ifdef _HIST_EXTERN
+ histogram *histograms;
+ unsigned num_histograms;
++#else
++extern histogram *histograms;
++extern unsigned num_histograms;
++#endif
+ 
+ /* Scale factor converting samples to pc values:
+    each sample covers HIST_SCALE bytes.  */

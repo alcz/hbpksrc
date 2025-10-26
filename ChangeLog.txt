@@ -7,6 +7,18 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-26 12:12 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + mipsel-pe/binutils/patch-12
+  + mipsel-pe/binutils/patch-13
+  + mipsel-pe/binutils/patch-14
+  + mipsel-pe/binutils/patch-15
+  + mipsel-pe/gcc/patch-05
+  + mipsel-pe/gcc/patch-06
+  * mipsel-pe/binutils/Makefile
+  * mipsel-pe/gcc/Makefile
+    * experiment at building an older GCC flavor with newer toolchain,
+      moderate GCC 12.2.0 from Debian 12 tested
+
 2025-10-26 12:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + ChangeLog.txt
     ; initial commit of package manager - targeted at building C libraries
