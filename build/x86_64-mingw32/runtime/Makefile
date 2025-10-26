@@ -19,7 +19,7 @@ do-build:
 do-pkginst:
 	mkdir -p dest/$(ARCH_PREFIX)
 	mkdir -p dest/tmp
-	cd dest/tmp && pmgr-extract ../../$(DISTDIR)/$(SOURCES)
+	cd dest/tmp && hbpk-extract ../../$(DISTDIR)/$(SOURCES)
 	cd dest/tmp && patch -p0 < ../../_patch-00
 	rm -rf dest/tmp/x86_64-w64-mingw32/include/c++
 	cd dest/tmp/x86_64-w64-mingw32/lib && rm libobjc.a libstdc++.a

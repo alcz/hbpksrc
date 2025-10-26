@@ -24,5 +24,5 @@ do-build:
 
 do-pkginst:
 	mkdir -p dest/$(ARCH_PREFIX)
-	cd dest/$(ARCH_PREFIX) && pmgr-extract ../../$(DISTDIR)/$(SOURCES)
+	cd dest/$(ARCH_PREFIX) && hbpk-extract ../../$(DISTDIR)/$(SOURCES)
 	rm -rf dest/$(ARCH_PREFIX)/lib/gcc

@@ -7,6 +7,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-26 17:28 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/pmgr/pmgr-add.in -> base/pmgr/hbpk-add.in
+  * base/pmgr/pmgr-del.in -> base/pmgr/hbpk-del.in
+  * base/pmgr/pmgr-extract.in -> base/pmgr/hbpk-extract.in
+  * base/pmgr/pmgr-ls.in -> base/pmgr/hbpk-ls.in
+  * build/arm-linux-gnueabi/runtime/Makefile
+  * build/i386-pc-minix/runtime/Makefile
+  * build/i686-mingw32/runtime/Makefile
+  * build/i686-mingw32/w32api/Makefile
+  * build/x86_64-mingw32/runtime/Makefile
+  * common.mk
+  * README
+    * renamed CLI package manager files/calls from pmgr-* to hbpk-*
+
 2025-10-26 16:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/libpq18/Makefile
   + build/libpq8/Makefile

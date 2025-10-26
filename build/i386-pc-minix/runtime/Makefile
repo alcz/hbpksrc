@@ -27,4 +27,4 @@ do-build:
 
 do-pkginst:
 	mkdir -p dest/$(ARCH_PREFIX)
-	cd dest/$(ARCH_PREFIX) && (for src in $(SOURCES); do pmgr-extract ../../$(DISTDIR)/$$src; done)
+	cd dest/$(ARCH_PREFIX) && (for src in $(SOURCES); do hbpk-extract ../../$(DISTDIR)/$$src; done)

@@ -1,9 +1,9 @@
-PKGDEST     = /opt/pmgr
-PKGDBDIR    = share/pmgr
-PKGCMDNAME  = pmgr
-PKGSUFFIX   = pmgr
+PKGDEST     = /opt/hbpk
+PKGDBDIR    = share/hbpk
+PKGCMDNAME  = hbpk
+PKGSUFFIX   = hbpk
 FETCH       = wget
-EXTRACT     = pmgr-extract
+EXTRACT     = hbpk-extract
 PKGCOMPRESS = xz
 DISTDIR     = $(TOPDIR)/distfiles
 PKGDIR      = $(TOPDIR)/packages

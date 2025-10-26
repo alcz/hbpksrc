@@ -22,11 +22,11 @@ do
 		if [ -f $PKGDEST/$PKGDBDIR/files/$pkgname ]
 		then
 			echo "reinstall: $pkgname"
-			pmgr-del $pkgname
+			hbpk-del $pkgname
 		fi
 		echo "check package: $pkg"
 		depfile=$PKGDBDIR/depends/$pkgname
-		(cd $PKGDEST && pmgr-extract $pkg $depfile || exit)
+		(cd $PKGDEST && hbpk-extract $pkg $depfile || exit)
 		deps=`cat $PKGDEST/$depfile`
 		for dep in $deps
 		do
@@ -51,14 +51,14 @@ do
 					rm -f $PKGDEST/$depfile
 					exit 1
 				else
-					pmgr-add $target || (rm -f $PKGDEST/$depfile && exit)
+					hbpk-add $target || (rm -f $PKGDEST/$depfile && exit)
 				fi
 			fi
 		done
 		echo "install package: $pkg"
-		(cd $PKGDEST && pmgr-extract $pkg || exit)
+		(cd $PKGDEST && hbpk-extract $pkg || exit)
 		echo "done."
-		echo "* to show installed files: pmgr-ls $pkgname"
+		echo "* to show installed files: hbpk-ls $pkgname"
 	else
 		echo "install package: $pkg"
 		echo "ERROR: not found!"

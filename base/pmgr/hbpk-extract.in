@@ -39,15 +39,15 @@ then
 
 	case $type in
 		z)
-			pmgr-sizecat $target | gzip -dc | $tar xf - "$@"
+			hbpk-sizecat $target | gzip -dc | $tar xf - "$@"
 			exit
 			;;
 		j)
-			pmgr-sizecat $target | bzip2 -dc | $tar xf - "$@"
+			hbpk-sizecat $target | bzip2 -dc | $tar xf - "$@"
 			exit
 			;;
 		J)
-			pmgr-sizecat $target | xz -dc | $tar xf - "$@"
+			hbpk-sizecat $target | xz -dc | $tar xf - "$@"
 			exit
 			;;
 	esac

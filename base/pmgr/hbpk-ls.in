@@ -8,7 +8,7 @@ if [ $# -eq 0 ]
 then
 	echo "[$PKGDEST/$PKGDBDIR/files]"
 	ls $PKGDEST/$PKGDBDIR/files
-	echo "* to show details: pmgr-ls -l"
+	echo "* to show details: hbpk-ls -l"
 	exit 0
 fi
 
