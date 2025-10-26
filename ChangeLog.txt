@@ -7,6 +7,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-26 16:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/libpq18/Makefile
+  + build/libpq8/Makefile
+  + build/libpq9/Makefile
+    + added PostgreSQL libPQ client libs from version
+      18.0, 9.6.24, 8.4.22
+      TODO: 18.0 most likely needs ICU lib to be added
+
+  + build/zlib/Makefile
+    + zlib 1.3.1
+      try to keep the same version as Harbour in-tree
+      local hbzlib
+
+  * ChangeLog.txt
+    * wording
+
 2025-10-26 12:12 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + mipsel-pe/binutils/patch-12
   + mipsel-pe/binutils/patch-13
@@ -17,7 +33,8 @@
   * mipsel-pe/binutils/Makefile
   * mipsel-pe/gcc/Makefile
     * experiment at building an older GCC flavor with newer toolchain,
-      moderate GCC 12.2.0 from Debian 12 tested
+      building old GCC 4.3.4 MIPS PE Win32 by moderately recent GCC 12.2.0
+      from Debian 12 (tested)
 
 2025-10-26 12:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + ChangeLog.txt
