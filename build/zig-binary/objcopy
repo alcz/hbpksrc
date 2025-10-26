@@ -1,0 +1,2 @@
+#!/bin/sh
+$(dirname "$0")/../usr/share/zig/zig objcopy $@

@@ -7,6 +7,23 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-26 21:29 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/cmake/Makefile
+  + build/zig-binary/Makefile
+  + build/zig-binary/README.txt
+    + added CMake 4.1.2 and Zig 0.15.2, would Zig be able to
+      build CMake?
+
+  + build/zig-binary/ar
+  + build/zig-binary/c++
+  + build/zig-binary/cc
+  + build/zig-binary/clang
+  + build/zig-binary/clang++
+  + build/zig-binary/cxx
+  + build/zig-binary/objcopy
+  + build/zig-binary/rc
+    + scripts that will redirect average C compiler usage to Zig
+
 2025-10-26 18:59 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * base/pmgr/hbpk-add.in
   * base/pmgr/hbpk-extract.in
