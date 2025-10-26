@@ -7,6 +7,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-26 18:59 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/pmgr/hbpk-add.in
+  * base/pmgr/hbpk-extract.in
+    * "binary" built packages now have *.hbpk suffix
+
+  * base/pmgr/include/limits.h -> base/pmgr/include/limits.h.disable
+    * temp(?) disable overriding of /usr/include/limits.h
+
 2025-10-26 17:28 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * base/pmgr/pmgr-add.in -> base/pmgr/hbpk-add.in
   * base/pmgr/pmgr-del.in -> base/pmgr/hbpk-del.in

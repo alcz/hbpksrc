@@ -27,7 +27,7 @@ then
 		*.tar.xz | *.txz)
 			type=J
 			;;
-		*.pmgr)
+		*.hbpk)
 			if [ `od -An -tx1 -N4 $target | sed 's/ //g'` = "425a6839" ]
 			then
 				type=j

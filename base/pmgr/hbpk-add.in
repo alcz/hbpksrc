@@ -36,7 +36,7 @@ do
 				echo "- installed"
 			else
 				target=""
-				for p in $pkgdir/*.pmgr
+				for p in $pkgdir/*.hbpk
 				do
 					pbase=`basename $p`
 					pname=`echo $pbase | sed -e "s/-[0-9].*//"`
