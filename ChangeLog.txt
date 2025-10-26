@@ -1,0 +1,17 @@
+*
+ * $Id: aef25d8b19f00a4722bab47682911c2f81c0dab8 $
+ */
+
+/* Encoding: UTF-8 (No BOM)  Notation (in 5th position):
+     * Change, ! Fix, % Optimization, + Addition, - Removal, ; Comment
+   Entries may not always be in chronological/commit order.
+   See license at the end of file. */
+
+2025-10-26 12:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + ChangeLog.txt
+    ; initial commit of package manager - targeted at building C libraries
+      (sometimes old versions of them), where rewriting specific Makefiles
+      to hbmk2 is not viable
+
+      public domain code from https://github.com/7shi/pmgrsrc
+      Many thanks 7shi.
