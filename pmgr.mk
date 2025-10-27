@@ -20,7 +20,7 @@ fetch: .fetch
 	touch $@
 
 std-fetch:
-	for src in $(SOURCES); do if [ ! -f $(DISTDIR)/$$src ]; then rm -f $$src && $(FETCH) $(SRCURL)/$$src && mv $$src $(DISTDIR); fi; done
+	for src in $(SOURCES); do if [ ! -f $(DISTDIR)/$$src ]; then rm -f $$src && $(FETCH) $(SRCURL)/`echo $$src | sed -e 's/.*@//'` -O $$src && mv $$src $(DISTDIR); fi; done
 
 extract: .extract
 .extract: .depend .fetch

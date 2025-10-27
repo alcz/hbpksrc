@@ -7,6 +7,30 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-27 19:52 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+ + build/letodbf-rdd-alcz/Makefile
+ + build/letodbf-rdd-alcz/patch-00
+ + build/letodbf-rdd-elch/Makefile
+ + build/letodbf-rdd-elch/patch-00
+ + build/letodbf-server-alcz/Makefile
+ + build/letodbf-server-elch/Makefile
+   + added LetoDBf related packages
+   ; patch is related to <sys/select.h> having FD_SET
+     in musl libc
+
+ + hbarch.mk
+   + common-ized HB_ZIG_TARGET to HB_CPU translation
+
+ * build/harbour-core-onedir/Makefile
+ * build/harbour-core/Makefile
+   * moved dev suffix to PKGVER -> 3.2.0dev
+
+ * pmgr.mk
+   * one "sed" call later we can have conflicting names
+     of SOURCES file downloads - use something@file.tar.gz,
+     "something@" will end up in local storage, download
+     request will be just for "file.tar.gz".
+
 2025-10-27 12:24 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * README
     * .hbpk as package extension, plus a note

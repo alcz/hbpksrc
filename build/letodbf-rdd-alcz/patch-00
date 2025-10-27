@@ -1,0 +1,10 @@
+--- source/client/letocl.c.orig	2025-10-27 19:06:47.410009356 +0100
++++ source/client/letocl.c	2025-10-27 19:07:23.774430082 +0100
+@@ -55,6 +55,7 @@
+    #endif
+    #include <unistd.h>
+    #include <sys/socket.h>   /* only with above __USE_GNU: MSG_MORE flag */
++   #include <sys/select.h>
+    #if defined( HB_OS_BSD ) || ( defined( _POSIX_C_SOURCE ) && _POSIX_C_SOURCE >= 200112L )
+       #define HB_HAS_POLL
+       #include <poll.h>

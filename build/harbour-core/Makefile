@@ -1,6 +1,6 @@
 PKGNAME = harbour-core
-PKGVER  = 3.2.0
-PKGBLD  = dev+zig
+PKGVER  = 3.2.0dev
+PKGBLD  = +zig
 DEPENDS = zig
 
 TOPDIR  = ../..
