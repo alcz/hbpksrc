@@ -1,0 +1,71 @@
+name: Ubuntu 64-bit
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+       repository: alcz/hbpksrc
+       path: hbpksrc
+
+    - name: Prepare environment
+      run: |
+        sudo apt install libcurl4-openssl-dev libssl-dev
+        sudo mkdir /opt/hbpk
+        sudo chown $USER:$USER /opt/hbpk
+
+    - name: Build base of hbpk
+      run: |
+        export PATH="/opt/hbpk/bin:$PATH"
+        cd hbpksrc/base
+        make install
+        rm /opt/hbpk/bin/hbpk-sizecat # pacify progress-bar
+        ln -s /usr/bin/cat /opt/hbpk/bin/hbpk-sizecat
+        cat /opt/hbpk/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
+        mv /tmp/hbpk-del /opt/hbpk/bin/hbpk-del # another patch for extra argument
+        chmod 755 /opt/hbpk/bin/hbpk-del
+
+    - name: Build a selection of packges
+      run: |
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/linux/zig:$PATH"
+        cd hbpksrc/build
+        cd zig-binary
+        make install
+        cd ../harbour-core
+        make install
+        cd ../harbour-core-onedir
+        mv ../harbour-core/harbour-* ./ # only redo the install
+        touch .config .depend .extract .fetch .patch
+        make install
+        cd ../letodbf-server-elch
+        make install
+        cd ../letodbf-server-alcz
+        make install
+        cd ../letodbf-rdd-elch
+        make install
+        cd ../letodbf-rdd-alcz
+        make install
+
+    - name: Run tests
+      run: |
+        /opt/hbpk/harbour/bin/linux/zig/hbtest
+
+    - name: Rename artifacts
+      run: |
+        cd hbpksrc
+        mv packages x86_64-linux-musl
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: x86_64-linux-musl
+        path: hbpksrc/x86_64-linux-musl/*
