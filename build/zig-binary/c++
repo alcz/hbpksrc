@@ -1,2 +1,5 @@
 #!/bin/sh
-$(dirname "$0")/../usr/share/zig/zig c++ $@
+if [ -n "$HB_ZIG_TARGET" ]; then
+   ZIG_TARGET="-target $HB_ZIG_TARGET"
+fi
+$(dirname "$0")/../usr/share/zig/zig c++ $ZIG_TARGET $@

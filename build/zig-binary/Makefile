@@ -1,5 +1,6 @@
 PKGNAME = zig
 PKGVER  = 0.15.2
+PKGBLD  = +officialbinary
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk

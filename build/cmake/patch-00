@@ -1,0 +1,20 @@
+--- Source/cmWindowsRegistry.cxx.orig	2025-10-27 02:55:54.356583927 +0100
++++ Source/cmWindowsRegistry.cxx	2025-10-27 02:52:57.302171442 +0100
+@@ -405,6 +405,9 @@
+ 
+   bool Find()
+   {
++#if ! defined(_WIN32)
++    return false
++#else
+     // reset result members
+     this->RootKey = cm::string_view{};
+     this->SubKey = cm::string_view{};
+@@ -446,6 +449,7 @@
+       }
+     }
+     return result;
++#endif
+   }
+ 
+ #if defined(_WIN32) && !defined(__CYGWIN__)

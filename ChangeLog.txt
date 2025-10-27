@@ -7,6 +7,53 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-27 03:20 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/cmake/patch-00
+    ! Cmake bootstrapped with make on Linux GPFs/crashes in
+      Windows registry related routine. Where are we yet
+      in this world?
+
+  + build/harbour-core-onedir/Makefile
+    + Harbour + contribs not needing external libraries:
+      placed under single dir /opt/hbpk/harbour, built
+      by Zig cc LLVM wrapper
+      resulting package:
+      harbour-core-3.2.0dev+zig+onedir.hbpk
+
+  + build/harbour-core/Makefile
+    + Harbour + contribs not needing any external libs:
+      placed under /opt/hbpk prefix, binary under
+      /opt/hbpk/bin, libs under ../lib, etc.
+      built by Zig too
+      resulting package:
+      harbour-core-3.2.0dev+zig.hbpk
+
+  * build/cmake/Makefile
+    * tried different revision, due to bug described
+      above - no luck. Needed our own patch.
+
+  * build/zig-binary/Makefile
+  * build/zig-binary/c++
+  * build/zig-binary/cc
+  * build/zig-binary/clang
+  * build/zig-binary/clang++
+  * build/zig-binary/cxx
+    + compiler wrappers, added support for HB_ZIG_TARGET
+      variable. Currently use to specify x86_64-linux-musl
+      target, so the resulting binaries will work on
+      any Linux distribution.
+
+    ; this is the official Zig binary downloaded as is
+      from ziglang.org
+      repacked as:
+      zig-0.15.2+officialbinary.hbpk
+
+  * ../common.mk
+    + use HB_ZIG_TARGET on Linux
+
+  * ../pmgr.mk
+    + $(PKGBLD) additional package flavour/description
+
 2025-10-26 21:29 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/cmake/Makefile
   + build/zig-binary/Makefile

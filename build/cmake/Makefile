@@ -1,5 +1,7 @@
 PKGNAME = cmake
-PKGVER  = 4.1.2
+PKGVER  = 4.0.4
+PKGBLD  = +zig
+DEPENDS = zig
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
@@ -14,10 +16,10 @@ do-extract: std-extract
 do-patch: #fix-configure
 
 do-config:
-	cd $(WORKDIR) && ./configure --prefix=$(PKGDEST)
+	cd $(WORKDIR) && ./configure --prefix=$(PKGDEST) -- -DCMAKE_USE_OPENSSL=OFF
 
 do-build:
-	cd $(WORKDIR) && make
+	cd $(WORKDIR) && make -j8
 
 do-pkginst:
 	cd $(WORKDIR) && make prefix=`pwd`/../dest install

@@ -10,3 +10,15 @@ PKGDIR      = $(TOPDIR)/packages
 COMMANDS    = all fetch extract config build \
               package repackage install reinstall uninstall \
               clean distclean
+
+_DETPLAT_STR = $(shell uname -o)
+
+# prefer universal binaries - the main reason this build system is here
+# this will only have effect if zig-* compiler package has been installed
+ifneq ($(findstring Linux,$(_DETPLAT_STR)),)
+   export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
+else
+ifneq ($(findstring linux,$(_DETPLAT_STR)),)
+   export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
+endif
+endif
