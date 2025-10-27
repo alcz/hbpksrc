@@ -7,7 +7,7 @@
 [command usage]
 
 install:
-% hbpk-add PACKAGE-VER.pmgr
+% hbpk-add PACKAGE-VER.hbpk
 
 uninstall:
 % hbpk-del PACKAGE
@@ -16,3 +16,7 @@ list installed packages:
 % hbpk-ls [package-name]
 
 Thank you!
+
+preferably assign yourself to this path:
+mkdir -p /opt/hbpk
+chown $USER:$USER /opt/hbpk

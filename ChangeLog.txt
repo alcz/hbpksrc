@@ -7,6 +7,13 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-27 12:24 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * README
+    * .hbpk as package extension, plus a note
+
+  * common.mk
+    * set HB_ZIG_TARGET only if it's empty
+
 2025-10-27 03:20 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/cmake/patch-00
     ! Cmake bootstrapped with make on Linux GPFs/crashes in
