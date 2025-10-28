@@ -5,6 +5,7 @@ PKGSUFFIX   = hbpk
 FETCH       = wget
 EXTRACT     = hbpk-extract
 PKGCOMPRESS = xz
+HBMK        = hbmk2
 DISTDIR     = $(TOPDIR)/distfiles
 PKGDIR      = $(TOPDIR)/packages
 COMMANDS    = all fetch extract config build \

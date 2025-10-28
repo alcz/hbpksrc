@@ -1,4 +1,10 @@
-_JSON = $(shell hbmk2 --hbinfo)
+# silence stderr on this check, when failed?
+_JSON = $(shell $(HBMK) --hbinfo)
+
+ifeq ($(_JSON),)
+	HBMK := $(shell hbpk-ls harbour-core | grep /hbmk2$)
+	_JSON = $(shell $(HBMK) --hbinfo)
+endif
 
 # no braces
 _STRIPPED := $(subst {,,$(subst },,$(_JSON)))

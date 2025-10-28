@@ -24,7 +24,7 @@ do-patch: #fix-configure
 do-config:
 
 do-build:
-	cd $(WORKDIR) && hbmk2 rddleto.hbp
+	cd $(WORKDIR) && $(HBMK) rddleto.hbp
 do-pkginst:
 	mkdir -p dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER) && mkdir -p dest/lib && mkdir -p dest/harbour/contrib/letodbf && \
 	cp -r $(WORKDIR)/* dest/harbour/contrib/letodbf && \

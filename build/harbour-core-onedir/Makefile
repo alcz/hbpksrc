@@ -33,5 +33,4 @@ do-build:
 do-pkginst:
 	mkdir -p dest/harbour && mkdir -p dest/bin && cd $(WORKDIR) && \
 	cp -r addons bin contrib doc extras include lib tests ChangeLog.txt LICENSE.txt README.md ../dest/harbour && \
-	cd ../dest/bin && ln -s -f ../harbour/bin/linux/zig/hbmk2 hbmk2 && \
 	rm -rf ../harbour/lib/linux/zig/.hbmk

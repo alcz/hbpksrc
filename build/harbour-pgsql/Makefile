@@ -15,7 +15,7 @@ include $(TOPDIR)/hbarch.mk
 
 ifeq (,$(wildcard ../harbour-contribs/tree/contrib/.))
 	_CONTRIB_EXTRACT := std-extract
-	_CONTRIB_MV := mv core-master $(WORKDIR)
+	_CONTRIB_MV := rm -f $(WORKDIR) && mv core-master $(WORKDIR)
 endif
 
 include $(TOPDIR)/hbinfo.mk
@@ -31,9 +31,9 @@ do-config:
 
 do-build:
 	cd $(WORKDIR)/contrib/hbpgsql && \
-	HB_WITH_PGSQL=$(PKGDEST)/include hbmk2 hbpgsql.hbp && \
+	HB_WITH_PGSQL=$(PKGDEST)/include $(HBMK) hbpgsql.hbp && \
 	cd ../sddpg && \
-	HB_WITH_PGSQL=$(PKGDEST)/include hbmk2 sddpg.hbp -I../rddsql
+	HB_WITH_PGSQL=$(PKGDEST)/include $(HBMK) sddpg.hbp -I../rddsql
 do-pkginst:
 	mkdir -p dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER) && mkdir -p dest/lib && \
 	mkdir -p dest/harbour/contrib/hbpgsql && \

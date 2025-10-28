@@ -7,6 +7,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-28 23:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * build/harbour-core-onedir/Makefile
+  * build/harbour-pgsql/Makefile
+  * build/letodbf-rdd-alcz/Makefile
+  * build/letodbf-rdd-elch/Makefile
+  * build/letodbf-server-alcz/Makefile
+  * build/letodbf-server-elch/Makefile
+  * common.mk
+  * hbinfo.mk
+    ! making a symlink to hbmk2 at /bin/hbmk2 wasn't a good idea,
+      it messes library search when linking.
+      resorted to "hbpk-ls harbour-core | grep /hbmk2$" to locate
+      binary in installed harbour-core package flavour
+
 2025-10-28 21:48 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/harbour-contribs/placeholder.txt
     + Harbour source tree will be symlinked or unpacked
