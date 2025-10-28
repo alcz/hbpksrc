@@ -11,11 +11,7 @@ WORKDIR = $(PKGNAME)-$(PKGVER)
 SOURCES = master.tar.gz
 SRCURL  = https://github.com/harbour/core/archive/refs/heads
 
-ifneq ($(findstring aarch64,$(HB_ZIG_TARGET)),)
-	export HB_CPU = arm64
-else
-	export HB_CPU = $(shell uname -m)
-endif
+include $(TOPDIR)/hbarch.mk
 
 do-fetch: std-fetch
 do-extract: std-extract
@@ -23,7 +19,7 @@ do-patch: #fix-configure
 
 do-config:
 	mv core-master $(WORKDIR)
-
+	ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 do-build:
 	cd $(WORKDIR) && HB_USER_CFLAGS=-fPIC \
 	HB_BUILD_3RDEXT=no \
@@ -35,4 +31,7 @@ do-build:
 	HB_COMPILER=zig make -j8
 
 do-pkginst:
-	mkdir -p dest/harbour && cd $(WORKDIR) && cp -r addons bin contrib doc extras include lib tests ChangeLog.txt LICENSE.txt README.md ../dest/harbour && rm -rf ../dest/harbour/lib/linux/zig/.hbmk
+	mkdir -p dest/harbour && mkdir -p dest/bin && cd $(WORKDIR) && \
+	cp -r addons bin contrib doc extras include lib tests ChangeLog.txt LICENSE.txt README.md ../dest/harbour && \
+	cd ../dest/bin && ln -s -f ../harbour/bin/linux/zig/hbmk2 hbmk2 && \
+	rm -rf ../harbour/lib/linux/zig/.hbmk

@@ -1,4 +1,4 @@
-*
+/*
  * $Id: aef25d8b19f00a4722bab47682911c2f81c0dab8 $
  */
 
@@ -6,6 +6,41 @@
      * Change, ! Fix, % Optimization, + Addition, - Removal, ; Comment
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
+
+2025-10-28 21:48 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/harbour-contribs/placeholder.txt
+    + Harbour source tree will be symlinked or unpacked
+      here if any on the contribs is build
+
+  + build/harbour-pgsql/Makefile
+    + experimenting on hbpgsql, sddpg inclusion,
+      currently tied to libpq 9.6
+
+  + hbinfo.mk
+    + some JSON parsing in GNU Make
+
+  * .github/workflows/ubuntu.yml
+    ; will it build?
+
+  * README
+    + notes about HBPK_WORKDIR
+
+  * base/pmgr/hbpk-add.in
+  * base/pmgr/hbpk-del.in
+  * base/pmgr/hbpk-ls.in
+  * common.mk
+    * HBPK_WORKDIR=$HOME/hbpk
+      experimental support for relocating
+      from /opt/hbpk or having multiple
+      building trees
+
+  * build/harbour-core-onedir/Makefile
+  * build/harbour-core/Makefile
+  * build/letodbf-rdd-alcz/Makefile
+  * build/letodbf-rdd-elch/Makefile
+  * build/libpq9/Makefile
+    * many refinements, including getting platform, compiler
+      info from hbmk2 --hbinfo
 
 2025-10-27 19:52 UTC+0100 Aleksander Czajczynski (hb fki.pl)
  + build/letodbf-rdd-alcz/Makefile

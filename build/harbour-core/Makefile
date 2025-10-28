@@ -11,11 +11,7 @@ WORKDIR = $(PKGNAME)-$(PKGVER)
 SOURCES = master.tar.gz
 SRCURL  = https://github.com/harbour/core/archive/refs/heads
 
-ifneq ($(findstring aarch64,$(HB_ZIG_TARGET)),)
-	export HB_CPU = arm64
-else
-	export HB_CPU = $(shell uname -m)
-endif
+include $(TOPDIR)/hbarch.mk
 
 do-fetch: std-fetch
 do-extract: std-extract
@@ -23,6 +19,7 @@ do-patch: #fix-configure
 
 do-config:
 	mv core-master $(WORKDIR)
+	ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 
 do-build:
 	cd $(WORKDIR) && HB_USER_CFLAGS=-fPIC \

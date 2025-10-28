@@ -1,0 +1,3 @@
+tree/ subdirectory here is created or symlinked by either harbour-core or 
+harbour-core-onedir build to keep unpacked sourcetree in known place,
+later when separate contrib packaging is happening

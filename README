@@ -20,3 +20,8 @@ Thank you!
 preferably assign yourself to this path:
 mkdir -p /opt/hbpk
 chown $USER:$USER /opt/hbpk
+
+store the repo in home directory or have multiple build trees:
+export HBPK_WORKDIR=$HOME/hbpk
+export PATH="$HBPK_WORKDIR:$PATH"
+NOTE: this is not very well tested, right now changing HBPK_WORKDIR= need rebuilding base/

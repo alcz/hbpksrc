@@ -21,5 +21,6 @@ do-build:
 
 do-pkginst:
 	cd $(WORKDIR)/src/interfaces/libpq && prefix=`pwd`/../../../../dest PREFIX=/ DESTDIR=`pwd`/../../../../dest make install && cd ../../../../dest && mv .$(PKGDEST)/* ./ && rm -r opt
+	cd $(WORKDIR)/src/include && cp pg_config.h postgres_ext.h pg_config_ext.h ../../../dest/include
 #	cd $(WORKDIR)/src/interfaces/libpq && prefix=`pwd`/../../../../dest make install
 # FIXME: DESTDIR vs PREFIX in libpq(?)

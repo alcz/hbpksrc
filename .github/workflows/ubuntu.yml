@@ -54,6 +54,10 @@ jobs:
         make install
         cd ../letodbf-rdd-alcz
         make install
+        cd ../libpq9
+        make install
+        cd ../harbour-pgsql
+        make install
 
     - name: Run tests
       run: |

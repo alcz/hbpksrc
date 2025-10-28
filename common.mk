@@ -24,3 +24,7 @@ ifeq ($(HB_ZIG_TARGET),)
     endif
     endif
 endif
+
+ifneq ($(HBPK_WORKDIR),)
+    PKGDEST = $(HBPK_WORKDIR)
+endif
