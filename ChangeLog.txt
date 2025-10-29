@@ -1,11 +1,18 @@
-/*
- * $Id: aef25d8b19f00a4722bab47682911c2f81c0dab8 $
- */
-
 /* Encoding: UTF-8 (No BOM)  Notation (in 5th position):
      * Change, ! Fix, % Optimization, + Addition, - Removal, ; Comment
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
+
+2025-10-29 23:11 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + boot.mk
+  * common.mk
+  * base/Makefile
+    * improve make compat in base stage, to bootstrap GNU
+      Make eventually
+
+  * build/harbour-core-onedir/Makefile
+    * ignore symlink creation, Windows/MSYS2 @ GitHub Runner
+      goes for issues
 
 2025-10-29 18:00 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * base/Makefile

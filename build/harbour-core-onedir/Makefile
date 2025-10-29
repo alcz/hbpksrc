@@ -19,7 +19,7 @@ do-patch: #fix-configure
 
 do-config:
 	mv core-master $(WORKDIR)
-	ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
+	-ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 do-build:
 	cd $(WORKDIR) && HB_USER_CFLAGS=-fPIC \
 	HB_BUILD_3RDEXT=no \
