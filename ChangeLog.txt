@@ -7,6 +7,28 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-29 12:55 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + base/xz-inherit/Makefile
+  + base/xz-inherit/xz
+    + added pseudo-package to satisfy xz dep in MSYS2 shell
+      without building it. Seemed problematic to build
+      from "unix tarball" with no patching.
+
+  * base/pmgr/hbpk-extract.in
+    + added support for .zip via unzip
+
+  * build/zig-binary/Makefile
+    ! avoid creating a symlink for zig on MSYS2/Windows,
+      it ends up twice in tarball on this platform
+
+  + build/zig-binary/zig
+    + instead of a symlink, a bash-script wrapper is used,
+      right now it also contains a hack mangling "zig rc"
+      argument
+
+  * build/zlib/Makefile
+    * tie to "clang" compiler
+
 2025-10-29 02:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + base/xz-current/Makefile
     + added upgradable xz (5.8.1) package, old one stay

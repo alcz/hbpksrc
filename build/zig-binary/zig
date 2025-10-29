@@ -1,0 +1,13 @@
+#!/bin/sh
+if [ "$1" = "rc" ]
+   then
+# giant hack for windows build of "zig rc" called from MSYS shell
+# remove if can be fixed in harbour-core .mk rule
+   ncmd=$@
+   ncmd=${ncmd//\/I/-I}
+   ncmd=${ncmd//\/C /-C }
+   ncmd=${ncmd//\/FO /-FO }
+   $(dirname "$0")/../usr/share/zig/zig ${ncmd//.\//.\\}
+else
+   $(dirname "$0")/../usr/share/zig/zig $@
+fi
