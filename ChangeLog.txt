@@ -7,11 +7,40 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-29 18:00 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/Makefile
+    + HBPK_BOOTSTRAP=yes allow 1st stage bootstrap using
+      non GNU make(?)
+
+  * base/xz-inherit/Makefile
+    * shuffled pkg version number to 0
+
+  * build/libpq8/Makefile
+  * build/libpq9/Makefile
+    * shuffled package names to libpq, major version
+      number added to PKGVER - actually these can't coexist
+      on system paths - header files will collide.
+    * use $(HBPK_CC_FAMILY)
+
+  * build/openssl/Makefile
+  * build/zlib/Makefile
+    * use $(HBPK_CC_FAMILY)
+
+  * common.mk
+    + set HBPK_CC_FAMILY = CC=clang when zig is detected
+
+    + set HB_ZIG_TARGET={cpu}-windows-gnu when MSYS2 shell
+      is detected 
+
+  * hbinfo.mk
+    + set HBPK_CC_FAMILY = CC=clang when zig is detected,
+      this one uses information returned by hbmk2 --hbinfo
+
 2025-10-29 13:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * libpq8/Makefile
   * libpq9/Makefile
     * tie to CC=clang
-      later will be translated to $(CLANG_OR_ZIG) macro of
+      later will be translated to $(HBPK_CC_FAMILY) macro of
       some sort
 
   * git -> interix-git

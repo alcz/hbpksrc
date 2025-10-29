@@ -1,6 +1,6 @@
 PKGNAME = xz
-PKGVER  = inherit
-PKGBLD  = +hostbinary
+PKGVER  = 0
+PKGBLD  = +inherit-hostbinary
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk

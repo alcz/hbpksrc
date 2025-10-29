@@ -2,7 +2,7 @@ TOPDIR = ../..
 include $(TOPDIR)/common.mk
 
 SCRIPTS = $(PKGCMDNAME)-add $(PKGCMDNAME)-del $(PKGCMDNAME)-ls $(PKGCMDNAME)-extract
-TARGETS = $(PKGCMDNAME)-sizecat $(SCRIPTS)
+TARGETS = $(HBPK_BOOTCAT)$(PKGCMDNAME)-sizecat $(SCRIPTS)
 
 all: build
 fetch extract:
@@ -33,6 +33,13 @@ $(SCRIPTS):
 $(PKGCMDNAME)-sizecat: sizecat.c
 	gcc -o $@ sizecat.c
 	strip $@
+
+no$(PKGCMDNAME)-sizecat:
+	echo '#!/bin/sh' > $@
+	printf '/usr/bin/cat "$$@"\n' >> $@
+	chmod 755 $@
+	mkdir -p $(PKGDEST)/bin
+	-cp -f $@ $(PKGDEST)/bin/$(PKGCMDNAME)-sizecat
 
 clean distclean:
 	rm -f $(TARGETS)

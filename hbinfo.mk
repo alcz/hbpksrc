@@ -24,3 +24,7 @@ HBPK_COMPILER := $(word 2,$(subst :, ,$(filter compiler:%,$(_CLEANED))))
 # getter
 # HBPK_PLATFORM := $(call json_get,platform)
 # HBPK_COMPILER := $(call json_get,compiler)
+
+ifeq ($(HBPK_COMPILER),zig)
+	export HBPK_CC_FAMILY = CC=clang
+endif

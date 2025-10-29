@@ -54,7 +54,7 @@ then
 			exit
 			;;
 		Z)
-			hbpk-sizecat $target | unzip -d - "$@"
+			unzip -q $target "$@"
 			exit
 			;;
 	esac

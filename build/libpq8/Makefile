@@ -1,14 +1,14 @@
-PKGNAME = libpq8
-PKGVER  = 4.22
+PKGNAME = libpq
+PKGVER  = 8.4.22
 DEPENDS = zlib
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
 include $(TOPDIR)/pmgr.mk
 
-WORKDIR = postgresql-8.$(PKGVER)
+WORKDIR = postgresql-$(PKGVER)
 SOURCES = $(WORKDIR).tar.gz
-SRCURL  = https://ftp.postgresql.org/pub/source/v8.$(PKGVER)
+SRCURL  = https://ftp.postgresql.org/pub/source/$(PKGVER)
 
 include $(TOPDIR)/hbinfo.mk
 
@@ -17,7 +17,7 @@ do-extract: std-extract
 do-patch:
 
 do-config:
-	cd $(WORKDIR) && CC=clang ./configure --prefix=$(PKGDEST) --without-readline --with-includes=$(PKGDEST)/include --with-libraries=$(PKGDEST)/lib
+	cd $(WORKDIR) && $(HBPK_CC_FAMILY) ./configure --prefix=$(PKGDEST) --without-readline --with-includes=$(PKGDEST)/include --with-libraries=$(PKGDEST)/lib
 
 do-build:
 	cd $(WORKDIR)/src/interfaces/libpq && make

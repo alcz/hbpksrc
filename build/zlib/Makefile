@@ -14,7 +14,7 @@ do-extract: std-extract
 do-patch: #fix-configure
 
 do-config:
-	cd $(WORKDIR) && CC=clang ./configure --prefix=$(PKGDEST)
+	cd $(WORKDIR) && $(HBPK_CC_FAMILY) ./configure --prefix=$(PKGDEST)
 
 do-build:
 	cd $(WORKDIR) && make
