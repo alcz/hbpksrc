@@ -7,6 +7,23 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-29 02:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + base/xz-current/Makefile
+    + added upgradable xz (5.8.1) package, old one stay
+      for older OS-es, new one is needed by aarch64
+
+  * build/libpq8/Makefile
+  * build/libpq9/Makefile
+    * for convenience place libpq.a in Harbour's libpath
+
+  + build/openssl/Makefile
+    + static build OpenSSL 3.6.0 for testing
+
+  * hbinfo.mk
+    * gracefully check if hbmk2 is in /bin
+
+  + .github/workflows/ubuntu-arm64.yml
+
 2025-10-28 23:05 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * build/harbour-core-onedir/Makefile
   * build/harbour-pgsql/Makefile

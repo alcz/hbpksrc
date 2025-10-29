@@ -1,5 +1,6 @@
-# silence stderr on this check, when failed?
-_JSON = $(shell $(HBMK) --hbinfo)
+ifneq ($(wildcard $(PKGDEST)/bin/$(HBMK)),)
+	_JSON = $(shell $(HBMK) --hbinfo)
+endif
 
 ifeq ($(_JSON),)
 	HBMK := $(shell hbpk-ls harbour-core | grep /hbmk2$)

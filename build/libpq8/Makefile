@@ -9,7 +9,9 @@ include $(TOPDIR)/pmgr.mk
 WORKDIR = postgresql-8.$(PKGVER)
 SOURCES = $(WORKDIR).tar.gz
 SRCURL  = https://ftp.postgresql.org/pub/source/v8.$(PKGVER)
-#postgresql-8.$(PKGVER).tar.gz
+
+include $(TOPDIR)/hbinfo.mk
+
 do-fetch: std-fetch
 do-extract: std-extract
 do-patch:
@@ -22,5 +24,7 @@ do-build:
 
 do-pkginst:
 	cd $(WORKDIR)/src/interfaces/libpq && prefix=`pwd`/../../../../dest PREFIX=/ DESTDIR=`pwd`/../../../../dest make install && cd ../../../../dest && mv .$(PKGDEST)/* ./ && rm -r opt
+	mkdir -p dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER)
+	cp dest/lib/*.a dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER)/
 #	cd $(WORKDIR)/src/interfaces/libpq && prefix=`pwd`/../../../../dest make install
 # FIXME: DESTDIR vs PREFIX in libpq(?)
