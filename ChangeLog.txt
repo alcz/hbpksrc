@@ -7,6 +7,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-29 13:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * libpq8/Makefile
+  * libpq9/Makefile
+    * tie to CC=clang
+      later will be translated to $(CLANG_OR_ZIG) macro of
+      some sort
+
+  * git -> interix-git
+  * mkisofs -> interix-mkisofs
+  * openssh -> interix-openssh
+  * python  -> interix-python2
+    * move out Interix ports to a namespace
+
+  - base/xz-inherit/xz
+    - binary was unneccesary here...
+
 2025-10-29 12:55 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + base/xz-inherit/Makefile
   + base/xz-inherit/xz

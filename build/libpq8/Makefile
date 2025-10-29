@@ -17,7 +17,7 @@ do-extract: std-extract
 do-patch:
 
 do-config:
-	cd $(WORKDIR) && ./configure --prefix=$(PKGDEST) --without-readline --with-includes=$(PKGDEST)/include --with-libraries=$(PKGDEST)/lib
+	cd $(WORKDIR) && CC=clang ./configure --prefix=$(PKGDEST) --without-readline --with-includes=$(PKGDEST)/include --with-libraries=$(PKGDEST)/lib
 
 do-build:
 	cd $(WORKDIR)/src/interfaces/libpq && make
