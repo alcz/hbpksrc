@@ -2,7 +2,7 @@ PKGNAME = xz
 PKGVER  = 5.8.1
 
 TOPDIR  = ../..
-include $(TOPDIR)/common.mk
+include $(TOPDIR)/boot.mk
 include $(TOPDIR)/pmgr.mk
 
 PKGCOMPRESS = bin/xz

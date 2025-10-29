@@ -3,6 +3,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-30 00:19 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/GNU.txt
+  * base/Makefile
+    * self-modifying bootstrap BSD to GNU, only to activate
+      missing feature of work dir override
+
+  * base/pmgr/Makefile
+  * base/xz-current/Makefile
+  * base/xz-inherit/Makefile
+  * base/xz/Makefile
+    ! switch to boot.mk
+
+  * build/libpq8/Makefile
+  * build/libpq9/Makefile
+    ! typo in path
+
 2025-10-29 23:11 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + boot.mk
   * common.mk

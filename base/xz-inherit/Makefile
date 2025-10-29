@@ -3,7 +3,7 @@ PKGVER  = 0
 PKGBLD  = +inherit-hostbinary
 
 TOPDIR  = ../..
-include $(TOPDIR)/common.mk
+include $(TOPDIR)/boot.mk
 include $(TOPDIR)/pmgr.mk
 
 #MACHINE = $(shell uname -m)

@@ -8,7 +8,7 @@ include $(TOPDIR)/pmgr.mk
 
 WORKDIR = postgresql-$(PKGVER)
 SOURCES = $(WORKDIR).tar.gz
-SRCURL  = https://ftp.postgresql.org/pub/source/$(PKGVER)
+SRCURL  = https://ftp.postgresql.org/pub/source/v$(PKGVER)
 
 include $(TOPDIR)/hbinfo.mk
 

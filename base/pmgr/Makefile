@@ -1,5 +1,5 @@
 TOPDIR = ../..
-include $(TOPDIR)/common.mk
+include $(TOPDIR)/boot.mk
 
 SCRIPTS = $(PKGCMDNAME)-add $(PKGCMDNAME)-del $(PKGCMDNAME)-ls $(PKGCMDNAME)-extract
 TARGETS = $(HBPK_BOOTCAT)$(PKGCMDNAME)-sizecat $(SCRIPTS)

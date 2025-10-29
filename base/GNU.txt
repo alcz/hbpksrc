@@ -1,0 +1,14 @@
+PACKAGES = pmgr xz
+
+TOPDIR = ..
+
+# allow 1st stage boostrap using non-GNU make(?)
+include $(TOPDIR)/boot.mk
+
+# comment this block to enable bootstrap by BSD Make
+ifneq ($(HBPK_WORKDIR),)
+   PKGDEST = $(HBPK_WORKDIR)
+endif
+
+$(COMMANDS):
+	for pkg in $(PACKAGES); do (cd $$pkg && $(MAKE) $@) || exit; done
