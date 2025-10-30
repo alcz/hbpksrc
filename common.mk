@@ -20,9 +20,9 @@ endif
 ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
    ifneq ($(wildcard $(PKGDEST)/usr/share/zig),)
       export PATH := $(PATH):$(PKGDEST)/usr/share/zig
-      # also set for packages that are not Harbour
+      # also set for packages that are not for Harbour
       # ever use other compilers when zig is installed?
-      ifeq ($(HB_ZIG_TARGET),)
+      ifeq ($(HBPK_CC_FAMILY),)
          export HBPK_CC_FAMILY = CC=clang
       endif
    endif
@@ -40,6 +40,10 @@ ifeq ($(HB_ZIG_TARGET),)
    else
    ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
       export HB_ZIG_TARGET = $(shell uname -m)-windows-gnu
+   else
+   ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
+      export HB_ZIG_TARGET = $(shell uname -m)-macos
+   endif
    endif
    endif
    endif

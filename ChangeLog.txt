@@ -3,6 +3,13 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-30 11:10 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * common.mk
+  * build/zig-binary/Makefile
+    * patch for macOS host
+    ! don't overwrite HBPK_CC_FAMILY if it's already set
+      (c&p typo)
+
 2025-10-30 01:50 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * common.mk
     * indent
