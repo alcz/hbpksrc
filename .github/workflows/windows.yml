@@ -24,6 +24,7 @@ jobs:
           mingw-w64-x86_64-minizip
           mingw-w64-x86_64-make
           unzip
+          patch
           make
 
     - uses: actions/checkout@v2
