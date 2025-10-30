@@ -1,9 +1,17 @@
-ifneq ($(wildcard $(PKGDEST)/bin/$(HBMK)),)
+ifneq ($(MSYSTEM),)
+	_EXT = .exe
+else
+ifneq ($(WINDIR),)
+	_EXT = .exe
+endif
+endif
+
+ifneq ($(wildcard $(PKGDEST)/bin/$(HBMK)$(_EXT)),)
 	_JSON = $(shell $(HBMK) --hbinfo)
 endif
 
 ifeq ($(_JSON),)
-	HBMK := $(shell hbpk-ls harbour-core | grep /hbmk2$)
+	HBMK := $(shell hbpk-ls harbour-core | grep /hbmk2$(_EXT)$)
 	_JSON = $(shell $(HBMK) --hbinfo)
 endif
 

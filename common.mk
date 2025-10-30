@@ -36,7 +36,7 @@ ifeq ($(HB_ZIG_TARGET),)
       export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
    else
    ifneq ($(findstring linux,$(_DETPLAT_STR)),)
-       export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
+      export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
    else
    ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
       export HB_ZIG_TARGET = $(shell uname -m)-windows-gnu
