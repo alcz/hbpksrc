@@ -59,7 +59,7 @@ jobs:
         cd hbpksrc/build
         PKGSELECTION=zig-binary make install
         PKGSELECTION=harbour-core make install
-        cd ../harbour-core-onedir
+        cd harbour-core-onedir
         mv ../harbour-core/harbour-* ./ # only redo the install
         touch .config .depend .extract .fetch .patch
         cd ..

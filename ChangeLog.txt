@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-31 17:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + .github/workflows/macos.yml
+    + added macos-latest runner
+    
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows.yml
+    * fix path oops
+
 2025-10-31 16:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * base/Makefile
   * base/pmgr/Makefile

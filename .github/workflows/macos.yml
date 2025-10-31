@@ -1,4 +1,4 @@
-name: Ubuntu ARM64
+name: macOS M
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -19,9 +19,9 @@ jobs:
 
     - name: Prepare environment
       run: |
-        sudo apt install libcurl4-openssl-dev libssl-dev
+        brew install slang
         sudo mkdir /opt/hbpk
-        sudo chown $USER:$USER /opt/hbpk
+        sudo chown $USER /opt/hbpk
 
     - name: Build base of hbpk
       run: |
@@ -38,7 +38,7 @@ jobs:
 
     - name: Build a selection of packges
       run: |
-        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/linux/zig:$PATH"
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/darwin/zig:$PATH"
         cd hbpksrc/build
         PKGSELECTION=zig-binary make install
         PKGSELECTION=harbour-core make install
@@ -59,15 +59,15 @@ jobs:
 
     - name: Run tests
       run: |
-        /opt/hbpk/harbour/bin/linux/zig/hbtest
+        /opt/hbpk/harbour/bin/darwin/zig/hbtest
 
     - name: Rename artifacts
       run: |
         cd hbpksrc
-        mv packages packages-aarch64-linux-musl
+        mv packages packages-aarch64-macos
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: packages-aarch64-linux-musl
-        path: hbpksrc/packages-aarch64-linux-musl/*
+        name: packages-aarch64-macos
+        path: hbpksrc/packages-aarch64-macos
