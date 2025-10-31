@@ -50,7 +50,10 @@ ifeq ($(HB_ZIG_TARGET),)
       export HB_ZIG_TARGET = $(shell uname -m)-windows-gnu
    else
    ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
-      export HB_ZIG_TARGET = $(shell uname -m)-macos
+	export HB_ZIG_TARGET = $(shell uname -m)-macos
+	ifneq ($(findstring arm64,$(HB_ZIG_TARGET)),)
+		export HB_ZIG_TARGET = aarch64-macos
+	endif
    endif
    endif
    endif

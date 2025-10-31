@@ -3,6 +3,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-31 17:43 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * common.mk
+  * build/zig-binary/Makefile
+    * on macOS machine name is arm64 not aarch64 here again
+
+  * .github/workflows/macos.yml
+    * /usr/bin/cat -> /bin/cat
+
 2025-10-31 17:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + .github/workflows/macos.yml
     + added macos-latest runner

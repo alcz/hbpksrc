@@ -25,20 +25,22 @@ jobs:
 
     - name: Build base of hbpk
       run: |
-        export PATH="/opt/hbpk/bin:$PATH"
+        export HBPK_WORKDIR=$HOME/hbpk
+        export PATH="$HBPK_WORKDIR/bin:$PATH"
         cd hbpksrc/base
         mv xz xz-old
         mv xz-current xz
         make install
-        rm /opt/hbpk/bin/hbpk-sizecat # pacify progress-bar
-        ln -s /usr/bin/cat /opt/hbpk/bin/hbpk-sizecat
-        cat /opt/hbpk/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
-        mv /tmp/hbpk-del /opt/hbpk/bin/hbpk-del # another patch for extra argument
-        chmod 755 /opt/hbpk/bin/hbpk-del
+        rm $HBPK_WORKDIR/bin/hbpk-sizecat # pacify progress-bar
+        ln -s /bin/cat $HBPK_WORKDIR/bin/hbpk-sizecat
+        cat $HBPK_WORKDIR/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
+        mv /tmp/hbpk-del $HBPK_WORKDIR/bin/hbpk-del # another patch for extra argument
+        chmod 755 $HBPK_WORKDIR/bin/hbpk-del
 
     - name: Build a selection of packges
       run: |
-        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/darwin/zig:$PATH"
+        export HBPK_WORKDIR=$HOME/hbpk
+        export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$PATH"
         cd hbpksrc/build
         PKGSELECTION=zig-binary make install
         PKGSELECTION=harbour-core make install
@@ -47,6 +49,7 @@ jobs:
         touch .config .depend .extract .fetch .patch
         cd ..
         PKGSELECTION=harbour-core-onedir make install
+        sudo chown -R $USER $HBPK_WORKDIR
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
@@ -59,7 +62,7 @@ jobs:
 
     - name: Run tests
       run: |
-        /opt/hbpk/harbour/bin/darwin/zig/hbtest
+         $HOME/hbpk/harbour/bin/darwin/zig/hbtest
 
     - name: Rename artifacts
       run: |
