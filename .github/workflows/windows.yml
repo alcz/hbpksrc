@@ -37,6 +37,7 @@ jobs:
       shell: msys2 {0}
       run: |
         mkdir /opt/hbpk
+        echo verbose=off > $HOME/.wgetrc
 
     - name: Build base of hbpk
       shell: msys2 {0}

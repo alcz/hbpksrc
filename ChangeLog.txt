@@ -3,6 +3,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-31 22:07 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * ubuntu-arm64.yml
+  * windows.yml
+  * ubuntu.yml
+  * macos.yml
+    * get grep from brew on macOS
+    + verbose=no > $HOME/.wgetrc
+
 2025-10-31 18:51 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * base/Makefile
   * common.mk

@@ -22,6 +22,7 @@ jobs:
         sudo apt install libcurl4-openssl-dev libssl-dev
         sudo mkdir /opt/hbpk
         sudo chown $USER:$USER /opt/hbpk
+        echo verbose=off > $HOME/.wgetrc
 
     - name: Build base of hbpk
       run: |

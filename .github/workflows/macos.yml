@@ -20,8 +20,10 @@ jobs:
     - name: Prepare environment
       run: |
         brew install slang
+        brew install grep # strange problem with system grep
         sudo mkdir /opt/hbpk
         sudo chown $USER /opt/hbpk
+        echo verbose=off > $HOME/.wgetrc
 
     - name: Build base of hbpk
       run: |
@@ -40,7 +42,7 @@ jobs:
     - name: Build a selection of packges
       run: |
         export HBPK_WORKDIR=$HOME/hbpk
-        export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$PATH"
+        export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
         cd hbpksrc/build
         PKGSELECTION=zig-binary make install
         PKGSELECTION=harbour-core make install
