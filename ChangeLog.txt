@@ -3,6 +3,11 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-31 18:51 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/Makefile
+  * common.mk
+    * do we need to export PKGDEST=(?)
+
 2025-10-31 17:43 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * common.mk
   * build/zig-binary/Makefile

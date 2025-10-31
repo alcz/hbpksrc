@@ -18,7 +18,7 @@ ifneq ($(findstring MINGW,$(_DETPLAT_STR)),)
 endif
 
 ifneq ($(HBPK_WORKDIR),)
-   PKGDEST = $(HBPK_WORKDIR)
+   export PKGDEST = $(HBPK_WORKDIR)
 endif
 
 # MSYS2 Shell needs additional path entry to make tools locate zig.exe 
