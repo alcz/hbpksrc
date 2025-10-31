@@ -2,7 +2,7 @@ PKGNAME = xz
 PKGVER  = 4.999.9beta
 
 TOPDIR  = ../..
-include $(TOPDIR)/boot.mk
+include $(TOPDIR)/base/via.mk
 include $(TOPDIR)/pmgr.mk
 
 PKGCOMPRESS = bin/xz

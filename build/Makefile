@@ -29,6 +29,10 @@ PACKAGES = \
 	which \
 	x86_64-mingw32
 
+ifneq ($(PKGSELECTION),)
+   PACKAGES := $(PKGSELECTION)
+endif
+
 TOPDIR = ..
 include $(TOPDIR)/common.mk
 

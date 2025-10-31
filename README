@@ -17,6 +17,7 @@ list installed packages:
 
 Thank you!
 
+[extra]
 preferably assign yourself to this path:
 mkdir -p /opt/hbpk
 chown $USER:$USER /opt/hbpk

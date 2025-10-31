@@ -3,6 +3,34 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-10-31 16:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/Makefile
+  * base/pmgr/Makefile
+  * base/xz-current/Makefile
+  * base/xz-inherit/Makefile
+  * base/xz/Makefile
+  - base/GNU.txt
+  + base/gnu.mk
+  + base/via.mk
+    * changed BSD Make bootstrap
+      to use swappable via.mk
+
+  * build/Makefile
+    + PKGSELECTION="pkgname1 pkgname2 ..."
+      to build specific packages
+
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows.yml
+    * changed to use PKGSELECTION=
+    + add diffutils on win/MSYS2
+
+  * common.mk
+    ; final variables proposal
+
+  * README
+    + [extra]
+
 2025-10-30 11:10 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * common.mk
   * build/zig-binary/Makefile

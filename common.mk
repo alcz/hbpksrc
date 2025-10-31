@@ -4,6 +4,14 @@ endif
 
 include $(TOPDIR)/boot.mk
 
+# final configuration sets proposal:
+# HBPK_DETPLAT_STR= (parsed from uname or some env)
+# HBPK_HOST_PLAT= (supplied by user)
+# HBPK_NO_DETPLAT_UNAME=y (set to prevent autoconfig by calling uname)
+# HBPK_NO_DETPLAT_ENV=y (setting to prevent autoconfig by reading environment)
+# HBPK_MSYSTEM (MSYS2 shell on windows detected)
+# HBPK_HOST_BIN_EXT (executable file extension on host os)
+
 _DETPLAT_STR = $(shell uname)
 ifneq ($(findstring MINGW,$(_DETPLAT_STR)),)
    _DETPLAT_STR = $(shell uname -o)

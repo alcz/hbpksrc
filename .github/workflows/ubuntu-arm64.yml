@@ -40,25 +40,21 @@ jobs:
       run: |
         export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/linux/zig:$PATH"
         cd hbpksrc/build
-        cd zig-binary
-        make install
-        cd ../harbour-core
-        make install
+        PKGSELECTION=zig-binary make install
+        PKGSELECTION=harbour-core make install
         cd ../harbour-core-onedir
         mv ../harbour-core/harbour-* ./ # only redo the install
         touch .config .depend .extract .fetch .patch
-        make install
-        cd ../letodbf-server-elch
-        make install
-        cd ../letodbf-server-alcz
-        make install
-        cd ../letodbf-rdd-elch
-        make install
-        cd ../letodbf-rdd-alcz
-        make install
-        cd ../libpq9
-        make install
-        cd ../harbour-pgsql
+        cd ..
+        PKGSELECTION=harbour-core-onedir make install
+        PKGSELECTION=" \
+          letodbf-server-elch \
+          letodbf-server-alcz \
+          letodbf-rdd-elch \
+          letodbf-rdd-alcz \
+          libpq9 \
+          harbour-pgsql \
+          " \
         make install
 
     - name: Run tests
