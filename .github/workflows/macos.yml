@@ -51,10 +51,6 @@ jobs:
         touch .config .depend .extract .fetch .patch
         cd ..
         PKGSELECTION=harbour-core-onedir make install
-        hbpk-ls harbour-core | grep /hbmk2
-        hbpk-ls harbour-core | ggrep /hbmk2
-        hbpk-ls harbour-core | ggrep /hbmk2$
-        hbpk-ls harbour-core | grep /hbmk2$
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \

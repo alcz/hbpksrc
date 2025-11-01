@@ -11,7 +11,7 @@ ifneq ($(wildcard $(PKGDEST)/bin/$(HBMK)$(_EXT)),)
 endif
 
 ifeq ($(_JSON),)
-	HBMK := $(shell hbpk-ls harbour-core | grep /hbmk2$(_EXT)$)
+	HBMK := $(shell hbpk-ls harbour-core | grep /hbmk2$(_EXT)$$)
 	_JSON = $(shell $(HBMK) --hbinfo)
 endif
 
