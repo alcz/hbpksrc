@@ -24,6 +24,29 @@ jobs:
         sudo chown $USER:$USER /opt/hbpk
         echo verbose=off > $HOME/.wgetrc
 
+    - name: Get previous successful run ID
+      id: get_run
+      continue-on-error: true
+      run: |
+        cd hbpksrc
+        # ignore artifacts, when a forced rebuild goes
+        if ! git log --oneline -n1 | grep -Fq "[corebuild]"; then
+          PREV_RUN_ID=$(gh run list --workflow="${{ github.workflow }}" --limit=1 --status=success --json databaseId -q '.[0].databaseId')
+          echo "Previous successful run ID: $PREV_RUN_ID"
+          echo "run_id=$PREV_RUN_ID" >> $GITHUB_OUTPUT
+        fi
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get previously built packages
+      continue-on-error: true
+      uses: actions/download-artifact@v4
+      with:
+        name: packages-aarch64-linux-musl
+        path: packages-aarch64-linux-musl-last
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        run-id: ${{ steps.get_run.outputs.run_id }}
+
     - name: Build base of hbpk
       run: |
         export PATH="/opt/hbpk/bin:$PATH"
@@ -40,14 +63,23 @@ jobs:
     - name: Build a selection of packges
       run: |
         export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/linux/zig:$PATH"
-        cd hbpksrc/build
-        PKGSELECTION=zig-binary make install
-        PKGSELECTION=harbour-core make install
-        cd harbour-core-onedir
-        mv ../harbour-core/harbour-* ./ # only redo the install
-        touch .config .depend .extract .fetch .patch
-        cd ..
-        PKGSELECTION=harbour-core-onedir make install
+        if [ -d "packages-aarch64-linux-musl-last" ]; then
+          mv packages-aarch64-linux-musl-last/harbour-core*.hbpk hbpksrc/packages/
+          mv packages-aarch64-linux-musl-last/zig*.hbpk hbpksrc/packages/
+          cd hbpksrc/packages
+          hbpk-add zig*.hbpk
+          hbpk-add harbour-core*onedir.hbpk
+          cd ../build
+        else
+          cd hbpksrc/build
+          PKGSELECTION=zig-binary make install
+          PKGSELECTION=harbour-core make install
+          cd harbour-core-onedir
+          mv ../harbour-core/harbour-* ./ # only redo the install
+          touch .config .depend .extract .fetch .patch
+          cd ..
+          PKGSELECTION=harbour-core-onedir make install
+        fi
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \

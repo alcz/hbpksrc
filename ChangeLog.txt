@@ -3,10 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-01 20:31 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows.yml
+    ; test package "caching"
+
 2025-11-01 20:01 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml
     + prepare to reuse core artifacts/packages
-
+ 
 2025-11-01 12:12 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * hbinfo.mk
     * properly escape $ -> $$ while grepping
