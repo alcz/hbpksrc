@@ -25,6 +25,13 @@ jobs:
         sudo chown $USER /opt/hbpk
         echo verbose=off > $HOME/.wgetrc
 
+    - name: Get previously built packages
+      continue-on-error: true
+      uses: actions/download-artifact@v4
+      with:
+        name: packages-aarch64-macos
+        path: hbpksrc/packages-aarch64-macos-last
+
     - name: Build base of hbpk
       run: |
         export HBPK_WORKDIR=$HOME/hbpk
