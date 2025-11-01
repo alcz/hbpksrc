@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-01 11:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/pmgr/hbpk-add.in
+  * base/pmgr/hbpk-del.in
+  * base/pmgr/hbpk-ls.in
+    ! if [ -z ] not portable enough for macOS?
+      it lacked else anyway...
+
+  * .github/workflows/macos.yml
+    ; test
+
 2025-10-31 22:07 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * ubuntu-arm64.yml
   * windows.yml

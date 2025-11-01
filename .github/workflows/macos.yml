@@ -20,7 +20,7 @@ jobs:
     - name: Prepare environment
       run: |
         brew install slang
-        brew install grep # strange problem with system grep
+        brew install grep
         sudo mkdir /opt/hbpk
         sudo chown $USER /opt/hbpk
         echo verbose=off > $HOME/.wgetrc
@@ -52,6 +52,9 @@ jobs:
         cd ..
         PKGSELECTION=harbour-core-onedir make install
         hbpk-ls harbour-core | grep /hbmk2
+        hbpk-ls harbour-core | ggrep /hbmk2
+        hbpk-ls harbour-core | ggrep /hbmk2$
+        hbpk-ls harbour-core | grep /hbmk2$
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
