@@ -3,6 +3,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-02 06:25 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * build/libpq18/Makefile
+    * libpq shouldn't need ICU in ./configure
+      to respect collations
+
+  * build/libpq9/Makefile
+    * libpq9 -> libpq PKGNAME
+
+  * build/libpq18/Makefile
+    * update to be in-line with other libpq*'s
+
+  * .github/workflows/macos.yml
+    * don't bother with building old libpq on macOS
+
 2025-11-01 20:31 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/ubuntu-arm64.yml
   * .github/workflows/ubuntu.yml

@@ -1,4 +1,4 @@
-PKGNAME = libpq9
+PKGNAME = libpq
 PKGVER  = 9.6.24
 DEPENDS = zlib
 

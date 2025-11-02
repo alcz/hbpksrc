@@ -1,7 +1,7 @@
 PKGNAME = harbour-pgsql
 PKGVER  = 3.2.0dev
 PKGBLD  = +pq9
-DEPENDS = harbour-core libpq9
+DEPENDS = harbour-core libpq
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
