@@ -1,6 +1,14 @@
 --- contrib/hbyaml/hbyaml.hbp.orig	2025-10-01 18:37:39.000000000 +0200
-+++ contrib/hbyaml/hbyaml.hbp	2025-11-03 20:19:55.678821400 +0100
-@@ -25,7 +25,7 @@
++++ contrib/hbyaml/hbyaml.hbp	2025-11-03 22:20:13.514238300 +0100
+@@ -17,15 +17,12 @@
+ -depkeyhead=libyaml:yaml.h
+ -depcontrol=libyaml:local{HB_BUILD_3RDEXT='no'}
+ -depcontrol=libyaml:${HB_WITH_LIBYAML}
+--depincpath=libyaml:/usr/local/opt/libyaml/include
+--depincpath=libyaml:/usr/include
+--depincpath=libyaml:/usr/local/include
+ -depincpathlocal=libyaml:3rd/libyaml
+ -depfinish=libyaml
  
  -cflag=-DYAML_DECLARE_STATIC
  

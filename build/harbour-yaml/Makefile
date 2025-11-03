@@ -31,7 +31,8 @@ do-build:
 	$(HBMK) hbyaml.hbp
 do-pkginst:
 	mkdir -p dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER) && mkdir -p dest/lib && \
-	mkdir -p dest/harbour/contrib/hbyaml
+	mkdir -p dest/harbour/contrib/hbyaml && mkdir -p dest/harbour/include
 	cp -r $(EXTRDIR)/* dest/harbour/contrib/hbyaml && \
 	cp $(EXTRDIR)/*.a dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER) && \
-	cp $(EXTRDIR)/*.a dest/lib/ && cp $(EXTRDIR)/3rd/libyaml/*.a dest/lib/
+	cp $(EXTRDIR)/*.a dest/lib/ && cp $(EXTRDIR)/3rd/libyaml/*.a dest/lib/ && \
+	cp $(EXTRDIR)/3rd/libyaml/yaml.h dest/harbour/include
