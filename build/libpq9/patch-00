@@ -1,0 +1,11 @@
+--- src/template/win32.orig	2021-11-08 23:07:24.000000000 +0100
++++ src/template/win32	2025-11-03 22:35:52.045283900 +0100
+@@ -2,8 +2,3 @@
+ 
+ # Extra CFLAGS for code that will go into a shared library
+ CFLAGS_SL=""
+-
+-# --allow-multiple-definition is required to link pg_dump because it finds
+-# pg_toupper() etc. in both libpq and pgport
+-# --disable-auto-import is to ensure we get MSVC-like linking behavior
+-LDFLAGS="$LDFLAGS -Wl,--allow-multiple-definition -Wl,--disable-auto-import"
