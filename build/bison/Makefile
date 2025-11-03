@@ -1,24 +1,26 @@
-PKGNAME = m4
-PKGVER  = 1.4.20
+PKGNAME = bison
+PKGVER  = 3.8
+#DEPENDS = m4
+#build time depend
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
 include $(TOPDIR)/pmgr.mk
 
 WORKDIR = $(PKGNAME)-$(PKGVER)
-SOURCES = $(WORKDIR).tar.gz
+SOURCES = $(WORKDIR).tar.xz
 SRCURL  = ftp://ftp.gnu.org/gnu/$(PKGNAME)
 
 do-fetch: std-fetch
 do-extract: std-extract
-do-patch:
+do-patch: #fix-configure
 
 do-config:
-	cd $(WORKDIR) && $(HBPK_CC_FAMILY) CFLAGS=-fno-stack-protector ./configure --prefix=$(PKGDEST)
-	# -fno-stack-protector needed, otherwise missing mempcpy_chk symbol - Zig oddity(?)
+	cd $(WORKDIR) && $(HBPK_CC_FAMILY) ./configure --prefix=$(PKGDEST) --enable-relocatable
+
 do-build:
 	cd $(WORKDIR) && make
 
 do-pkginst:
 	cd $(WORKDIR) && make prefix=`pwd`/../dest install
-	strip dest/bin/*
+	strip dest/bin/bison*

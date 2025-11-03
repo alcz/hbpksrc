@@ -31,7 +31,8 @@ ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
       # also set for packages that are not for Harbour
       # ever use other compilers when zig is installed?
       ifeq ($(HBPK_CC_FAMILY),)
-         export HBPK_CC_FAMILY = CC=clang
+         export HBPK_CC_FAMILY = CC=clang CXX=clang++
+      #  export HBPK_CC_PATHFAMILY = CC=$(PKGDEST)/bin/clang
       endif
    endif
 endif
@@ -40,6 +41,8 @@ endif
 # this will only have effect if zig-* compiler package has been installed
 
 ifeq ($(HB_ZIG_TARGET),)
+   # NOTE: there is also native-native-gnu and probably native-native-musl
+   #       for target, but being explicit seems to be more useful for us
    ifneq ($(findstring Linux,$(_DETPLAT_STR)),)
       export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
    else

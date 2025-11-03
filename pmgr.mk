@@ -29,7 +29,7 @@ extract: .extract
 	touch $@
 
 std-extract:
-	for src in $(SOURCES); do $(EXTRACT) $(DISTDIR)/$$src; done
+	for src in $(SOURCES); do $(EXTRACT) $(DISTDIR)/$$src $(EXTRDIR); done
 
 patch: .patch
 .patch: .extract

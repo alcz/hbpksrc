@@ -1,0 +1,11 @@
+--- contrib/hbyaml/hbyaml.hbp.orig	2025-10-01 18:37:39.000000000 +0200
++++ contrib/hbyaml/hbyaml.hbp	2025-11-03 20:19:55.678821400 +0100
+@@ -25,7 +25,7 @@
+ 
+ -cflag=-DYAML_DECLARE_STATIC
+ 
+--hbx=${hb_name}
++${hb_name}.hbx
+ 
+ core.c
+ emit.c

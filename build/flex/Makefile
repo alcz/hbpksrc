@@ -1,5 +1,5 @@
-PKGNAME = m4
-PKGVER  = 1.4.20
+PKGNAME = flex
+PKGVER  = 2.6.4
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
@@ -7,15 +7,15 @@ include $(TOPDIR)/pmgr.mk
 
 WORKDIR = $(PKGNAME)-$(PKGVER)
 SOURCES = $(WORKDIR).tar.gz
-SRCURL  = ftp://ftp.gnu.org/gnu/$(PKGNAME)
+SRCURL  = https://github.com/westes/flex/releases/download/v$(PKGVER)
 
 do-fetch: std-fetch
 do-extract: std-extract
-do-patch:
+do-patch: #fix-configure
 
 do-config:
-	cd $(WORKDIR) && $(HBPK_CC_FAMILY) CFLAGS=-fno-stack-protector ./configure --prefix=$(PKGDEST)
-	# -fno-stack-protector needed, otherwise missing mempcpy_chk symbol - Zig oddity(?)
+	cd $(WORKDIR) && ./configure --prefix=$(PKGDEST)
+
 do-build:
 	cd $(WORKDIR) && make
 

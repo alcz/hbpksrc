@@ -85,6 +85,7 @@ jobs:
           letodbf-server-alcz \
           letodbf-rdd-elch \
           letodbf-rdd-alcz \
+          harbour-yaml \
           libpq9 \
           harbour-pgsql \
           " \

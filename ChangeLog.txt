@@ -3,6 +3,64 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-03 21:32 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/bison/Makefile
+  + build/bison-inherit/Makefile
+  + build/cmake-binary/Makefile
+  + build/flex/Makefile
+  + build/flex-inherit/Makefile
+  * build/m4/Makefile
+  + build/m4-inherit/Makefile
+  + build/ninja-binary/Makefile
+    + added, tested, tried, updated significant amount
+      of these base build tools, because building
+      PostgreSQL 18.0 libpq client library is now a struggle.
+      Bison and friends is likely not needed to build client
+      library itself, yet PG build script requests them.
+
+  + build/harbour-yaml/Makefile
+  + build/harbour-yaml/patch-00
+    + a study how to unpack Harbour 3.4 tree partially and make
+      package for hbyaml contrib by Viktor Szakats
+
+  * .github/workflows/macos.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows.yml
+    + hbyaml
+
+  * build/libpq18/Makefile
+    + after giving every amount of build tools requested,
+      libpq 18.0 still fails on MSYS2/Windows:
+      cd postgresql-18.0/src/port && make
+      make[2]: Entering directory '/home/a/hbpksrc/build/libpq18/postgresql-18.0/src/port'
+      make[2]: *** No rule to make target 'explicit_bzero.obj', needed by 'libpgport.a'.  Stop.
+
+      is it confused by .obj file-ext?
+
+  * build/libpq8/Makefile
+    + -fPIC needed by Zig here for some targets
+
+  * common.mk
+    + added CXX= to HBPK_CC_FAMILY
+    ; note about Zig's native-native-{libc}
+
+  * pmgr.mk
+    + added partial extract of tarball via EXTRDIR=
+
+  + packages/x86_64-windows-gnu/bison-3.8.hbpk
+  + packages/x86_64-windows-gnu/m4-1.4.14+msys.hbpk
+  + packages/x86_64-windows-gnu/m4-1.4.20.hbpk
+    + binaries in case they are needed to bootstrap something
+      on Windows, most likely it's still easier to get
+      MSYS2 packages via pacman. Will be removed from git after
+      separate binary repo instantiates.
+
+    ; non MSYS2 builds of these may need extra settings on env,
+      .exe extension is significant.
+      BISON_PKGDATADIR=$(PKGDEST)/share/bison
+      M4=$(PKGDEST)/bin/m4.exe
+
 2025-11-02 06:25 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * build/libpq18/Makefile
     * libpq shouldn't need ICU in ./configure
