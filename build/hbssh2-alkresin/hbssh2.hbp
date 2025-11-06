@@ -1,0 +1,4 @@
+-hblib
+-o${hb_name}
+-cflag=-D_USE_HB
+hbssh2-main/source/*.c

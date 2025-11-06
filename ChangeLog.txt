@@ -3,6 +3,17 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-06 01:13 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + hbssh2-alkresin/Makefile
+  + hbssh2-alkresin/hbssh2.hbp
+  + hbssh2-alkresin/patch-00
+  + hbssh2-alkresin/patch-01
+    + quick portage of Alexander Kresin's hbssh2
+
+  + libssh2/Makefile
+    + added libssh2 1.11.1, build depends on cmake, runtime
+      also needs OpenSSL
+
 2025-11-03 22:40 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * build/libpq9/patch-00
     ! patch out --allow-multiple-definition and --disable-auto-import
