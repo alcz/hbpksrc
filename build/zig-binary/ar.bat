@@ -1,0 +1,1 @@
+@%~dp0\..\usr\share\zig\zig ar %*

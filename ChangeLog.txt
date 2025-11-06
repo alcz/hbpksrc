@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-07 00:15 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * build/zig-binary/ar.bat
+  * build/zig-binary/ranlib
+  * build/zig-binary/ranlib.bat
+    * added ranlib, added .bat wrappers for things that could
+      be called from cmake_link_scripts
+
+  * build/zig-binary/zig
+    * chmod
 
 2025-11-07 00:04 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * base/pmgr/hbpk-del.in
