@@ -34,7 +34,12 @@ ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
          export HBPK_CC_FAMILY = CC=clang CXX=clang++
       #  export HBPK_CC_PATHFAMILY = CC=$(PKGDEST)/bin/clang
       endif
+      # festival of ugly cmake hacks, when cmake_link_script is used, this seems the only way...
+      HBPK_CMAKE_G = -DCMAKE_AR=$(PKGDEST)/bin/ar.bat
    endif
+   export HBPK_CMAKE_G := -G "MSYS Makefiles" $(HBPK_CMAKE_G)
+else
+   export HBPK_CMAKE_G = -G "Unix Makefiles"
 endif
 
 # prefer universal binaries - the main reason this build system exists

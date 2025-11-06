@@ -18,9 +18,9 @@ if [ "$1" = "-f" ]
 then
 	while read f
 	do
-		if [ -f $PKGDEST/$f -o -L $PKGDEST/$f ]
+		if [ -f "$PKGDEST/$f" -o -L "$PKGDEST/$f" ]
 		then
-			rm $PKGDEST/$f
+			rm "$PKGDEST/$f"
 		fi
 	done
 	exit 0
@@ -30,11 +30,11 @@ if [ "$1" = "-d" ]
 then
 	while read d
 	do
-		if [ -d $PKGDEST/$d ]
+		if [ -d "$PKGDEST/$d" ]
 		then
-			if [ `ls -A $PKGDEST/$d | wc -l` -eq 0 ]
+			if [ `ls -A "$PKGDEST/$d" | wc -l` -eq 0 ]
 			then
-				rmdir $PKGDEST/$d
+				rmdir "$PKGDEST/$d"
 			fi
 		fi
 	done
