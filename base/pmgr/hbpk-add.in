@@ -1,7 +1,11 @@
 #!/bin/sh
 # This file is in the public domain.
 
-PKGDEST=@PKGDEST@
+if [ "${HBPK_WORKDIR}" = "" ]; then
+	PKGDEST=@PKGDEST@
+else
+	PKGDEST=$HBPK_WORKDIR
+fi
 PKGDBDIR=@PKGDBDIR@
 
 if [ $# -eq 0 ]

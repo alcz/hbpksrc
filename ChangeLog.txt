@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-06 01:34 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * base/pmgr/hbpk-add.in
+  * base/pmgr/hbpk-del.in
+  * base/pmgr/hbpk-ls.in
+    * another try to fit HBPK_WORKDIR= portable between
+      shells
+
+    ; anyway don't use working directory in path
+      containing spaces
+
 2025-11-06 01:13 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + hbssh2-alkresin/Makefile
   + hbssh2-alkresin/hbssh2.hbp
