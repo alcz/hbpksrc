@@ -1,0 +1,7 @@
+# TODO: *.hbc file
+
+-hblib
+-o${hb_name}
+
+naldodj-hb_otp-main/src/hb/hb_otp.prg
+naldodj-hb_otp-main/src/hb/hb_base32.prg

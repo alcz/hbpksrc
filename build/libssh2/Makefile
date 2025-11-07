@@ -18,7 +18,8 @@ do-patch: #fix-configure
 do-config:
 
 do-build:
-	cd $(WORKDIR) && mkdir -p dest && cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=./dest . && make all install
+	cd $(WORKDIR) && mkdir -p dest && \
+		$(HBPK_CC_FAMILY) cmake $(HBPK_CMAKE_G) -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=./dest . && make all install
 
 do-pkginst:
 	mkdir -p dest && cd dest && cp -r ../$(WORKDIR)/dest/* .

@@ -3,6 +3,18 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-07 01:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/libcotp/*
+    + added C library that generates TOTP and HOTP according to RFC-6238
+      this package depends on OpenSSL (there are other options)
+
+  + build/hbotp-naldodj/*
+    + added libcotp wrapper by Naldo DJ
+      NOTE: this contrib lacks a *.hbc file
+
+  + build/libssh2/Makefile
+    * updated for MSYS2 compat
+
 2025-11-07 00:15 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * build/zig-binary/ar.bat
   * build/zig-binary/ranlib
@@ -38,6 +50,7 @@
   + hbssh2-alkresin/patch-00
   + hbssh2-alkresin/patch-01
     + quick portage of Alexander Kresin's hbssh2
+      NOTE: this contrib lacks a *.hbc file
 
   + libssh2/Makefile
     + added libssh2 1.11.1, build depends on cmake, runtime
