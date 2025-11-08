@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-09 00:34 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/nappgui/Makefile
+    * cleanup
+
+  + build/zig-binary/Makefile
+    + .bat + ranlib
+
+  * .github/workflows/ubuntu.yml
+    * test build NAppGUI on Linux x86_64
+
 2025-11-08 23:27 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/nappgui/*
     + added C lib by Francisco Garcia Collado

@@ -35,5 +35,5 @@ do-build:
 
 do-pkginst:
 	mkdir -p dest/bin && mkdir -p dest/usr/share/zig
-	cp ar cc clang clang++ cxx c++ objcopy rc dest/bin
+	cp ar cc clang clang++ cxx c++ objcopy ranlib rc ar.bat ranlib.bat dest/bin
 	cd $(WORKDIR) && cp -r * ../dest/usr/share/zig && $(_MKLINK)

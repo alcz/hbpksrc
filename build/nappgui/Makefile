@@ -15,7 +15,7 @@ do-patch: #fix-configure
 
 do-config:
 	cd $(WORKDIR) && mkdir -p build && cd build && \
-		CXX_COMPILER_ID=clang $(HBPK_CC_FAMILY) cmake $(HBPK_CMAKE_G) \
+		$(HBPK_CC_FAMILY) cmake $(HBPK_CMAKE_G) \
 		-DCMAKE_INSTALL_PREFIX=dest ..
 do-build:
 	cd $(WORKDIR) && cmake --build build
