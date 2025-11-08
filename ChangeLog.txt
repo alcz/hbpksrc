@@ -3,6 +3,17 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-08 21:22 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + base/pmgr/hbpk-sizecat.ape
+  + base/pmgr/hbpk-sizecat.ape.aarch64.elf.xz
+    + added hbpk-sizecat tool compiled by "cosmocc" resulting in
+      Actually Portable Executable using cosmopolitan libc.
+      Can help in bootstraping on systems lacking gcc installed.
+
+  + base/xz-ape/xz.com
+    + added xz APE binary for bootstrapping on systems lacking
+      both compiler and xz, should this package be called xz-binary?
+
 2025-11-07 01:17 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/libcotp/*
     + added C library that generates TOTP and HOTP according to RFC-6238
