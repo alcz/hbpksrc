@@ -3,6 +3,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-08 23:27 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/nappgui/*
+    + added C lib by Francisco Garcia Collado
+      NAppGUI Cross-Platform C SDK: Build portable desktop
+      applications for Windows, macOS and Linux, using just C.
+
+    ; it builds DEBUG version right now
+
 2025-11-08 21:22 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + base/pmgr/hbpk-sizecat.ape
   + base/pmgr/hbpk-sizecat.ape.aarch64.elf.xz

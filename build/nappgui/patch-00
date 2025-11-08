@@ -1,0 +1,18 @@
+--- prj/NAppCompilers.cmake.orig	2025-09-25 07:09:39.000000000 +0200
++++ prj/NAppCompilers.cmake	2025-11-08 23:03:15.882593800 +0100
+@@ -44,6 +44,15 @@
+         message (FATAL_ERROR "Unknown processor architecture")
+     endif()
+ 
++    if(NOT DEFINED ${CMAKE_CXX_COMPILER_ID})
++        set(CMAKE_CXX_COMPILER_ID "Clang")
++        set(CMAKE_CXX_COMPILER_VERSION "10.0")
++        if (WIN32)
++            set(CMAKE_AR "ar.bat")
++            set(CMAKE_LINK_LIBRARY_SUFFIX "")
++        endif()
++    endif()
++
+     if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+ 
+         include(${NAPPGUI_ROOT_PATH}/prj/NAppMSVC.cmake)
