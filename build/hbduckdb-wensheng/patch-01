@@ -1,0 +1,52 @@
+--- duckdb.hbp.orig	2025-06-09 04:01:50.000000000 +0200
++++ duckdb.hbp	2025-11-09 20:24:47.101584700 +0100
+@@ -1,49 +1,9 @@
+ # DuckDB Harbour 包裝器專案檔
+ 
+-# 編譯器設定
+-{msvc}
+-   -lmsvc
+-   -inc
+-   -Ld:\hb32\lib
+-   -Id:\hb32\include
+-
+-{bcc}
+-   -lbcc
+-   -inc
+-   -Ld:\bcc74\lib
+-   -Id:\bcc74\include
+-   -Ld:\hb32\lib
+-   -Id:\hb32\include
+-   -L.
+-   -I.
+-
+-{mingw}
+-   -lmingw
+-   -inc
+-   -Ld:\hb32\lib
+-   -Id:\hb32\include
+-
+-# DuckDB 函式庫
+-{msvc}
+-   -lduckdb
+-   -L.
+-   -I.
+-
+-{bcc}
+-   -lduckdb
+-   -L.
+-   -I.
+-
+-{mingw}
+-   -lduckdb
+-   -L.
+-   -I.
+-
+ # 原始碼檔案
+ harbour_duckdb.c
+ 
+ # 強制使用 BCC 編譯器
+--bcc
+ 
+ -hblib
+ -inc

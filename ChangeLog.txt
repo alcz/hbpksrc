@@ -3,6 +3,31 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-09 23:36 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/windows.yml
+    * switched libpq to test binary package, don't use otherwise
+
+  * libpq9/patch-01
+    * libpq's are largely unbuildable from source on Windows
+      using current toolchain, will switch to building libpq
+      in separate repo using cl or clang-cl to make packages
+
+  + hbduckdb-wensheng/Makefile
+  + hbduckdb-wensheng/patch-00
+  + hbduckdb-wensheng/patch-01
+    + package DuckDB Harbour wrapper by WenSheng
+
+    ; it is adapted a bit to 1.4.1 of libduckdb
+      by the patch, timestamp values now returned
+      to struct
+
+  + libduckdb-binary/Makefile
+    + added package definition for DuckDB client library
+      based on official binaries
+
+  * hbotp-naldodj/Makefile
+    * install lib binary in harbour/lib/{hb_plat}/{hb_comp}
+
 2025-11-09 19:19 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml
   * .github/workflows/ubuntu-arm64.yml

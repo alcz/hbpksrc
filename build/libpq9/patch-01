@@ -1,0 +1,11 @@
+--- src/interfaces/libpq/Makefile.orig	2021-11-08 23:07:24.000000000 +0100
++++ src/interfaces/libpq/Makefile	2025-11-09 21:04:55.879269200 +0100
+@@ -57,7 +57,7 @@
+ OBJS += pgsleep.o win32.o libpqrc.o
+ 
+ libpqrc.o: libpq.rc
+-	$(WINDRES) -i $< -o $@
++	$(WINDRES) $< $@
+ 
+ ifeq ($(enable_thread_safety), yes)
+ OBJS += pthread-win32.o

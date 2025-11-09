@@ -13,9 +13,12 @@ SRCURL  = https://ftp.postgresql.org/pub/source/v$(PKGVER)
 include $(TOPDIR)/hbinfo.mk
 
 OSTYPE  = $(shell uname -o | sed --e 's/GNU\///' --e 's/Linux/linux/' --e 's/Msys/windows/')
-#ifeq ($(shell $(CC) -print-prog-name=ld),)
+
 ifeq ($(OSTYPE),windows)
-	HBPK_TMP_LD = LD=/bin/true # hack for systems without bulid essentials
+	HBPK_TMP_LD = LD=/bin/true # hack for systems without build essentials
+	ifeq ($(HBPK_COMPILER),zig)
+		HBPK_TMP_WINDRES = WINDRES=rc
+	endif
 endif
 
 do-fetch: std-fetch
@@ -23,7 +26,8 @@ do-extract: std-extract
 do-patch:
 
 do-config:
-	cd $(WORKDIR) && $(HBPK_CC_FAMILY) $(HBPK_TMP_LD) ./configure --prefix=$(PKGDEST) --without-readline --with-includes=$(PKGDEST)/include --with-libraries=$(PKGDEST)/lib
+	cd $(WORKDIR) && $(HBPK_CC_FAMILY) $(HBPK_TMP_LD) $(HBPK_TMP_WINDRES) \
+		./configure --prefix=$(PKGDEST) --without-readline --with-includes=$(PKGDEST)/include --with-libraries=$(PKGDEST)/lib
 
 do-build:
 	cd $(WORKDIR)/src/interfaces/libpq && make

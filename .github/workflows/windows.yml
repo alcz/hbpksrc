@@ -97,6 +97,9 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
+        wget https://harbour.zip/packages/x86_64-windows-gnu/libpq-9.6.24+outdatedssl+testonly.hbpk
+        hbpk-add libpq-9.6.24+outdatedssl+testonly.hbpk
+        rm libpq-9.6.24+outdatedssl+testonly.hbpk
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
@@ -104,7 +107,6 @@ jobs:
           letodbf-rdd-alcz \
           harbour-yaml \
           hwgui \
-          libpq9 \
           harbour-pgsql \
           " \
         make install
