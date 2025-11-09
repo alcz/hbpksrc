@@ -1,0 +1,137 @@
+- showstopper: mixed GNU and musl headers. seemingly we need to pull gtk, glib, etc. on our own.
+- warning: HB_DEPRECATED macro is duplicated in Harbour and harfbuzz library
+- warning: deprecated GTimeVal, use GDateTime
+
+cd hwgui_fork-main && /opt/hbpk/harbour/bin/linux/zig/hbmk2 -I/opt/hbpk/include hwgui.hbp procmisc.hbp hbxml.hbp hwgdebug.hbp 
+hbmk2: Processing environment options: -cpu=x86_64
+Harbour 3.2.0dev (r2510231945)
+Copyright (c) 1999-2025, https://harbour.github.io/
+In file included from source/gtk/commond.c:16:
+In file included from /usr/include/gtk-2.0/gtk/gtk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30:
+In file included from /usr/include/glib-2.0/gio/gio.h:28:
+In file included from /usr/include/glib-2.0/gio/giotypes.h:30:
+In file included from /usr/include/glib-2.0/gio/gioenums.h:30:
+In file included from /usr/include/glib-2.0/glib-object.h:24:
+In file included from /usr/include/glib-2.0/gobject/gbinding.h:30:
+In file included from /usr/include/glib-2.0/glib.h:47:
+In file included from /usr/include/glib-2.0/glib/gdir.h:34:
+In file included from /opt/hbpk/usr/share/zig/lib/libc/include/generic-musl/dirent.h:18:
+/usr/include/x86_64-linux-gnu/bits/dirent.h:25:5: error: unknown type name '__ino_t'
+   25 |     __ino_t d_ino;
+      |     ^
+/usr/include/x86_64-linux-gnu/bits/dirent.h:26:5: error: unknown type name '__off_t'
+   26 |     __off_t d_off;
+      |     ^
+In file included from source/gtk/commond.c:16:
+In file included from /usr/include/gtk-2.0/gtk/gtk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30:
+In file included from /usr/include/glib-2.0/gio/gio.h:28:
+In file included from /usr/include/glib-2.0/gio/giotypes.h:30:
+In file included from /usr/include/glib-2.0/gio/gioenums.h:30:
+In file included from /usr/include/glib-2.0/glib-object.h:24:
+In file included from /usr/include/glib-2.0/gobject/gbinding.h:30:
+In file included from /usr/include/glib-2.0/glib.h:115:
+In file included from /usr/include/glib-2.0/glib/deprecated/gthread.h:125:
+/usr/include/x86_64-linux-gnu/sys/types.h:27:1: error: unknown type name '__BEGIN_DECLS'
+   27 | __BEGIN_DECLS
+      | ^
+In file included from source/gtk/commond.c:16:
+In file included from /usr/include/gtk-2.0/gtk/gtk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30:
+In file included from /usr/include/glib-2.0/gio/gio.h:28:
+In file included from /usr/include/glib-2.0/gio/giotypes.h:30:
+In file included from /usr/include/glib-2.0/gio/gioenums.h:30:
+In file included from /usr/include/glib-2.0/glib-object.h:24:
+In file included from /usr/include/glib-2.0/gobject/gbinding.h:30:
+In file included from /usr/include/glib-2.0/glib.h:115:
+In file included from /usr/include/glib-2.0/glib/deprecated/gthread.h:125:
+In file included from /usr/include/x86_64-linux-gnu/sys/types.h:129:
+/usr/include/x86_64-linux-gnu/bits/types/time_t.h:8:9: error: unknown type name '__time64_t'
+    8 | typedef __time64_t time_t;
+      |         ^
+In file included from source/gtk/commond.c:16:
+In file included from /usr/include/gtk-2.0/gtk/gtk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:30:
+In file included from /usr/include/glib-2.0/gio/gio.h:28:
+In file included from /usr/include/glib-2.0/gio/giotypes.h:30:
+In file included from /usr/include/glib-2.0/gio/gioenums.h:30:
+In file included from /usr/include/glib-2.0/glib-object.h:24:
+In file included from /usr/include/glib-2.0/gobject/gbinding.h:30:
+In file included from /usr/include/glib-2.0/glib.h:115:
+In file included from /usr/include/glib-2.0/glib/deprecated/gthread.h:125:
+/usr/include/x86_64-linux-gnu/sys/types.h:163:5: error: function-like macro '__GNUC_PREREQ' is not defined
+  163 | #if __GNUC_PREREQ (2, 7)
+      |     ^
+/usr/include/x86_64-linux-gnu/sys/types.h:230:1: error: unknown type name '__END_DECLS'
+  230 | __END_DECLS
+      | ^
+In file included from source/gtk/commond.c:16:
+In file included from /usr/include/gtk-2.0/gtk/gtk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdk.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h:31:
+In file included from /usr/include/gtk-2.0/gdk/gdkscreen.h:32:
+In file included from /usr/include/gtk-2.0/gdk/gdktypes.h:37:
+In file included from /usr/include/pango-1.0/pango/pango.h:25:
+In file included from /usr/include/pango-1.0/pango/pango-attributes.h:25:
+In file included from /usr/include/pango-1.0/pango/pango-font.h:25:
+In file included from /usr/include/pango-1.0/pango/pango-coverage.h:28:
+In file included from /usr/include/harfbuzz/hb.h:31:
+In file included from /usr/include/harfbuzz/hb-blob.h:34:
+/usr/include/harfbuzz/hb-common.h:73:9: warning: 'HB_DEPRECATED' macro redefined [-Wmacro-redefined]
+   73 | #define HB_DEPRECATED __attribute__((__deprecated__))
+      |         ^
+/opt/hbpk/harbour/include/hbsetup.h:557:12: note: previous definition is here
+  557 |    #define HB_DEPRECATED __attribute__ (( __deprecated__ ))
+      |            ^
+In file included from source/gtk/commond.c:16:
+In file included from /usr/include/gtk-2.0/gtk/gtk.h:33:
+In file included from /usr/include/gtk-2.0/gtk/gtkaboutdialog.h:32:
+In file included from /usr/include/gtk-2.0/gtk/gtkdialog.h:35:
+In file included from /usr/include/gtk-2.0/gtk/gtkwindow.h:36:
+In file included from /usr/include/gtk-2.0/gtk/gtkbin.h:35:
+In file included from /usr/include/gtk-2.0/gtk/gtkcontainer.h:35:
+In file included from /usr/include/gtk-2.0/gtk/gtkwidget.h:36:
+In file included from /usr/include/gtk-2.0/gtk/gtkobject.h:37:
+/usr/include/gtk-2.0/gtk/gtktypeutils.h:236:34: warning: 'GTypeDebugFlags' is deprecated [-Wdeprecated-declarations]
+  236 | void            gtk_type_init   (GTypeDebugFlags    debug_flags);
+      |                                  ^
+/usr/include/glib-2.0/gobject/gtype.h:731:19: note: 'GTypeDebugFlags' has been explicitly marked deprecated here
+  731 | } GTypeDebugFlags GOBJECT_DEPRECATED_TYPE_IN_2_36;
+      |                   ^
+/usr/include/glib-2.0/gobject/gobject-visibility.h:213:41: note: expanded from macro 'GOBJECT_DEPRECATED_TYPE_IN_2_36'
+  213 | #define GOBJECT_DEPRECATED_TYPE_IN_2_36 GLIB_DEPRECATED_TYPE
+      |                                         ^
+/usr/include/glib-2.0/glib/gmacros.h:1324:30: note: expanded from macro 'GLIB_DEPRECATED_TYPE'
+ 1324 | #define GLIB_DEPRECATED_TYPE G_DEPRECATED
+      |                              ^
+/usr/include/glib-2.0/glib/gmacros.h:1263:37: note: expanded from macro 'G_DEPRECATED'
+ 1263 | #define G_DEPRECATED __attribute__((__deprecated__))
+      |                                     ^
+In file included from source/gtk/commond.c:16:
+In file included from /usr/include/gtk-2.0/gtk/gtk.h:126:
+In file included from /usr/include/gtk-2.0/gtk/gtkmenutoolbutton.h:30:
+In file included from /usr/include/gtk-2.0/gtk/gtktoolbutton.h:30:
+In file included from /usr/include/gtk-2.0/gtk/gtktoolitem.h:31:
+/usr/include/gtk-2.0/gtk/gtktooltips.h:73:3: warning: 'GTimeVal' is deprecated: Use 'GDateTime' instead [-Wdeprecated-declarations]
+   73 |   GTimeVal last_popdown;
+      |   ^
+/usr/include/glib-2.0/glib/gtypes.h:578:35: note: 'GTimeVal' has been explicitly marked deprecated here
+  578 | typedef struct _GTimeVal GTimeVal GLIB_DEPRECATED_TYPE_IN_2_62_FOR(GDateTime);
+      |                                   ^
+/usr/include/glib-2.0/glib/glib-visibility.h:656:45: note: expanded from macro 'GLIB_DEPRECATED_TYPE_IN_2_62_FOR'
+  656 | #define GLIB_DEPRECATED_TYPE_IN_2_62_FOR(f) GLIB_DEPRECATED_TYPE_FOR (f)
+      |                                             ^
+/usr/include/glib-2.0/glib/gmacros.h:1325:37: note: expanded from macro 'GLIB_DEPRECATED_TYPE_FOR'
+ 1325 | #define GLIB_DEPRECATED_TYPE_FOR(f) G_DEPRECATED_FOR(f)
+      |                                     ^
+/usr/include/glib-2.0/glib/gmacros.h:1273:44: note: expanded from macro 'G_DEPRECATED_FOR'
+ 1273 | #define G_DEPRECATED_FOR(f) __attribute__((__deprecated__("Use '" #f "' instead")))
+      |                                            ^
+3 warnings and 6 errors generated.
+hbmk2[hwgui]: Error: Running C/C++ compiler. 1
+zig cc -c -O3  -DHWG_USE_POINTER_ITEM -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/x86_64-linux-gnu -I/usr/include/webp -I/usr/include/atk-1.0 -pthread   -target x86_64-linux-musl -W -Wall -I/opt/hbpk/harbour/include -I/opt/hbpk/include -Iinclude source/gtk/commond.c -o'/tmp/hbmk_zq8maj.dir/commond.o'

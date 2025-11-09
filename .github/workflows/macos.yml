@@ -89,7 +89,6 @@ jobs:
           letodbf-rdd-elch \
           letodbf-rdd-alcz \
           harbour-yaml \
-          hwgui \
           libpq18 \
           harbour-pgsql \
           " \

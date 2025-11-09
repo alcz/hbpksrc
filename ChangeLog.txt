@@ -3,6 +3,19 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-09 19:19 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/macos.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  + build/hwgui/err-linux-zig-notes.txt
+    * HwGUI test negative for Linux, can't possibly use
+      system packages due to clashes between musl libc and
+      host headers
+
+  * build/libpq9/Makefile
+    * test hack for systems missing build-essentials kind
+      of package
+
 2025-11-09 13:33 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/hwgui/Makefile
     + added HwGUI is a GUI library for Harbour/xHarbour
