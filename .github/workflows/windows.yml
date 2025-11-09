@@ -103,6 +103,7 @@ jobs:
           letodbf-rdd-elch \
           letodbf-rdd-alcz \
           harbour-yaml \
+          hwgui \
           libpq9 \
           harbour-pgsql \
           " \

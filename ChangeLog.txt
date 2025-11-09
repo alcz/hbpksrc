@@ -3,6 +3,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-09 13:33 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/hwgui/Makefile
+    + added HwGUI is a GUI library for Harbour/xHarbour
+      by Alexander Kresin and contributors
+
+    ; define HWGUI_UNICODE="-cflag=-DUNICODE -prgflag=-DUNICODE"
+      to produce a package of unicode version
+
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/macos.yml
+  * .github/workflows/windows.yml
+    + test build HwGUI
+
 2025-11-09 00:34 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/nappgui/Makefile
     * cleanup
