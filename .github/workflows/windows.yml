@@ -19,11 +19,15 @@ jobs:
         location: d:/
         update: true
         install: >
+          msystem: CLANG64
           mingw-w64-x86_64-github-cli
-          mingw-w64-x86_64-bzip2
-          mingw-w64-x86_64-xz
           mingw-w64-x86_64-minizip
           mingw-w64-x86_64-make
+          mingw-w64-clang-x86_64-github-cli
+          mingw-w64-clang-x86_64-minizip
+          mingw-w64-clang-x86_64-make
+          bzip2
+          xz
           unzip
           patch
           diffutils
