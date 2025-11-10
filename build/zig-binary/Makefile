@@ -6,13 +6,9 @@ TOPDIR  = ../..
 include $(TOPDIR)/common.mk
 include $(TOPDIR)/pmgr.mk
 
-MACHINE = $(shell uname -m)
 OSTYPE  = $(shell uname -o | sed --e 's/GNU\///' --e 's/Linux/linux/' --e 's/Msys/windows/')
 ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
 	OSTYPE  = macos
-	ifneq ($(findstring arm64,$(MACHINE)),)
-		MACHINE = aarch64
-	endif
 endif
 
 WORKDIR = $(PKGNAME)-$(MACHINE)-$(OSTYPE)-$(PKGVER)

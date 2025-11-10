@@ -45,25 +45,40 @@ endif
 # prefer universal binaries - the main reason this build system exists
 # this will only have effect if zig-* compiler package has been installed
 
+MACHINE = $(shell uname -m)
 ifeq ($(HB_ZIG_TARGET),)
    # NOTE: there is also native-native-gnu and probably native-native-musl
    #       for target, but being explicit seems to be more useful for us
    ifneq ($(findstring Linux,$(_DETPLAT_STR)),)
-      export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
+      export HB_ZIG_TARGET = $(MACHINE)-linux-musl
    else
    ifneq ($(findstring linux,$(_DETPLAT_STR)),)
-      export HB_ZIG_TARGET = $(shell uname -m)-linux-musl
+      export HB_ZIG_TARGET = $(MACHINE)-linux-musl
    else
    ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
-      export HB_ZIG_TARGET = $(shell uname -m)-windows-gnu
+      ifneq ($(findstring ARM64,$(MSYSTEM)),)
+         MACHINE = aarch64
+         export HB_ZIG_TARGET = aarch64-windows-gnu
+      else
+         export HB_ZIG_TARGET = $(MACHINE)-windows-gnu
+      endif
    else
    ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
-	export HB_ZIG_TARGET = $(shell uname -m)-macos
-	ifneq ($(findstring arm64,$(HB_ZIG_TARGET)),)
-		export HB_ZIG_TARGET = aarch64-macos
-	endif
+      export HB_ZIG_TARGET = $(MACHINE)-macos
+      ifneq ($(findstring arm64,$(HB_ZIG_TARGET)),)
+         MACHINE = aarch64
+         export HB_ZIG_TARGET = aarch64-macos
+      endif
    endif
    endif
+   endif
+   endif
+else
+   ifneq ($(findstring arm64,$(MACHINE)),)
+      MACHINE = aarch64
+   else
+   ifneq ($(findstring ARM64,$(MSYSTEM)),)
+      MACHINE = aarch64
    endif
    endif
 endif

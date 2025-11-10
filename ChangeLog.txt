@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-10 18:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+ * build/cmake-binary/Makefile
+ * build/libduckdb-binary/Makefile
+ * build/ninja-binary/Makefile
+ * build/zig-binary/Makefile
+ * common.mk
+   * moved MACHINE= to common.mk, MSYS2 `uname -m` lies on ARM64,
+     still returning x86_64, got to check MSYSTEM variable
+
 2025-11-10 17:30 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + .github/workflows/windows-arm64.yml
     + Windows ARM64 runner

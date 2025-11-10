@@ -20,12 +20,15 @@ jobs:
         location: c:/
         update: true
         install: >
+          mingw-w64-clang-aarch64-github-cli
+          mingw-w64-clang-aarch64-tools-git
           bzip2
           xz
           unzip
           patch
           diffutils
           make
+          git
 
     - uses: actions/checkout@v2
       with:
@@ -41,6 +44,7 @@ jobs:
     - name: Get previous successful run ID
       id: get_run
       continue-on-error: true
+      shell: msys2 {0}
       run: |
         cd hbpksrc
         # ignore artifacts, when a forced rebuild goes

@@ -12,11 +12,11 @@ ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
 else
 	# sligthly unorganized naming convention
 	ifneq ($(MSYSTEM),)
-		ifneq ($(findstring aarch64,$(shell uname -m)),)
+		ifneq ($(findstring aarch64,$(MACHINE)),)
 			MACHINE = arm64
 		endif
 	else
-		ifneq ($(findstring aarch64,$(shell uname -m)),)
+		ifneq ($(findstring aarch64,$(MACHINE)),)
 			MACHINE = -aarch64
 		endif
 	endif
