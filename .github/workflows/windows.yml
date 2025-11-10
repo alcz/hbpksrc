@@ -114,6 +114,13 @@ jobs:
           harbour-yaml \
           hwgui \
           harbour-pgsql \
+          openssl \
+          libssh2 \
+          libcotp \
+          libduckdb-binary \
+          hbduckdb-wensheng \
+          hbotp-naldodj \
+          hbssh2-alkresin \
           " \
         make install
 

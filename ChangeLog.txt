@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-10 22:31 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/macos.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows-arm64.yml
+  * .github/workflows/windows.yml
+  * build/Makefile
+    * new default packages lists
+
 2025-11-10 21:52 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/windows.yml
     - there is no CLANG64 shell(?)

@@ -107,6 +107,13 @@ jobs:
           letodbf-rdd-alcz \
           harbour-yaml \
           hwgui \
+          openssl \
+          libssh2 \
+          libcotp \
+          libduckdb-binary \
+          hbduckdb-wensheng \
+          hbotp-naldodj \
+          hbssh2-alkresin \
           " \
         make install
 

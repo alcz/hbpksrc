@@ -1,33 +1,18 @@
 PACKAGES = \
-	alpha-elf \
-	arm-linux-gnueabi \
-	arm-pe \
-	autoconf \
-	automake \
-	cvs \
-	distorm \
-	file \
-	gawk \
-	ginstall \
-	git \
-	gmp \
-	gtar \
-	gxemul \
-	i386-elf \
-	i386-pc-minix \
-	i686-mingw32 \
-	m4 \
-	mercurial \
-	mipsel-elf \
-	mipsel-pe \
-	mkisofs \
-	mpc \
-	mpfr \
-	openssh \
-	python \
-	subversion \
-	which \
-	x86_64-mingw32
+	zig-binary \
+	harbour-core \
+	cmake-binary \
+	nappgui \
+	openssl \
+	letodbf-server-elch \
+	letodbf-server-alcz \
+	letodbf-rdd-elch \
+	letodbf-rdd-alcz \
+	harbour-yaml \
+	hwgui \
+	hbotp-naldodj \
+	hbssh2-alkresin \
+	hbduckdb-wensheng
 
 ifneq ($(PKGSELECTION),)
    PACKAGES := $(PKGSELECTION)
