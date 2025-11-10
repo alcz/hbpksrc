@@ -3,6 +3,13 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-10 21:52 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/windows.yml
+    - there is no CLANG64 shell(?)
+
+  * .github/workflows/macos.yml
+    * try to reuse Homebrew libpq via libpq-inherit
+
 2025-11-10 21:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/windows.yml
     * switch MSYS2 shell to CLANG64

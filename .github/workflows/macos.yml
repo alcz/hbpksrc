@@ -90,6 +90,7 @@ jobs:
           letodbf-rdd-elch \
           letodbf-rdd-alcz \
           harbour-yaml \
+          libpq-inherit \
           harbour-pgsql \
           " \
         make install
