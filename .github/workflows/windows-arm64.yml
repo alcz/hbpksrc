@@ -1,4 +1,4 @@
-name: macOS M
+name: Windows ARM64
 
 on:
   push:
@@ -9,21 +9,33 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: windows-11-arm
 
     steps:
+
+    - name: Init MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: CLANGARM64
+        location: c:/
+        update: true
+        install: >
+          bzip2
+          xz
+          unzip
+          patch
+          diffutils
+          make
+
     - uses: actions/checkout@v2
       with:
        repository: alcz/hbpksrc
        path: hbpksrc
 
     - name: Prepare environment
+      shell: msys2 {0}
       run: |
-        brew install slang
-        brew install grep
-        brew install libpq
-        sudo mkdir /opt/hbpk
-        sudo chown $USER /opt/hbpk
+        mkdir /opt/hbpk
         echo verbose=off > $HOME/.wgetrc
 
     - name: Get previous successful run ID
@@ -44,32 +56,32 @@ jobs:
       continue-on-error: true
       uses: actions/download-artifact@v4
       with:
-        name: packages-aarch64-macos
-        path: packages-aarch64-macos-last
+        name: packages-aarch64-windows-gnu
+        path: packages-aarch64-windows-gnu-last
         github-token: ${{ secrets.GITHUB_TOKEN }}
         run-id: ${{ steps.get_run.outputs.run_id }}
 
     - name: Build base of hbpk
+      shell: msys2 {0}
       run: |
-        export HBPK_WORKDIR=$HOME/hbpk
-        export PATH="$HBPK_WORKDIR/bin:$PATH"
+        export PATH="/opt/hbpk/bin:/usr/bin:$PATH"
+        export HBPK_BOOTCAT=no # shouldn't build hbpk-sizecat in CI at all
         cd hbpksrc/base
         mv xz xz-old
-        mv xz-current xz
+        mv xz-inherit xz
         make install
-        rm $HBPK_WORKDIR/bin/hbpk-sizecat # pacify progress-bar
-        ln -s /bin/cat $HBPK_WORKDIR/bin/hbpk-sizecat
-        cat $HBPK_WORKDIR/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
-        mv /tmp/hbpk-del $HBPK_WORKDIR/bin/hbpk-del # another patch for extra argument
-        chmod 755 $HBPK_WORKDIR/bin/hbpk-del
+        cat /opt/hbpk/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
+        mv /tmp/hbpk-del /opt/hbpk/bin/hbpk-del # another patch for extra argument
+        chmod 755 /opt/hbpk/bin/hbpk-del
+        ln -f -s /usr/bin/cat.exe /opt/hbpk/bin/hbpk-sizecat.exe
 
     - name: Build a selection of packges
+      shell: msys2 {0}
       run: |
-        export HBPK_WORKDIR=$HOME/hbpk
-        export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
-        if [ -d "packages-aarch64-macos-last" ]; then
-          mv packages-aarch64-macos-last/harbour-core*.hbpk hbpksrc/packages/
-          mv packages-aarch64-macos-last/zig*.hbpk hbpksrc/packages/
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
+        if [ -d "packages-aarch64-windows-gnu-last" ]; then
+          mv packages-aarch64-windows-gnu-last/harbour-core*.hbpk hbpksrc/packages/
+          mv packages-aarch64-windows-gnu-last/zig*.hbpk hbpksrc/packages/
           cd hbpksrc/packages
           hbpk-add zig*.hbpk
           hbpk-add harbour-core*onedir.hbpk
@@ -90,21 +102,22 @@ jobs:
           letodbf-rdd-elch \
           letodbf-rdd-alcz \
           harbour-yaml \
-          harbour-pgsql \
+          hwgui \
           " \
         make install
 
     - name: Run tests
+      shell: msys2 {0}
       run: |
-         $HOME/hbpk/harbour/bin/darwin/zig/hbtest
+        /opt/hbpk/harbour/bin/win/zig/hbtest
 
     - name: Rename artifacts
       run: |
         cd hbpksrc
-        mv packages packages-aarch64-macos
+        mv packages packages-aarch64-windows-gnu
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: packages-aarch64-macos
-        path: hbpksrc/packages-aarch64-macos
+        name: packages-aarch64-windows-gnu
+        path: hbpksrc/packages-aarch64-windows-gnu/*
