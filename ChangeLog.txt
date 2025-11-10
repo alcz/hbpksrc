@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-10 21:21 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + base/libpq-inherit/Makefile
+    + added pseudo-package to inherit and repackage libpq
+      PostgreSQL client library from host package system,
+      potential targets are MSYS2 with MSYSTEM=CLANG64(?)
+      and macOS Homebrew.
+
+  * .github/workflows/windows.yml
+    ! fix missing git tools in MSYS2 shell
+
 2025-11-10 18:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
  * build/cmake-binary/Makefile
  * build/libduckdb-binary/Makefile

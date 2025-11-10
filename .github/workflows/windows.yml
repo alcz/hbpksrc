@@ -19,6 +19,7 @@ jobs:
         location: d:/
         update: true
         install: >
+          mingw-w64-x86_64-github-cli
           mingw-w64-x86_64-bzip2
           mingw-w64-x86_64-xz
           mingw-w64-x86_64-minizip
@@ -27,6 +28,7 @@ jobs:
           patch
           diffutils
           make
+          git
 
     - uses: actions/checkout@v2
       with:
@@ -42,6 +44,7 @@ jobs:
     - name: Get previous successful run ID
       id: get_run
       continue-on-error: true
+      shell: msys2 {0}
       run: |
         cd hbpksrc
         # ignore artifacts, when a forced rebuild goes
