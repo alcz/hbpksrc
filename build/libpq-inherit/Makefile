@@ -16,7 +16,9 @@ ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
 	endif
 else
 ifneq ($(findstring MINGW64,$(MSYSTEM)),)
-	_SRCPREFIX = /mingw64
+#	_SRCPREFIX = /mingw64
+# MSYS2 on GitHub actions does not have CLANG64 shell? except we still like to look for libs built by Clang
+	_SRCPREFIX = /clang64
 else
 ifneq ($(findstring CLANG64,$(MSYSTEM)),)
 	_SRCPREFIX = /clang64

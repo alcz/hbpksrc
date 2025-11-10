@@ -22,6 +22,7 @@ jobs:
           mingw-w64-x86_64-github-cli
           mingw-w64-x86_64-minizip
           mingw-w64-x86_64-make
+          mingw-w64-x86_64-postgresql
           mingw-w64-clang-x86_64-github-cli
           mingw-w64-clang-x86_64-minizip
           mingw-w64-clang-x86_64-make
@@ -106,6 +107,7 @@ jobs:
         wget https://harbour.zip/packages/x86_64-windows-gnu/libpq-9.6.24+outdatedssl+testonly.hbpk
         hbpk-add libpq-9.6.24+outdatedssl+testonly.hbpk
         rm libpq-9.6.24+outdatedssl+testonly.hbpk
+        OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
@@ -121,6 +123,7 @@ jobs:
           hbduckdb-wensheng \
           hbotp-naldodj \
           hbssh2-alkresin \
+          libpq-inherit \
           " \
         make install
 

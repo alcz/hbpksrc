@@ -78,6 +78,7 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
+        OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \

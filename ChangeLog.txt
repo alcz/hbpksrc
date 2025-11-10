@@ -3,6 +3,14 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-10 23:02 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows-arm64.yml
+  * .github/workflows/windows.yml
+  * build/libpq-inherit/Makefile
+    * build fixes
+
 2025-11-10 22:31 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml
   * .github/workflows/ubuntu-arm64.yml

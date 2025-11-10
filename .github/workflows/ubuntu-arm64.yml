@@ -73,6 +73,7 @@ jobs:
         else
           cd hbpksrc/build
           PKGSELECTION=zig-binary make install
+          PKGSELECTION=openssl make install
           PKGSELECTION=harbour-core make install
           cd harbour-core-onedir
           mv ../harbour-core/harbour-* ./ # only redo the install
@@ -80,6 +81,7 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
+        OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
@@ -88,7 +90,6 @@ jobs:
           harbour-yaml \
           libpq9 \
           harbour-pgsql \
-          openssl
           libssh2 \
           libcotp \
           libduckdb-binary \
