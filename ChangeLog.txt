@@ -3,6 +3,11 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-11 15:08 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * build/openssl/Makefile
+    + added $HBPK_CC_FAMILY before make, before ./configure
+      it was not enough, build progressed with gcc on Linux.
+
 2025-11-11 14:18 UTC+0100 Aleksander Czajczynski (hb fki.pl) [corebuild]
   * .github/workflows/windows-arm64.yml
   + build/zig-binary/windres-rc

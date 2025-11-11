@@ -19,7 +19,7 @@ do-config:
 	cd $(WORKDIR) && $(HBPK_CC_FAMILY) ./config no-shared $(HBPK_OPENSSL_OPTS) -fPIC --prefix=`pwd`/../dest --libdir=`pwd`/../dest/lib
 
 do-build:
-	cd $(WORKDIR) && make -j8
+	cd $(WORKDIR) && $(HBPK_CC_FAMILY) make -j8
 
 do-pkginst:
 	cd $(WORKDIR) && make install
