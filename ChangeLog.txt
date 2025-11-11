@@ -3,6 +3,13 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-11 20:59 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * build/libpq-inherit/Makefile
+  + build/libpq-inherit/pkgver.sh
+    ! switched from sed to awk for retrieving libpq PACKAGE_VERSION,
+      sed call was unhappy on macOS, moved to pkgver.sh
+    * split out lib and bin paths
+
 2025-11-11 18:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * github/workflows/ubuntu-arm64.yml
     * another try about previous one
