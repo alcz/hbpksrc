@@ -84,7 +84,7 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
-        HBPK_OPENSSL_OPTS="darwin64-arm64-cc no-tests" \
+        HBPK_OPENSSL_OPTS="no-tests no-apps no-shared" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \

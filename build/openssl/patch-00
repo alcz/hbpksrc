@@ -1,0 +1,11 @@
+--- Configurations/10-main.conf.orig	2025-10-01 14:11:48.000000000 +0200
++++ Configurations/10-main.conf	2025-11-11 23:19:01.377996600 +0100
+@@ -1854,7 +1854,7 @@
+         thread_scheme    => "pthreads",
+         perlasm_scheme   => "osx32",
+         dso_scheme       => "dlfcn",
+-        ranlib           => "ranlib -c",
++        ranlib           => "ranlib",
+         shared_target    => "darwin-shared",
+         shared_cflag     => "-fPIC",
+         shared_extension => ".\$(SHLIB_VERSION_NUMBER).dylib",
