@@ -88,6 +88,7 @@ jobs:
           harbour-yaml \
           libpq9 \
           harbour-pgsql \
+          zlib \
           openssl \
           libssh2 \
           libcotp \

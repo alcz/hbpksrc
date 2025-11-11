@@ -3,6 +3,13 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-11 18:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * github/workflows/ubuntu-arm64.yml
+    * another try about previous one
+
+  * build/duckdb-binary/Makefile
+    ! linux DuckDB binaries end on libs, no other bins
+
 2025-11-11 15:56 UTC+0100 Aleksander Czajczynski (hb fki.pl) [corebuild]
   * .github/workflows/ubuntu-arm64.yml
     * OpenSSL build system ignores CC= nor there's linux-aarch64-clang

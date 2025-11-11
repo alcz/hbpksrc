@@ -48,4 +48,4 @@ do-pkginst:
 	-cp $(WORKDIR)/lib* dest/lib
 	-mv $(WORKDIR)/*.lib dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER)
 	-mv $(WORKDIR)/lib* dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER)
-	mv $(WORKDIR)/* dest/bin
+	-mv $(WORKDIR)/* dest/bin

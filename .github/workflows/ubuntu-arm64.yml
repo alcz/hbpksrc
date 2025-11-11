@@ -73,7 +73,6 @@ jobs:
         else
           cd hbpksrc/build
           PKGSELECTION=zig-binary make install
-          PKGSELECTION=openssl make install
           PKGSELECTION=harbour-core make install
           cd harbour-core-onedir
           mv ../harbour-core/harbour-* ./ # only redo the install
@@ -83,6 +82,7 @@ jobs:
         fi
         # OpenSSL build system ignores CC= nor there's linux-aarch64-clang
         ln -s /opt/hbpk/bin/cc /opt/hbpk/bin/gcc
+        sudo apt-get remove -y gcc
         OPENSSL_ROOT_DIR="/opt/hbpk" \
         HBPK_OPENSSL_OPTS="linux-aarch64 no-tests" \
         PKGSELECTION=" \
@@ -92,6 +92,8 @@ jobs:
           letodbf-rdd-alcz \
           harbour-yaml \
           libpq9 \
+          zlib \
+          openssl \
           harbour-pgsql \
           libssh2 \
           libcotp \
