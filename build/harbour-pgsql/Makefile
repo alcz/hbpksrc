@@ -1,10 +1,12 @@
 PKGNAME = harbour-pgsql
 PKGVER  = 3.2.0dev
-PKGBLD  = +pq9
+PKGBLD  = +pq$(shell hbpk-ls | grep libpq | sed -n 's/^libpq[[:space:]]\+\([0-9]\+\)\..*/\1/p')
+
 DEPENDS = harbour-core libpq
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
+
 include $(TOPDIR)/pmgr.mk
 
 WORKDIR = ../harbour-contribs/tree

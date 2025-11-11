@@ -3,6 +3,13 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-10 08:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/windows-arm64.yml
+  * .github/workflows/windows.yml
+  * build/harbour-pgsql/Makefile
+    ! arch
+    * derive pgsql package name from installed libpq ver
+
 2025-11-10 07:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/windows-arm64.yml
   * .github/workflows/windows.yml

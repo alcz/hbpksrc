@@ -119,6 +119,7 @@ jobs:
           libduckdb-binary \
           hbduckdb-wensheng \
           libpq-inherit \
+          harbour-pgsql \
           " \
         make install
 
@@ -130,22 +131,34 @@ jobs:
     - name: 'Extend environment for deps that need GNU tools to build'
       shell: msys2 {0}
       run: |
-        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-binutils
-        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-gcc
+        pacman -S --noconfirm mingw-w64-x86_64-binutils
+        pacman -S --noconfirm mingw-w64-x86_64-gcc
 
     - name: Build packages depending on OpenSSL
+      continue-on-error: true
       shell: msys2 {0}
       run: |
         export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
-        cd hbpksrc/build
         # OpenSSL seems to require windres (linking tools stage), windres wants GCC
+        if [ -d "packages-x86_64-windows-gnu-last" ]; then
+          mv packages-x86_64-windows-gnu-last/openssl*.hbpk hbpksrc/packages/
+          cd hbpksrc/packages
+          hbpk-add zlib*.hbpk
+          hbpk-add cmake*.hbpk
+          hbpk-add openssl*.hbpk
+          cd ../build
+        else
+          cd hbpksrc/build
+          HBPK_OPENSSL_OPTS="no-tests no-apps" PKGSELECTION="zlib cmake-binary openssl" make install
+        fi
+        OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \
-          openssl \
-          libssh2 \
           libcotp \
           hbotp-naldodj \
+          libssh2 \
           hbssh2-alkresin \
           " \
+        make install
 
     - name: Rename artifacts
       run: |

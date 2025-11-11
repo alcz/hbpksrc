@@ -122,23 +122,33 @@ jobs:
       shell: msys2 {0}
       run: |
         # those probably not exist on ARM
-        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-binutils
-        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-gcc
+        pacman -S --noconfirm mingw-w64-aarch64-binutils
+        pacman -S --noconfirm mingw-w64-aarch64-gcc
 
     - name: Build packages depending on OpenSSL
       continue-on-error: true
       shell: msys2 {0}
       run: |
         export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
-        cd hbpksrc/build
-        # OpenSSL seems to require windres (linking tools stage), windres wants GCC
+        if [ -d "packages-aarch64-windows-gnu-lastxx" ]; then
+          mv packages-aarch64-windows-gnu-last/openssl*.hbpk hbpksrc/packages/
+          cd hbpksrc/packages
+          hbpk-add zlib*.hbpk
+          hbpk-add cmake*.hbpk
+          hbpk-add openssl*.hbpk
+          cd ../build
+        else
+          cd hbpksrc/build
+          HBPK_OPENSSL_OPTS="mingwarm64 no-tests no-apps" PKGSELECTION="zlib openssl cmake-binary" make install
+        fi
+        OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \
-          openssl \
-          libssh2 \
           libcotp \
           hbotp-naldodj \
+          libssh2 \
           hbssh2-alkresin \
           " \
+        make install
 
     - name: Rename artifacts
       run: |

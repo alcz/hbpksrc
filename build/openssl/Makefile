@@ -16,7 +16,7 @@ do-extract: std-extract
 do-patch: #fix-configure
 
 do-config:
-	cd $(WORKDIR) && $(HBPK_CC_FAMILY) ./config no-shared -fPIC --prefix=`pwd`/../dest --libdir=`pwd`/../dest/lib
+	cd $(WORKDIR) && $(HBPK_CC_FAMILY) ./config no-shared $(HBPK_OPENSSL_OPTS) -fPIC --prefix=`pwd`/../dest --libdir=`pwd`/../dest/lib
 
 do-build:
 	cd $(WORKDIR) && make -j8
