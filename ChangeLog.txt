@@ -3,6 +3,11 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-11 22:34 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + build/zig-binary/Makefile
+    * update macOS zig binary early, CommonCryptoHeaders missing
+      from previous release
+
 2025-11-11 21:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml
     ! extra macOS include path for ./configure
