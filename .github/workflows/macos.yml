@@ -84,6 +84,7 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
+        HBPK_OPENSSL_OPTS="darwin64-arm64-cc no-tests" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
@@ -92,6 +93,7 @@ jobs:
           harbour-yaml \
           libpq-inherit \
           harbour-pgsql \
+          openssl \
           libssh2 \
           libcotp \
           libduckdb-binary \

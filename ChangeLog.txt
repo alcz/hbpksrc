@@ -3,6 +3,10 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-11 21:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/macos.yml
+    ! extra macOS include path for ./configure
+
 2025-11-11 20:59 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * build/libpq-inherit/Makefile
   + build/libpq-inherit/pkgver.sh
@@ -11,7 +15,7 @@
     * split out lib and bin paths
 
 2025-11-11 18:39 UTC+0100 Aleksander Czajczynski (hb fki.pl)
-  * github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu-arm64.yml
     * another try about previous one
 
   * build/duckdb-binary/Makefile
