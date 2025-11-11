@@ -139,7 +139,8 @@ jobs:
           cd ../build
         else
           cd hbpksrc/build
-          HBPK_OPENSSL_OPTS="mingwarm64 no-tests no-apps" PKGSELECTION="zlib openssl cmake-binary" make install
+          HBPK_OPENSSL_OPTS="mingwarm64 no-tests no-apps" \
+          WINDRES=windres-rc PKGSELECTION="zlib openssl cmake-binary" make install
         fi
         OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \

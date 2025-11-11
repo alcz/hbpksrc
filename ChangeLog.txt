@@ -3,14 +3,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
-2025-11-10 08:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+2025-11-11 14:18 UTC+0100 Aleksander Czajczynski (hb fki.pl) [corebuild]
+  * .github/workflows/windows-arm64.yml
+  + build/zig-binary/windres-rc
+    + added windres-rc wrapper, borrowed from vcpkg due to
+      no windres available on MSYS2 CLANGARM64. Actually
+      you could borrow MINGW64 package executing non native...
+      but hey.
+
+2025-11-11 08:47 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/windows-arm64.yml
   * .github/workflows/windows.yml
   * build/harbour-pgsql/Makefile
     ! arch
     * derive pgsql package name from installed libpq ver
 
-2025-11-10 07:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+2025-11-11 07:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/windows-arm64.yml
   * .github/workflows/windows.yml
   * build/openssl/Makefile
