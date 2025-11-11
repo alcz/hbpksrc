@@ -81,6 +81,8 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
+        # OpenSSL build system ignores CC= nor there's linux-aarch64-clang
+        ln -s /opt/hbpk/bin/cc /opt/hbpk/bin/gcc
         OPENSSL_ROOT_DIR="/opt/hbpk" \
         HBPK_OPENSSL_OPTS="linux-aarch64 no-tests" \
         PKGSELECTION=" \

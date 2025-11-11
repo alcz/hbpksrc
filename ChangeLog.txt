@@ -3,6 +3,11 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-11 15:56 UTC+0100 Aleksander Czajczynski (hb fki.pl) [corebuild]
+  * .github/workflows/ubuntu-arm64.yml
+    * OpenSSL build system ignores CC= nor there's linux-aarch64-clang
+      on this platform
+
 2025-11-11 15:08 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * build/openssl/Makefile
     + added $HBPK_CC_FAMILY before make, before ./configure
