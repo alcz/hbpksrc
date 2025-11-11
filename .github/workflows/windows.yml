@@ -26,6 +26,7 @@ jobs:
           mingw-w64-clang-x86_64-github-cli
           mingw-w64-clang-x86_64-minizip
           mingw-w64-clang-x86_64-make
+          mingw-w64-clang-x86_64-postgresql
           bzip2
           xz
           unzip
@@ -107,7 +108,6 @@ jobs:
         wget https://harbour.zip/packages/x86_64-windows-gnu/libpq-9.6.24+outdatedssl+testonly.hbpk
         hbpk-add libpq-9.6.24+outdatedssl+testonly.hbpk
         rm libpq-9.6.24+outdatedssl+testonly.hbpk
-        OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
@@ -116,13 +116,8 @@ jobs:
           harbour-yaml \
           hwgui \
           harbour-pgsql \
-          openssl \
-          libssh2 \
-          libcotp \
           libduckdb-binary \
           hbduckdb-wensheng \
-          hbotp-naldodj \
-          hbssh2-alkresin \
           libpq-inherit \
           " \
         make install
@@ -131,6 +126,26 @@ jobs:
       shell: msys2 {0}
       run: |
         /opt/hbpk/harbour/bin/win/zig/hbtest
+
+    - name: 'Extend environment for deps that need GNU tools to build'
+      shell: msys2 {0}
+      run: |
+        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-binutils
+        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-gcc
+
+    - name: Build packages depending on OpenSSL
+      shell: msys2 {0}
+      run: |
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
+        cd hbpksrc/build
+        # OpenSSL seems to require windres (linking tools stage), windres wants GCC
+        PKGSELECTION=" \
+          openssl \
+          libssh2 \
+          libcotp \
+          hbotp-naldodj \
+          hbssh2-alkresin \
+          " \
 
     - name: Rename artifacts
       run: |

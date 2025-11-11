@@ -100,7 +100,6 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
-        OPENSSL_ROOT_DIR="/opt/hbpk" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
@@ -108,13 +107,8 @@ jobs:
           letodbf-rdd-alcz \
           harbour-yaml \
           hwgui \
-          openssl \
-          libssh2 \
-          libcotp \
           libduckdb-binary \
           hbduckdb-wensheng \
-          hbotp-naldodj \
-          hbssh2-alkresin \
           " \
         make install
 
@@ -122,6 +116,29 @@ jobs:
       shell: msys2 {0}
       run: |
         /opt/hbpk/harbour/bin/win/zig/hbtest
+
+    - name: 'Extend environment for deps that rely on GNU tools to build'
+      continue-on-error: true
+      shell: msys2 {0}
+      run: |
+        # those probably not exist on ARM
+        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-binutils
+        pacman -S --noconfirm mingw-w64-${{ env.msys_cpu }}-gcc
+
+    - name: Build packages depending on OpenSSL
+      continue-on-error: true
+      shell: msys2 {0}
+      run: |
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
+        cd hbpksrc/build
+        # OpenSSL seems to require windres (linking tools stage), windres wants GCC
+        PKGSELECTION=" \
+          openssl \
+          libssh2 \
+          libcotp \
+          hbotp-naldodj \
+          hbssh2-alkresin \
+          " \
 
     - name: Rename artifacts
       run: |
