@@ -108,8 +108,8 @@ func_windres_wrapper ()
     fi
     shift
   done
-  echo $(dirname "$0")/../usr/share/zig/zig rc "$@" -fo "$out" "$in"
-  exec $(dirname "$0")/../usr/share/zig/zig rc "$@" -fo "$out" "$in"
+  echo $(dirname "$0")/../usr/share/zig/zig rc "$@" -fo"$out" "$in"
+  exec $(dirname "$0")/../usr/share/zig/zig rc "$@" -fo"$out" "$in"
   exit 1
 }
 

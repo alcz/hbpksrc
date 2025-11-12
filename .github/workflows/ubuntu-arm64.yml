@@ -50,6 +50,7 @@ jobs:
     - name: Build base of hbpk
       run: |
         export PATH="/opt/hbpk/bin:$PATH"
+        rm -rf hbpksrc/packages
         cd hbpksrc/base
         mv xz xz-old
         mv xz-current xz
@@ -60,7 +61,7 @@ jobs:
         mv /tmp/hbpk-del /opt/hbpk/bin/hbpk-del # another patch for extra argument
         chmod 755 /opt/hbpk/bin/hbpk-del
 
-    - name: Build a selection of packges
+    - name: Build a selection of packages
       run: |
         export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/linux/zig:$PATH"
         if [ -d "packages-aarch64-linux-musl-last" ]; then

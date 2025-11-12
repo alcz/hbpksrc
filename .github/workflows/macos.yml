@@ -51,7 +51,7 @@ jobs:
 
     - name: Build base of hbpk
       run: |
-        export HBPK_WORKDIR=$HOME/hbpk
+        export HBPK_WORKDIR="$HOME/hbpk"
         export PATH="$HBPK_WORKDIR/bin:$PATH"
         rm -rf hbpksrc/packages
         cd hbpksrc/base
@@ -64,9 +64,9 @@ jobs:
         mv /tmp/hbpk-del $HBPK_WORKDIR/bin/hbpk-del # another patch for extra argument
         chmod 755 $HBPK_WORKDIR/bin/hbpk-del
 
-    - name: Build a selection of packges
+    - name: Build a selection of packages
       run: |
-        export HBPK_WORKDIR=$HOME/hbpk
+        export HBPK_WORKDIR="$HOME/hbpk"
         export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
         if [ -d "packages-aarch64-macos-last" ]; then
           mv packages-aarch64-macos-last/harbour-core*.hbpk hbpksrc/packages/
@@ -104,6 +104,7 @@ jobs:
     - name: Build packages depending on OpenSSL
       continue-on-error: true
       run: |
+        export HBPK_WORKDIR="$HOME/hbpk"
         export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$PATH"
         if [ -d "packages-aarch64-macos" ]; then
           mv packages-aarch64-macos-last/openssl*.hbpk hbpksrc/packages/
@@ -120,7 +121,8 @@ jobs:
           HBPK_OPENSSL_OPTS="no-tests no-apps no-shared" PKGSELECTION="openssl" make install
           hbpk-add ../packages/zig*.hbpk
         fi
-        OPENSSL_ROOT_DIR="/opt/hbpk" \
+        OPENSSL_ROOT_DIR="$HBPK_WORKDIR" \
+        ZLIB_ROOT_DIR="$HBPK_WORKDIR" \
         PKGSELECTION=" \
           libcotp \
           hbotp-naldodj \
