@@ -1,4 +1,4 @@
-PACKAGES = pmgr xz
+PACKAGES = pmgr xz$(HBPK_XZ_FLAVOR)
 
 TOPDIR = ..
 

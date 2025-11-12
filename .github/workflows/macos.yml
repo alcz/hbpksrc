@@ -55,9 +55,7 @@ jobs:
         export PATH="$HBPK_WORKDIR/bin:$PATH"
         rm -rf hbpksrc/packages
         cd hbpksrc/base
-        mv xz xz-old
-        mv xz-current xz
-        make install
+        HBPK_XZ_FLAVOR=-current make install
         rm $HBPK_WORKDIR/bin/hbpk-sizecat # pacify progress-bar
         ln -s /bin/cat $HBPK_WORKDIR/bin/hbpk-sizecat
         cat $HBPK_WORKDIR/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
@@ -85,7 +83,6 @@ jobs:
           cd ..
           PKGSELECTION=harbour-core-onedir make install
         fi
-        HBPK_OPENSSL_OPTS="no-tests no-apps" \
         PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \

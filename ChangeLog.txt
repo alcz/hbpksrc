@@ -3,6 +3,32 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-12 17:32 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  + base/pmgr/hbpk-sizecat.win32.exe
+  * base pmgr/Makefile
+    + binaries are never used by default (gcc needed), but now there
+      are following hbpk-sizecat flavors to choose from:
+      HBPK_BOOTCAT=no (will symlink to cat, hbpk-del needs arg patch)
+      HBPK_BOOTCAT=win32
+      HBPK_BOOTCAT=win64 (will use .ape binary renamed to .exe, Win7+)
+      HBPK_BOOTCAT=ape   (will use .ape binary on UNIX hosts)
+
+  * base/Makefile
+    + HBPK_XZ_FLAVOR= xz env picker added, by default old build is used,
+      compatible with older UNIX hosts
+      HBPK_XZ_FLAVOR=-current (build fresh version)
+      HBPK_XZ_FLAVOR=-inherit (repackage host OS xz)
+      HBPK_XZ_FLAVOR=-ape (use APE/Cosmopolitan 64-bit binary)
+
+  * ChangeLog.txt
+    * failnote in prev
+
+  * .github/workflows/macos.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/windows-arm64.yml
+  * .github/workflows/windows.yml
+    * cleanups, use HBPK_XZ_FLAVOR
+
 2025-11-12 11:34 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * github/workflows/ubuntu-arm64.yml
   * github/workflows/ubuntu.yml
@@ -14,7 +40,7 @@
    * fix paths, account for $HOME with spaces
 
   * zig-binary/windres-rc
-   * try "-fo{out}" instead "-fo {out}"
+   * try "-fo{out}" instead "-fo {out}" [winarm64 still FAIL]
 
 2025-11-12 11:12 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * build/openssl/patch-00 -> zig-buildnotes.txt

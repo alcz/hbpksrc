@@ -77,9 +77,7 @@ jobs:
         export PATH="/opt/hbpk/bin:/usr/bin:$PATH"
         export HBPK_BOOTCAT=no # shouldn't build hbpk-sizecat in CI at all
         cd hbpksrc/base
-        mv xz xz-old
-        mv xz-inherit xz
-        make install
+        HBPK_XZ_FLAVOR=-inherit make install
         cat /opt/hbpk/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
         mv /tmp/hbpk-del /opt/hbpk/bin/hbpk-del # another patch for extra argument
         chmod 755 /opt/hbpk/bin/hbpk-del

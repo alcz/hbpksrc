@@ -41,5 +41,21 @@ no$(PKGCMDNAME)-sizecat:
 	mkdir -p $(PKGDEST)/bin
 	-cp -f $@ $(PKGDEST)/bin/$(PKGCMDNAME)-sizecat
 
+ape$(PKGCMDNAME)-sizecat:
+	mkdir -p $(PKGDEST)/bin
+	-cp -f hbpk-sizecat.ape $@
+	chmod 755 $@
+	-cp -f $@ $(PKGDEST)/bin/$(PKGCMDNAME)-sizecat
+
+win32$(PKGCMDNAME)-sizecat:
+	mkdir -p $(PKGDEST)/bin
+	-cp -f hbpk-sizecat.win32.exe $@
+	-cp -f $@ $(PKGDEST)/bin/$(PKGCMDNAME)-sizecat.exe
+
+win64$(PKGCMDNAME)-sizecat:
+	mkdir -p $(PKGDEST)/bin
+	-cp -f hbpk-sizecat.ape $@
+	-cp -f $@ $(PKGDEST)/bin/$(PKGCMDNAME)-sizecat.exe
+
 clean distclean:
 	rm -f $(TARGETS)

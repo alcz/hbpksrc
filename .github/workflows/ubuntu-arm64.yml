@@ -52,9 +52,7 @@ jobs:
         export PATH="/opt/hbpk/bin:$PATH"
         rm -rf hbpksrc/packages
         cd hbpksrc/base
-        mv xz xz-old
-        mv xz-current xz
-        make install
+        HBPK_XZ_FLAVOR=-current make install
         rm /opt/hbpk/bin/hbpk-sizecat # pacify progress-bar
         ln -s /usr/bin/cat /opt/hbpk/bin/hbpk-sizecat
         cat /opt/hbpk/bin/hbpk-del | sed -e 's/hbpk-sizecat -nosize/cat/' > /tmp/hbpk-del
