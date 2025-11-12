@@ -3,6 +3,11 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-12 11:12 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * build/openssl/patch-00 -> zig-buildnotes.txt
+  * github/workflows/macos.yml
+    * let XCode build OpenSSL
+
 2025-11-11 23:06 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/openssl/patch-00
     ! for macOS, no "ranlib -c" in Zig, patch to "ranlib"

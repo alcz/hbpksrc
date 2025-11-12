@@ -1,3 +1,13 @@
+Simplest build, by configure "no-tests no-apps no-shared", ends up like this:
+
+cc -fPIC -arch arm64 -O3 -Wall -fPIC -L. -bundle -Wl,-search_paths_first  \
+		-o providers/legacy.dylib \
+		providers/legacy-dso-legacyprov.o \
+		providers/liblegacy.a providers/libcommon.a -lcrypto  
+error: undefined symbol: _main
+
+This patch was used:
+
 --- Configurations/10-main.conf.orig	2025-10-01 14:11:48.000000000 +0200
 +++ Configurations/10-main.conf	2025-11-11 23:19:01.377996600 +0100
 @@ -1854,7 +1854,7 @@
