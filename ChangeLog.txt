@@ -3,9 +3,19 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-17 19:34 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/macos.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/windows-arm64.yml
+  * .github/workflows/windows.yml
+  + build/harbour-crypto/Makefile
+    + added hbcrypto contrib implemented by Viktor Szakats in Harbour 3.4
+      fork, backported to 3.2 by me
+
 2025-11-12 17:32 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + base/pmgr/hbpk-sizecat.win32.exe
-  * base pmgr/Makefile
+  * base/pmgr/Makefile
     + binaries are never used by default (gcc needed), but now there
       are following hbpk-sizecat flavors to choose from:
       HBPK_BOOTCAT=no (will symlink to cat, hbpk-del needs arg patch)

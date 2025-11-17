@@ -104,6 +104,7 @@ jobs:
           letodbf-server-alcz \
           letodbf-rdd-elch \
           letodbf-rdd-alcz \
+          harbour-crypto \
           harbour-yaml \
           hwgui \
           libduckdb-binary \

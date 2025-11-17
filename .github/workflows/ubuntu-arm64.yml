@@ -90,6 +90,7 @@ jobs:
           letodbf-rdd-elch \
           letodbf-rdd-alcz \
           harbour-yaml \
+          harbour-crypto \
           libpq9 \
           zlib \
           openssl \
