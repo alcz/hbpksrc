@@ -108,6 +108,19 @@ jobs:
       run: |
         /opt/hbpk/harbour/bin/linux/zig/hbtest
 
+    - name: Build debug version of Harbour core
+      run: |
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/linux/zig:$PATH"
+        if [ ! -d "packages-aarch64-linux-musl-last" ]; then
+          cd hbpksrc/build/harbour-core-debug
+          mv ../harbour-core-onedir/harbour-* ./ # only redo some parts
+          touch .config .depend .extract .fetch .patch
+          cd harbour-*
+          HB_COMPILER=zig make clean
+          cd ..
+          PKGSELECTION=harbour-core-debug make install
+        fi
+
     - name: Rename artifacts
       run: |
         cd hbpksrc

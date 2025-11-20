@@ -15,10 +15,10 @@ include $(TOPDIR)/hbarch.mk
 
 do-fetch: std-fetch
 do-extract: std-extract
-do-patch: #fix-configure
-
-do-config:
 	mv core-master $(WORKDIR)
+
+do-patch: #fix-configure
+do-config:
 	ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 
 do-build:

@@ -1,0 +1,11 @@
+--- include/hbwmain.c.orig	2025-11-20 21:20:17.932825700 +0100
++++ include/hbwmain.c	2025-11-20 21:20:53.178341200 +0100
+@@ -63,7 +63,7 @@
+ 
+    HB_SYMBOL_UNUSED( lpCmdLine );
+ 
+-   #if 0
++   #if HBPK_TRACING_ADDITIONS
+    HB_TRACE( HB_TR_DEBUG, ("WinMain(%p, %p, %s, %d)", hInstance, hPrevInstance, lpCmdLine, iCmdShow ) );
+    #endif
+ 

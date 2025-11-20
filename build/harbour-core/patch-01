@@ -1,0 +1,12 @@
+--- src/vm/cmdarg.c.orig	2025-10-23 21:45:11.000000000 +0200
++++ src/vm/cmdarg.c	2025-11-20 21:23:04.425115200 +0100
+@@ -271,6 +271,9 @@
+ 
+ void hb_winmainArgInit( void * hInstance, void * hPrevInstance, int iCmdShow )
+ {
++#if HBPK_TRACING_ADDITIONS
++   HB_TRACE( HB_TR_DEBUG, ("hb_winmainArgInit(%p, %p, %d)", hInstance, hPrevInstance, iCmdShow ) );
++#endif
+    s_hInstance = ( HANDLE ) hInstance;
+    s_hPrevInstance = ( HANDLE ) hPrevInstance;
+    s_iCmdShow = iCmdShow;

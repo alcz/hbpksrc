@@ -129,6 +129,20 @@ jobs:
           " \
         make install
 
+    - name: Build debug version of Harbour core
+      run: |
+        export HBPK_WORKDIR="$HOME/hbpk"
+        export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$PATH"
+        if [ ! -d "packages-aarch64-macos-last" ]; then
+          cd hbpksrc/build/harbour-core-debug
+          mv ../harbour-core-onedir/harbour-* ./ # only redo some parts
+          touch .config .depend .extract .fetch .patch
+          cd harbour-*
+          HB_COMPILER=zig make clean
+          cd ..
+          PKGSELECTION=harbour-core-debug make install
+        fi
+
     - name: Rename artifacts
       run: |
         cd hbpksrc

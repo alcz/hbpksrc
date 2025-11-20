@@ -160,7 +160,22 @@ jobs:
           " \
         make install
 
+    - name: Build debug version of Harbour core
+      shell: msys2 {0}
+      run: |
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
+        if [ ! -d "packages-x86_64-windows-gnu-last" ]; then
+          cd hbpksrc/build/harbour-core-debug
+          mv ../harbour-core-onedir/harbour-* ./ # only redo some parts
+          touch .config .depend .extract .fetch .patch
+          cd harbour-*
+          HB_COMPILER=zig make clean
+          cd ..
+          PKGSELECTION=harbour-core-debug make install
+        fi
+
     - name: Rename artifacts
+      shell: msys2 {0}
       run: |
         cd hbpksrc
         mv packages packages-x86_64-windows-gnu

@@ -3,6 +3,22 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-17 21:32 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  .github/workflows/macos.yml
+  .github/workflows/ubuntu-arm64.yml
+  .github/workflows/ubuntu.yml
+  .github/workflows/windows-arm64.yml
+  .github/workflows/windows.yml
+  + build/harbour-core-debug/Makefile
+    + build and package debug (& non optimized) version
+      of Harbour
+ 
+  + build/harbour-core/patch-00
+  + build/harbour-core/patch-01
+  * harbour-core-onedir/Makefile
+    * setup some tracing for WinMain - arguments missing, locating
+      problems with resources in hbwin
+
 2025-11-17 19:34 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml
   * .github/workflows/ubuntu.yml
