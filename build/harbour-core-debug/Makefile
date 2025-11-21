@@ -1,6 +1,6 @@
 PKGNAME = harbour-core
 PKGVER  = 3.2.0dev
-PKGBLD  = +zig+debug
+PKGBLD  = +zig+debug$(HBPK_BLD_SUFFIX)
 DEPENDS = zig
 
 TOPDIR  = ../..
@@ -23,7 +23,7 @@ do-config:
 	-ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 
 do-build:
-	cd $(WORKDIR) && HB_USER_CFLAGS="-fPIC -DHBPK_TRACING_ADDITIONS" \
+	cd $(WORKDIR) && HB_USER_CFLAGS="-fPIC -DHB_TR_LEVEL_DEBUG -DHBPK_TRACING_ADDITIONS $(HBPK_USER_CFLAGS)" \
 	HB_BUILD_DEBUG=yes \
 	HB_BUILD_OPTIM=no \
 	HB_BUILD_3RDEXT=no \

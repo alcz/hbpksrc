@@ -129,7 +129,7 @@ jobs:
           " \
         make install
 
-    - name: Build debug version of Harbour core
+    - name: Build debug version(s) of Harbour core
       run: |
         export HBPK_WORKDIR="$HOME/hbpk"
         export PATH="$HBPK_WORKDIR/bin:$HBPK_WORKDIR/harbour/bin/darwin/zig:$PATH"
@@ -140,7 +140,11 @@ jobs:
           cd harbour-*
           HB_COMPILER=zig make clean
           cd ..
-          PKGSELECTION=harbour-core-debug make install
+          HBPK_BLD_SUFFIX=+sanitizer PKGSELECTION=harbour-core-debug make install
+          cd harbour-*
+          HB_COMPILER=zig make clean
+          cd ..
+          HBPK_USER_CFLAGS=-fno-sanitize-trap=undefined PKGSELECTION=harbour-core-debug make install
         fi
 
     - name: Rename artifacts

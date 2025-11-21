@@ -3,6 +3,18 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2025-11-21 12:40 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  .github/workflows/macos.yml
+  .github/workflows/ubuntu-arm64.yml
+  .github/workflows/ubuntu.yml
+  .github/workflows/windows-arm64.yml
+  .github/workflows/windows.yml
+  + build/harbour-core-debug/Makefile
+    + added missing -DHB_TR_LEVEL_DEBUG
+
+    * split debug version build to two, separate packages with
+      included/excluded undefined behavior sanitizer
+
 2025-11-17 21:32 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   .github/workflows/macos.yml
   .github/workflows/ubuntu-arm64.yml
