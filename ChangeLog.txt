@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-08-28 11:15 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * build/zig-binary/Makefile
+    ! Zig 0.16.0 release for Win ARM64 seemed unstable, checking
+      for alternatives
+
+  * .github/workflows/macos.yml
+    ! incompatible sed appeared in macOS CI, retry to use sed
+      via Homebrew
+
 2026-08-28 09:57 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * build/zig-binary/Makefile
     * upgrade Zig to 0.16.0
