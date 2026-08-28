@@ -3,6 +3,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-08-28 09:57 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * build/zig-binary/Makefile
+    * upgrade Zig to 0.16.0
+
+  * build/openssl/Makefile
+    * up to 3.6.4
+
+  * build/zlib/Makefile
+    * better URL for multiple versions, don't update yet
+      Harbour is at zlib 1.3.1
+
+  * .github/workflows/ubuntu-arm64.yml
+    ! apt update call needed...
+
 2026-01-28 20:18 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + build/hbimgui-docking/Makefile
   + build/hbimgui/Makefile
@@ -68,7 +82,7 @@
 
   * build/harbour-core/patch-01
   - build/harbour-core/patch-02
-    - patch unneccesery after Harbour update
+    - patch unneccesary after Harbour update
 
 2025-11-21 12:40 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml

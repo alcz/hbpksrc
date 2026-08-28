@@ -1,18 +1,18 @@
 PKGNAME = zig
-PKGVER  = 0.15.2
+PKGVER  = 0.16.0
 PKGBLD  = +officialbinary
 
 TOPDIR  = ../..
 
 OSTYPE  = $(shell uname -o | sed --e 's/GNU\///' --e 's/Linux/linux/' --e 's/Msys/windows/')
-ifneq ($(findstring Darwin,$(shell uname)),)
-	OSTYPE  = macos
-	SRCURL  = https://ziglang.org/builds
-	PKGVER  = 0.16.0-dev.2261+d6b3dd25a
+#ifneq ($(findstring Darwin,$(shell uname)),)
+#	OSTYPE  = macos
+#	SRCURL  = https://ziglang.org/builds
+#	PKGVER  = 0.16.0-dev.2261+d6b3dd25a
 	# updated version needed for CommonCrypto headers
-else
+#else
         SRCURL  = https://ziglang.org/download/$(PKGVER)
-endif
+#endif
 
 include $(TOPDIR)/common.mk
 include $(TOPDIR)/pmgr.mk

@@ -1,5 +1,5 @@
 PKGNAME = openssl
-PKGVER  = 3.6.1
+PKGVER  = 3.6.4
 #PKGBLD  = +zig
 #DEPENDS = zig
 

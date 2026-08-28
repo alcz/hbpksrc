@@ -7,7 +7,7 @@ include $(TOPDIR)/pmgr.mk
 
 WORKDIR = $(PKGNAME)-$(PKGVER)
 SOURCES = $(WORKDIR).tar.gz
-SRCURL  = https://zlib.net/
+SRCURL  = https://zlib.net/fossils
 
 do-fetch: std-fetch
 do-extract: std-extract
