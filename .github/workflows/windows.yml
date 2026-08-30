@@ -11,6 +11,13 @@ jobs:
 
     runs-on: windows-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - zig
+          - mingw64
+
     steps:
 
     - name: Init MSYS2
@@ -46,6 +53,10 @@ jobs:
         mkdir /opt/hbpk
         rm -rf hbpksrc/packages
         echo verbose=off > $HOME/.wgetrc
+        if [ "${{matrix.compiler}}" = "mingw64" ]; then
+          pacman -S --noconfirm mingw-w64-x86_64-binutils
+          pacman -S --noconfirm mingw-w64-x86_64-gcc
+        fi
 
     - name: Get previous successful run ID
       id: get_run
@@ -66,8 +77,8 @@ jobs:
       continue-on-error: true
       uses: actions/download-artifact@v4
       with:
-        name: packages-x86_64-windows-gnu
-        path: packages-x86_64-windows-gnu-last
+        name: packages-x86_64-windows-gnu-${{matrix.compiler}}
+        path: packages-x86_64-windows-gnu-${{matrix.compiler}}-last
         github-token: ${{ secrets.GITHUB_TOKEN }}
         run-id: ${{ steps.get_run.outputs.run_id }}
 
@@ -86,30 +97,39 @@ jobs:
     - name: Build a selection of packages
       shell: msys2 {0}
       run: |
-        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/${{matrix.compiler}}:$PATH"
         # expired artifact leaves empty directory(?)
-        rmdir --ignore-fail-on-non-empty packages-x86_64-windows-gnu-last || true
-        if [ -d "packages-x86_64-windows-gnu-last" ]; then
-          mv packages-x86_64-windows-gnu-last/harbour-core*.hbpk hbpksrc/packages/
-          mv packages-x86_64-windows-gnu-last/zig*.hbpk hbpksrc/packages/
+        rmdir --ignore-fail-on-non-empty packages-x86_64-windows-gnu-${{matrix.compiler}}-last || true
+        if [ -d "packages-x86_64-windows-gnu-${{matrix.compiler}}-last" ]; then
+          mv packages-x86_64-windows-gnu-${{matrix.compiler}}-last/harbour-core*.hbpk hbpksrc/packages/
+          if [ "${{matrix.compiler}}" = "zig" ]; then
+            mv packages-x86_64-windows-gnu-${{matrix.compiler}}-last/zig*.hbpk hbpksrc/packages/
+          fi
           cd hbpksrc/packages
-          hbpk-add zig*.hbpk
+          if [ "${{matrix.compiler}}" = "zig" ]; then
+            hbpk-add zig*.hbpk
+          fi
           hbpk-add harbour-core*onedir.hbpk
           cd ../build
         else
           cd hbpksrc/build
-          PKGSELECTION=zig-binary make install
-          PKGSELECTION=harbour-core make install
+          if [ "${{matrix.compiler}}" = "zig" ]; then
+             PKGSELECTION=zig-binary make install
+          fi
+          HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=harbour-core make install
           cd harbour-core-onedir
           mv ../harbour-core/harbour-* ./ # only redo the install
           touch .config .depend .extract .fetch .patch
           cd ..
-          PKGSELECTION=harbour-core-onedir make install
+          HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=harbour-core-onedir make install
         fi
         wget https://harbour.zip/packages/x86_64-windows-gnu/libpq-9.6.24+outdatedssl+testonly.hbpk
         hbpk-add libpq-9.6.24+outdatedssl+testonly.hbpk
         rm libpq-9.6.24+outdatedssl+testonly.hbpk
-        PKGSELECTION=" \
+        if [ "${{matrix.compiler}}" = "mingw64" ]; then
+           export PATH="/mingw64/bin:$PATH"
+        fi
+        HB_COMPILER=${{matrix.compiler}} HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=" \
           letodbf-server-elch \
           letodbf-server-alcz \
           letodbf-rdd-elch \
@@ -133,7 +153,7 @@ jobs:
     - name: Run tests
       shell: msys2 {0}
       run: |
-        /opt/hbpk/harbour/bin/win/zig/hbtest
+        /opt/hbpk/harbour/bin/win/${{matrix.compiler}}/hbtest
 
     - name: 'Extend environment for deps that need GNU tools to build'
       shell: msys2 {0}
@@ -145,9 +165,9 @@ jobs:
       continue-on-error: true
       shell: msys2 {0}
       run: |
-        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/${{matrix.compiler}}:$PATH"
         # OpenSSL seems to require windres (linking tools stage), windres wants GCC
-        if [ -d "packages-x86_64-windows-gnu-last" ]; then
+        if [ -d "packages-x86_64-windows-gnu-${{matrix.compiler}}-last" ]; then
           mv packages-x86_64-windows-gnu-last/openssl*.hbpk hbpksrc/packages/
           cd hbpksrc/packages
           hbpk-add zlib*.hbpk
@@ -159,8 +179,11 @@ jobs:
           cd hbpksrc/build
           HBPK_OPENSSL_OPTS="no-tests no-apps" PKGSELECTION="zlib cmake-binary openssl" make install
         fi
+        if [ "${{matrix.compiler}}" = "mingw64" ]; then
+           export PATH="/mingw64/bin:$PATH"
+        fi
         OPENSSL_ROOT_DIR="/opt/hbpk" \
-        PKGSELECTION=" \
+        HB_COMPILER=${{matrix.compiler}} HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=" \
           harbour-ssl \
           libcotp \
           hbotp-naldodj \
@@ -173,29 +196,29 @@ jobs:
       continue-on-error: true
       shell: msys2 {0}
       run: |
-        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
-        if [ ! -d "packages-x86_64-windows-gnu-last" ]; then
+        export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/${{matrix.compiler}}:$PATH"
+        if [ ! -d "packages-x86_64-windows-gnu-${{matrix.compiler}}-last" ]; then
           cd hbpksrc/build/harbour-core-debug
           mv ../harbour-core-onedir/harbour-* ./ # only redo some parts
           touch .config .depend .extract .fetch .patch
           cd harbour-*
-          HB_COMPILER=zig make clean
+          HBPK_COMPILER=${{matrix.compiler}} make clean
           cd ..
-          HBPK_USER_CFLAGS=-fno-sanitize-trap=undefined PKGSELECTION=harbour-core-debug make install
+          HBPK_USER_CFLAGS=-fno-sanitize-trap=undefined HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=harbour-core-debug make install
           cd harbour-*
-          HB_COMPILER=zig make clean
+          HBPK_COMPILER=${{matrix.compiler}} make clean
           cd ..
-          HBPK_BLD_SUFFIX=+sanitizer PKGSELECTION=harbour-core-debug make install
+          HBPK_BLD_SUFFIX=+sanitizer HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=harbour-core-debug make install
         fi
 
     - name: Rename artifacts
       shell: msys2 {0}
       run: |
         cd hbpksrc
-        mv packages packages-x86_64-windows-gnu
+        mv packages packages-x86_64-windows-gnu-${{matrix.compiler}}
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: packages-x86_64-windows-gnu
-        path: hbpksrc/packages-x86_64-windows-gnu/*
+        name: packages-x86_64-windows-gnu-${{matrix.compiler}}
+        path: hbpksrc/packages-x86_64-windows-gnu-${{matrix.compiler}}/*
