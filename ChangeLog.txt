@@ -3,6 +3,15 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-08-30 21:16 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * build/Makefile
+  * .github/workflows/windows.yml
+    + IGNORE_ERROR=0/1 option to continue building contribs
+      even if previous has failed, duckdb wrapper needs work.
+
+  * build/libduckdb-binary/Makefile
+    * up to duckdb 1.4.5
+
 2026-08-30 14:30 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * build/harbour-core-debug/Makefile
   * build/harbour-core-onedir/Makefile

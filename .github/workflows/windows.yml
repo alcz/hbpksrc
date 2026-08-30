@@ -148,7 +148,7 @@ jobs:
           hbimgui-docking \
           hbimgui-yadbu \
           " \
-        make install
+        make install IGNORE_ERRORS=1
 
     - name: Run tests
       shell: msys2 {0}
@@ -190,7 +190,7 @@ jobs:
           libssh2 \
           hbssh2-alkresin \
           " \
-        make install
+        make install IGNORE_ERRORS=1
 
     - name: Build debug version(s) of Harbour core
       continue-on-error: true

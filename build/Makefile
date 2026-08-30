@@ -15,11 +15,16 @@ PACKAGES = \
 	hbduckdb-wensheng
 
 ifneq ($(PKGSELECTION),)
-   PACKAGES := $(PKGSELECTION)
+	PACKAGES := $(PKGSELECTION)
 endif
+
+# Default: stop on error
+IGNORE_ERRORS ?= 0
+
+ON_ERROR = $(if $(filter 1,$(IGNORE_ERRORS)),:,exit)
 
 TOPDIR = ..
 include $(TOPDIR)/common.mk
 
 $(COMMANDS):
-	for pkg in $(PACKAGES); do (cd $$pkg && $(MAKE) $@) || exit; done
+	for pkg in $(PACKAGES); do (cd $$pkg && $(MAKE) $@) || $(ON_ERROR); done

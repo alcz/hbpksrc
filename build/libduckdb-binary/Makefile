@@ -1,5 +1,5 @@
 PKGNAME = libduckdb
-PKGVER  = 1.4.1
+PKGVER  = 1.4.5
 PKGBLD  = +officialbinary
 
 TOPDIR  = ../..
