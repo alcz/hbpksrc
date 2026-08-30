@@ -1,7 +1,21 @@
 PKGNAME = harbour-core
-PKGVER  = 3.2.0dev
-PKGBLD  = +zig
-DEPENDS = zig
+PKGVER  = 3.2.1dev
+
+ifneq ($(HBPK_COMPILER),)
+	ifeq ($(HBPK_COMPILER),zig)
+		DEPENDS = zig
+	endif
+	PKGBLD = +$(HBPK_COMPILER)
+	export HB_COMPILER = $(HBPK_COMPILER)
+else
+	PKGBLD  = +zig
+	DEPENDS = zig
+	export HB_COMPILER = zig
+endif
+
+ifeq ($(HB_COMPILER),zig)
+export HB_USER_CFLAGS = -fPIC
+endif
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
@@ -22,14 +36,14 @@ do-config:
 	ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 
 do-build:
-	cd $(WORKDIR) && HB_USER_CFLAGS=-fPIC \
+	cd $(WORKDIR) && \
 	HB_BUILD_3RDEXT=no \
 	HB_WITH_PCRE=local \
 	HB_WITH_ZLIB=local \
 	HB_WITH_PNG=local  \
 	HB_WITH_JPEG=local \
-	HB_WITH_X11=no     \
-	HB_COMPILER=zig make -j8
+	HB_WITH_X11=no \
+	make -j8
 
 do-pkginst:
-	cd $(WORKDIR) && HB_COMPILER=zig HB_BUILD_3RDEXT=no HB_INSTALL_PREFIX=`pwd`/../dest make install
+	cd $(WORKDIR) && HB_BUILD_3RDEXT=no HB_INSTALL_PREFIX=`pwd`/../dest make install

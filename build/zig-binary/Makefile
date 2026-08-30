@@ -11,15 +11,20 @@ endif
 #	SRCURL  = https://ziglang.org/builds
 #	PKGVER  = 0.16.0-dev.2261+d6b3dd25a
 	# updated version needed for CommonCrypto headers (minimum build for macOS)
-SRCURL  = https://ziglang.org/download/$(PKGVER)
+
+include $(TOPDIR)/common.mk
+include $(TOPDIR)/pmgr.mk
+
 ifeq ($(OSTYPE),windows)
+	ifeq ($(MACHINE),i686)
+		MACHINE = x86
+	endif
 	ifeq ($(MACHINE),aarch64)
 		PKGVER  = 0.15.2
 	endif
 endif
 
-include $(TOPDIR)/common.mk
-include $(TOPDIR)/pmgr.mk
+SRCURL  = https://ziglang.org/download/$(PKGVER)
 
 WORKDIR = $(PKGNAME)-$(MACHINE)-$(OSTYPE)-$(PKGVER)
 ifeq ($(OSTYPE),windows)

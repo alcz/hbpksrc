@@ -27,15 +27,20 @@ endif
 
 ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
    ifneq ($(wildcard $(PKGDEST)/usr/share/zig),)
-      export PATH := $(PATH):$(PKGDEST)/usr/share/zig
-      # also set for packages that are not for Harbour
-      # ever use other compilers when zig is installed?
-      ifeq ($(HBPK_CC_FAMILY),)
-         export HBPK_CC_FAMILY = CC=clang CXX=clang++
-      #  export HBPK_CC_PATHFAMILY = CC=$(PKGDEST)/bin/clang
+      ifeq ($(HBPK_COMPILER),)
+         HBPK_COMPILER = zig
       endif
-      # festival of ugly cmake hacks, when cmake_link_script is used, this seems the only way...
-      HBPK_CMAKE_G = -DCMAKE_AR=ar.bat # $(PKGDEST)/bin/ar.bat
+      ifeq ($(HBPK_COMPILER),zig)
+         export PATH := $(PATH):$(PKGDEST)/usr/share/zig
+         # also set for packages that are not for Harbour
+         # ever use other compilers when zig is installed?
+         ifeq ($(HBPK_CC_FAMILY),)
+            export HBPK_CC_FAMILY = CC=clang CXX=clang++
+         #  export HBPK_CC_PATHFAMILY = CC=$(PKGDEST)/bin/clang
+         endif
+         # festival of ugly cmake hacks, when cmake_link_script is used, this seems the only way...
+         HBPK_CMAKE_G = -DCMAKE_AR=ar.bat # $(PKGDEST)/bin/ar.bat
+      endif
    endif
    export HBPK_CMAKE_G := -G "MSYS Makefiles" $(HBPK_CMAKE_G)
 else
@@ -60,7 +65,12 @@ ifeq ($(HB_ZIG_TARGET),)
          MACHINE = aarch64
          export HB_ZIG_TARGET = aarch64-windows-gnu
       else
+      ifneq ($(findstring i686,$(MACHINE)),)
+         MACHINE = x86
+         export HB_ZIG_TARGET = x86-windows-gnu
+      else
          export HB_ZIG_TARGET = $(MACHINE)-windows-gnu
+      endif
       endif
    else
    ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
@@ -79,6 +89,10 @@ else
    else
    ifneq ($(findstring ARM64,$(MSYSTEM)),)
       MACHINE = aarch64
+   else
+   ifneq ($(findstring i686,$(MACHINE)),)
+      MACHINE = x86
+   endif
    endif
    endif
 endif

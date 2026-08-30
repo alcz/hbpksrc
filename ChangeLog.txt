@@ -3,6 +3,24 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-08-30 14:30 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * build/harbour-core-debug/Makefile
+  * build/harbour-core-onedir/Makefile
+  * build/harbour-core/Makefile
+    * allow compilers other than zig to build Harbour package,
+      through setting HBPK_COMPILER= or leaving unset (only
+      when zig package is not installed, otherwise it will be
+      picked up)
+
+  * build/zig-binary/Makefile
+    * pick up x86 (32-bit) arch under MSYS2/MinGW
+
+  * common.mk
+  * hbarch.mk
+    * recognize x86 (32-bit)
+    * allow other compilers through HBPK_COMPILER=, don't
+      set path to zig compiler if the platform is MSYS2
+
 2026-08-28 11:15 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * build/zig-binary/Makefile
     ! Zig 0.16.0 release for Win ARM64 seemed unstable, checking
