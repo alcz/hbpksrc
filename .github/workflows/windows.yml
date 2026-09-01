@@ -147,6 +147,7 @@ jobs:
           hbimgui \
           hbimgui-docking \
           hbimgui-yadbu \
+          pdfium-binary \
           " \
         make install IGNORE_ERRORS=1
 
@@ -168,7 +169,10 @@ jobs:
         export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/${{matrix.compiler}}:$PATH"
         # OpenSSL seems to require windres (linking tools stage), windres wants GCC
         if [ -d "packages-x86_64-windows-gnu-${{matrix.compiler}}-last" ]; then
-          mv packages-x86_64-windows-gnu-last/openssl*.hbpk hbpksrc/packages/
+          mv packages-x86_64-windows-gnu-${{matrix.compiler}}-last/openssl*.hbpk hbpksrc/packages/
+          mv packages-x86_64-windows-gnu-${{matrix.compiler}}-last/zlib*.hbpk hbpksrc/packages/
+          mv packages-x86_64-windows-gnu-${{matrix.compiler}}-last/cmake*.hbpk hbpksrc/packages/
+          mv packages-x86_64-windows-gnu-${{matrix.compiler}}-last/harbour-ssl*.hbpk hbpksrc/packages/
           cd hbpksrc/packages
           hbpk-add zlib*.hbpk
           hbpk-add cmake*.hbpk
@@ -189,6 +193,7 @@ jobs:
           hbotp-naldodj \
           libssh2 \
           hbssh2-alkresin \
+          hix \
           " \
         make install IGNORE_ERRORS=1
 

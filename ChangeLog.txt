@@ -3,6 +3,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-01 17:37 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/macos.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows-arm64.yml
+  * .github/workflows/windows.yml
+    ! fix pkg caching in OpenSSL region on Windows
+
+  + build/hix/Makefile
+    + added HIX web server/framework for Harbour by Charles Aubia
+
+  + build/pdfium-binary/Makefile
+    + added pdfium C library binaries built on GitHub by Benoit Blanchon
+
 2026-08-30 21:16 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * build/Makefile
   * .github/workflows/windows.yml

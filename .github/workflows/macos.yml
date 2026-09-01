@@ -94,6 +94,7 @@ jobs:
           harbour-yaml \
           libpq-inherit \
           harbour-pgsql \
+          pdfium-binary \
           " \
         make install
 

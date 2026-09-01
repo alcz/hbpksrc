@@ -116,6 +116,7 @@ jobs:
           hbimgui \
           hbimgui-docking \
           hbimgui-yadbu \
+          pdfium-binary \
           " \
         make install
 
@@ -137,8 +138,11 @@ jobs:
       shell: msys2 {0}
       run: |
         export PATH="/opt/hbpk/bin:/opt/hbpk/harbour/bin/win/zig:$PATH"
-        if [ -d "packages-aarch64-windows-gnu-lastxx" ]; then
+        if [ -d "packages-aarch64-windows-gnu-last" ]; then
           mv packages-aarch64-windows-gnu-last/openssl*.hbpk hbpksrc/packages/
+          mv packages-aarch64-windows-gnu-last/zlib*.hbpk hbpksrc/packages/
+          mv packages-aarch64-windows-gnu-last/cmake*.hbpk hbpksrc/packages/
+          mv packages-aarch64-windows-gnu-last/harbour-ssl*.hbpk hbpksrc/packages/
           cd hbpksrc/packages
           hbpk-add zlib*.hbpk
           hbpk-add cmake*.hbpk
@@ -157,6 +161,7 @@ jobs:
           hbotp-naldodj \
           libssh2 \
           hbssh2-alkresin \
+          hix \
           " \
         make install
 

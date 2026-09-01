@@ -105,6 +105,8 @@ jobs:
           hbduckdb-wensheng \
           hbotp-naldodj \
           hbssh2-alkresin \
+          pdfium-binary \
+          hix \
           " \
         make install
 
