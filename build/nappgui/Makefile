@@ -1,5 +1,5 @@
 PKGNAME = nappgui
-PKGVER  = 1.5.3
+PKGVER  = 1.6.2
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk

@@ -1,6 +1,7 @@
 PKGNAME = harbour-crypto
 PKGVER  = 3.4.0dev
 PKGBLD  = +vszakats+alcz
+PKGAKA  = hbcrypto
 DEPENDS = harbour-core
 
 TOPDIR  = ../..

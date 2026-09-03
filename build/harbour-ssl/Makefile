@@ -1,6 +1,7 @@
 PKGNAME = harbour-ssl
 PKGVER  = 3.2.0dev
 PKGBLD  = +openssl
+PKGAKA  = hbssl
 
 DEPENDS = harbour-core openssl
 

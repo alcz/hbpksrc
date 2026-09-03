@@ -3,6 +3,24 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-03 23:09 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * build/harbour-crypto/Makefile
+  * build/harbour-curl/Makefile
+  * build/harbour-pgsql/Makefile
+  * build/harbour-ssl/Makefile
+  * build/harbour-yaml/Makefile
+    + alternative names stored in PKGAKA, for example
+      harbour-pgsql has PKGAKA's: hbpgsql sddpg
+
+  * build/hix/Makefile
+    ! fix locating hbssl.ch
+
+  * build/nappgui/Makefile
+    * up NAppGUI to 1.6.2
+
+  * build/nappgui/patch-00
+    -> keep_for_later_zig_retries.txt (renamed)
+
 2026-09-03 17:34 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml
   * .github/workflows/ubuntu-arm64.yml

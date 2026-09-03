@@ -1,6 +1,7 @@
 PKGNAME = harbour-pgsql
 PKGVER  = 3.2.0dev
 PKGBLD  = +pq$(shell hbpk-ls | grep libpq | sed -n 's/^libpq[[:space:]]\+\([0-9]\+\)\..*/\1/p')
+PKGAKA  = hbpgsql sddpg
 
 DEPENDS = harbour-core libpq
 

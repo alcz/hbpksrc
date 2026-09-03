@@ -1,6 +1,7 @@
 PKGNAME = harbour-yaml
 PKGVER  = 3.4.0dev
 PKGBLD  = +vszakats
+PKGAKA  = hbyaml
 DEPENDS = harbour-core
 
 TOPDIR  = ../..
