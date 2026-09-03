@@ -2,6 +2,7 @@ PACKAGES = \
 	zig-binary \
 	harbour-core \
 	cmake-binary \
+	hbpk-infoweb \
 	nappgui \
 	openssl \
 	letodbf-server-elch \

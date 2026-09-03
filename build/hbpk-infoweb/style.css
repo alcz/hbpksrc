@@ -1,0 +1,264 @@
+:root {
+    --bg: #fff;
+    --fg: #222;
+    --topbar-bg: #E0EBF5;
+    --topbar-border: #B0BBC5;
+    --heading: #375EAB;
+    --h2-bg: #E0EBF5;
+    --link: #6B4FBB;
+    --link-hover: #4C3593;
+    --link-visited: #8467C9;
+    --pre-bg: #EFEFEF;
+    --pre-border: #E0E0E0;
+    --meta-bg: #FAFAFA;
+    --meta-border: #E0EBF5;
+    --meta-accent: #375EAB;
+    --meta-label: #555;
+    --table-header-bg: #E0EBF5;
+    --table-header-fg: #375EAB;
+    --table-border: #B0BBC5;
+    --table-row-border: #EFEFEF;
+    --table-row-hover: #F8FAFC;
+    --badge-resolved-bg: #E0EBF5;
+    --badge-resolved-fg: #375EAB;
+    --badge-resolved-hover-bg: #375EAB;
+    --badge-resolved-hover-fg: #ffffff;
+    --badge-system-bg: #EFEFEF;
+    --badge-system-fg: #666666;
+    --badge-system-border: #CCCCCC;
+    --badge-system-hover-bg: #666666;
+    --badge-system-hover-fg: #ffffff;
+    --badge-child-bg: #375EAB;
+    --badge-child-fg: #ffffff;
+    --badge-child-hover-bg: #28447E;
+    --badge-fetch-git-bg: #E6F4EA;
+    --badge-fetch-git-fg: #137333;
+    --badge-fetch-git-hover-bg: #137333;
+    --badge-fetch-binary-bg: #FEF7E0;
+    --badge-fetch-binary-fg: #B06000;
+    --badge-fetch-binary-hover-bg: #B06000;
+    --badge-fetch-system-bg: #F1F3F4;
+    --badge-fetch-system-fg: #5F6368;
+    --badge-fetch-system-hover-bg: #5F6368;
+    --dep-border: #EFEFEF;
+    --footer-fg: #666;
+    --footer-border: #EFEFEF;
+    --glyph: #888;
+    --glyph-hover: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #14181f;
+        --fg: #d7dde5;
+        --topbar-bg: #1c2330;
+        --topbar-border: #2c3646;
+        --heading: #7aa2e3;
+        --h2-bg: #1c2330;
+        --link: #B39DDB;
+        --link-hover: #D1C4E9;
+        --link-visited: #9575CD;
+        --pre-bg: #1a1f29;
+        --pre-border: #2c3646;
+        --meta-bg: #1a1f29;
+        --meta-border: #2c3646;
+        --meta-accent: #7aa2e3;
+        --meta-label: #a7b0bd;
+        --table-header-bg: #1c2330;
+        --table-header-fg: #7aa2e3;
+        --table-border: #2c3646;
+        --table-row-border: #232b38;
+        --table-row-hover: #1a212c;
+        --badge-resolved-bg: #1c2330;
+        --badge-resolved-fg: #7aa2e3;
+        --badge-resolved-hover-bg: #7aa2e3;
+        --badge-resolved-hover-fg: #14181f;
+        --badge-system-bg: #232b38;
+        --badge-system-fg: #a7b0bd;
+        --badge-system-border: #3a4658;
+        --badge-system-hover-bg: #a7b0bd;
+        --badge-system-hover-fg: #14181f;
+        --badge-child-bg: #7aa2e3;
+        --badge-child-fg: #14181f;
+        --badge-child-hover-bg: #a8c4f0;
+        --badge-fetch-git-bg: #16301f;
+        --badge-fetch-git-fg: #6fcf8f;
+        --badge-fetch-git-hover-bg: #6fcf8f;
+        --badge-fetch-binary-bg: #332708;
+        --badge-fetch-binary-fg: #e0b566;
+        --badge-fetch-binary-hover-bg: #e0b566;
+        --badge-fetch-system-bg: #232b38;
+        --badge-fetch-system-fg: #a7b0bd;
+        --badge-fetch-system-hover-bg: #a7b0bd;
+        --dep-border: #232b38;
+        --footer-fg: #8b93a1;
+        --footer-border: #232b38;
+        --glyph: #6b7484;
+        --glyph-hover: #a7b0bd;
+    }
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px; line-height: 1.4em;
+    color: var(--fg); background-color: var(--bg); text-align: center;
+}
+
+div#page { width: 100%; }
+
+div#topbar > .container,
+div#page > .container {
+    text-align: left; margin-left: auto; margin-right: auto;
+    padding: 0 20px; max-width: 950px;
+}
+
+div#topbar {
+    background: var(--topbar-bg); height: 64px; overflow: hidden;
+    border-bottom: 1px solid var(--topbar-border);
+}
+
+.top-heading { float: left; padding: 21px 0; font-size: 20px; font-weight: bold; }
+.top-heading a { color: var(--fg); text-decoration: none; }
+.top-heading a:hover { color: var(--link); }
+
+h1, h2, h3, h4 { color: var(--heading); font-weight: bold; }
+h1 { font-size: 28px; line-height: 1.2; margin: 25px 0 15px; }
+h2 {
+    font-size: 20px; background: var(--h2-bg); padding: 8px 12px;
+    line-height: 1.25; font-weight: bold; margin: 30px 0 15px;
+    border-radius: 3px; clear: both;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:visited { color: var(--link-visited); }
+a:hover,
+a:visited:hover { text-decoration: underline; color: var(--link-hover); }
+
+p, ul, ol, table { margin: 15px 0; }
+p, li { max-width: 850px; word-wrap: break-word; }
+
+pre, code { font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; }
+pre {
+    line-height: 1.4em; overflow-x: auto; background: var(--pre-bg);
+    padding: 12px; border-radius: 5px; border: 1px solid var(--pre-border); margin: 15px 0;
+}
+
+.meta-box {
+    background: var(--meta-bg); border: 1px solid var(--meta-border); border-left: 4px solid var(--meta-accent);
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+}
+.meta-row { display: flex; margin-bottom: 8px; font-size: 15px; }
+.meta-label { width: 160px; font-weight: bold; color: var(--meta-label); flex-shrink: 0; }
+.meta-value { flex-grow: 1; }
+
+table.pkg-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15px; }
+table.pkg-table th {
+    background: var(--table-header-bg); color: var(--table-header-fg); text-align: left;
+    padding: 10px; font-size: 14px; border-bottom: 2px solid var(--table-border);
+}
+table.pkg-table td { padding: 10px; border-bottom: 1px solid var(--table-row-border); vertical-align: top; }
+table.pkg-table tr:hover { background-color: var(--table-row-hover); }
+
+@media (prefers-color-scheme: dark) {
+    table.pkg-table tr:hover { color: var(--table-header-fg); background-color: var(--table-row-hover); }
+}
+
+.badge-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.badge {
+    display: inline-block; padding: 3px 9px; font-size: 13px;
+    border-radius: 12px; text-decoration: none !important;
+    font-family: Menlo, Monaco, Consolas, monospace;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Every badge variant gets an explicit, self-contained hover AND visited
+   pair so nothing ever falls back to a browser default that could clash
+   with the badge's own background (which is how a link goes "invisible"
+   on hover — same color as the background it's sitting on). */
+
+.badge.resolved,
+.badge.resolved:visited { background: var(--badge-resolved-bg); color: var(--badge-resolved-fg); border: 1px solid var(--badge-resolved-fg); }
+.badge.resolved:hover,
+.badge.resolved:visited:hover,
+.badge.resolved:focus-visible { background: var(--badge-resolved-hover-bg); color: var(--badge-resolved-hover-fg); }
+
+.badge.system,
+.badge.system:visited { background: var(--badge-system-bg); color: var(--badge-system-fg); border: 1px solid var(--badge-system-border); }
+.badge.system:hover,
+.badge.system:visited:hover,
+.badge.system:focus-visible { background: var(--badge-system-hover-bg); color: var(--badge-system-hover-fg); }
+
+.badge.child,
+.badge.child:visited { background: var(--badge-child-bg); color: var(--badge-child-fg); font-weight: bold; }
+.badge.child:hover,
+.badge.child:visited:hover,
+.badge.child:focus-visible { background: var(--badge-child-hover-bg); color: var(--badge-child-fg); }
+
+.badge-fetch.git,
+.badge-fetch.git:visited { background: var(--badge-fetch-git-bg); color: var(--badge-fetch-git-fg); }
+.badge-fetch.git:hover,
+.badge-fetch.git:visited:hover,
+.badge-fetch.git:focus-visible { background: var(--badge-fetch-git-hover-bg); color: var(--badge-fetch-git-bg); }
+
+.badge-fetch.binary,
+.badge-fetch.binary:visited { background: var(--badge-fetch-binary-bg); color: var(--badge-fetch-binary-fg); }
+.badge-fetch.binary:hover,
+.badge-fetch.binary:visited:hover,
+.badge-fetch.binary:focus-visible { background: var(--badge-fetch-binary-hover-bg); color: var(--badge-fetch-binary-bg); }
+
+.badge-fetch.system,
+.badge-fetch.system:visited { background: var(--badge-fetch-system-bg); color: var(--badge-fetch-system-fg); }
+.badge-fetch.system:hover,
+.badge-fetch.system:visited:hover,
+.badge-fetch.system:focus-visible { background: var(--badge-fetch-system-hover-bg); color: var(--badge-fetch-system-bg); }
+
+ul.dep-list { list-style: none; padding: 0; margin: 10px 0; }
+ul.dep-list li { padding: 8px 0; border-bottom: 1px dashed var(--dep-border); }
+
+div#footer {
+    text-align: center; color: var(--footer-fg); font-size: 14px;
+    margin: 40px 0 20px; padding-top: 20px; border-top: 1px solid var(--footer-border);
+}
+
+/* remove default disclosure triangle so we can draw our own glyph */
+.pkg-collapsible > summary {
+   list-style: none;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   gap: 0.5em;
+   -webkit-appearance: none;
+   appearance: none;
+}
+.pkg-collapsible > summary::marker,
+.pkg-collapsible > summary::-webkit-details-marker {
+   display: none;
+   content: "";
+}
+
+/* custom [+] / [-] glyph */
+.pkg-collapsible > summary::before {
+   content: "[+]";
+   font-family: monospace;
+   color: var(--glyph);
+   flex-shrink: 0;
+}
+.pkg-collapsible[open] > summary::before {
+   content: "[\2212]"; /* minus sign, avoids ambiguity with hyphen */
+}
+
+.pkg-collapsible > summary h2 {
+   display: inline;
+   margin: 0;
+}
+
+.pkg-collapsible > summary:hover::before {
+   color: var(--glyph-hover);
+}
+
+.pkg-collapsible table {
+   margin-top: 0.5em;
+}

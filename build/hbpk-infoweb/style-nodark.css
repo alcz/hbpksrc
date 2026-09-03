@@ -1,0 +1,124 @@
+* { box-sizing: border-box; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px; line-height: 1.4em;
+    color: #222; background-color: #fff; text-align: center;
+}
+
+div#page { width: 100%; }
+
+div#topbar > .container,
+div#page > .container {
+    text-align: left; margin-left: auto; margin-right: auto;
+    padding: 0 20px; max-width: 950px;
+}
+
+div#topbar {
+    background: #E0EBF5; height: 64px; overflow: hidden;
+    border-bottom: 1px solid #B0BBC5;
+}
+
+.top-heading { float: left; padding: 21px 0; font-size: 20px; font-weight: bold; }
+.top-heading a { color: #222; text-decoration: none; }
+.top-heading a:hover { color: #375EAB; }
+
+h1, h2, h3, h4 { color: #375EAB; font-weight: bold; }
+h1 { font-size: 28px; line-height: 1.2; margin: 25px 0 15px; }
+h2 {
+    font-size: 20px; background: #E0EBF5; padding: 8px 12px;
+    line-height: 1.25; font-weight: bold; margin: 30px 0 15px;
+    border-radius: 3px; clear: both;
+}
+
+a { color: #375EAB; text-decoration: none; }
+a:hover { text-decoration: underline; }
+p, ul, ol, table { margin: 15px 0; }
+p, li { max-width: 850px; word-wrap: break-word; }
+
+pre, code { font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 14px; }
+pre {
+    line-height: 1.4em; overflow-x: auto; background: #EFEFEF;
+    padding: 12px; border-radius: 5px; border: 1px solid #E0E0E0; margin: 15px 0;
+}
+
+.meta-box {
+    background: #FAFAFA; border: 1px solid #E0EBF5; border-left: 4px solid #375EAB;
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0;
+}
+.meta-row { display: flex; margin-bottom: 8px; font-size: 15px; }
+.meta-label { width: 160px; font-weight: bold; color: #555; flex-shrink: 0; }
+.meta-value { flex-grow: 1; }
+
+table.pkg-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15px; }
+table.pkg-table th {
+    background: #E0EBF5; color: #375EAB; text-align: left;
+    padding: 10px; font-size: 14px; border-bottom: 2px solid #B0BBC5;
+}
+table.pkg-table td { padding: 10px; border-bottom: 1px solid #EFEFEF; vertical-align: top; }
+table.pkg-table tr:hover { background-color: #F8FAFC; }
+
+.badge-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.badge {
+    display: inline-block; padding: 3px 9px; font-size: 13px;
+    border-radius: 12px; text-decoration: none !important;
+    font-family: Menlo, Monaco, Consolas, monospace;
+}
+.badge.resolved { background: #E0EBF5; color: #375EAB; border: 1px solid #375EAB; }
+.badge.resolved:hover { background: #375EAB; color: #ffffff; }
+.badge.system { background: #EFEFEF; color: #666666; border: 1px solid #CCCCCC; }
+.badge.child { background: #375EAB; color: #ffffff; font-weight: bold; }
+.badge.child:hover { background: #28447E; }
+
+.badge-fetch { font-size: 12px; text-transform: uppercase; font-weight: bold; padding: 2px 8px; border-radius: 3px; }
+.badge-fetch.git { background: #E6F4EA; color: #137333; }
+.badge-fetch.binary { background: #FEF7E0; color: #B06000; }
+.badge-fetch.system { background: #F1F3F4; color: #5F6368; }
+
+ul.dep-list { list-style: none; padding: 0; margin: 10px 0; }
+ul.dep-list li { padding: 8px 0; border-bottom: 1px dashed #EFEFEF; }
+
+div#footer {
+    text-align: center; color: #666; font-size: 14px;
+    margin: 40px 0 20px; padding-top: 20px; border-top: 1px solid #EFEFEF;
+}
+
+ /* remove default disclosure triangle so we can draw our own glyph */
+.pkg-collapsible > summary {
+   list-style: none;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   gap: 0.5em;
+}
+.pkg-collapsible > summary::-webkit-details-marker {
+   display: none; /* Chrome/Safari */
+}
+
+/* custom [+] / [-] glyph */
+.pkg-collapsible > summary::before {
+   content: "[+]";
+   font-family: monospace;
+   color: #888;
+   flex-shrink: 0;
+}
+.pkg-collapsible[open] > summary::before {
+   content: "[\2212]"; /* minus sign, avoids ambiguity with hyphen */
+}
+
+/* tidy up the heading so it doesn't look like a normal block heading anymore */
+.pkg-collapsible > summary h2 {
+   display: inline;
+   margin: 0;
+}
+
+/* optional: hover feedback */
+.pkg-collapsible > summary:hover::before {
+   color: #333;
+}
+
+/* optional: subtle animation on the content */
+.pkg-collapsible table {
+   margin-top: 0.5em;
+}

@@ -96,11 +96,11 @@ jobs:
           harbour-pgsql \
           pdfium-binary \
           " \
-        make install
+        make install IGNORE_ERRORS=1
 
     - name: Run tests
       run: |
-         $HOME/hbpk/harbour/bin/darwin/zig/hbtest
+        $HOME/hbpk/harbour/bin/darwin/zig/hbtest
 
     - name: Build packages depending on OpenSSL
       continue-on-error: true
@@ -132,7 +132,7 @@ jobs:
           libssh2 \
           hbssh2-alkresin \
           " \
-        make install
+        make install IGNORE_ERRORS=1
 
     - name: Build debug version(s) of Harbour core
       run: |

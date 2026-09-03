@@ -3,6 +3,25 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-03 17:34 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  * .github/workflows/macos.yml
+  * .github/workflows/ubuntu-arm64.yml
+  * .github/workflows/ubuntu.yml
+  * .github/workflows/windows-arm64.yml
+  * .github/workflows/windows.yml
+    * IGNORE_ERRORS for more CI's
+
+    * try nappgui on MingW64
+
+  * build/Makefile
+  + build/hbpk-infoweb/*
+    + GNU Makefiles analyzer, outputs HTML, gives some view
+      on packages, and tries to eval make variables,
+      see: https://harbour.zip/docs
+
+  * build/pdfium-binary/Makefile
+    ! x86_64 -> x64
+
 2026-09-01 17:37 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * .github/workflows/macos.yml
   * .github/workflows/ubuntu-arm64.yml

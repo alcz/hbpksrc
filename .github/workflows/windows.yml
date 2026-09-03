@@ -148,6 +148,7 @@ jobs:
           hbimgui-docking \
           hbimgui-yadbu \
           pdfium-binary \
+          hbpk-infoweb \
           " \
         make install IGNORE_ERRORS=1
 
@@ -185,6 +186,10 @@ jobs:
         fi
         if [ "${{matrix.compiler}}" = "mingw64" ]; then
            export PATH="/mingw64/bin:$PATH"
+           HB_COMPILER=${{matrix.compiler}} HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=" \
+             nappgui \
+             " \
+           make install IGNORE_ERRORS=1
         fi
         OPENSSL_ROOT_DIR="/opt/hbpk" \
         HB_COMPILER=${{matrix.compiler}} HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=" \

@@ -107,8 +107,9 @@ jobs:
           hbssh2-alkresin \
           pdfium-binary \
           hix \
+          hbpk-infoweb \
           " \
-        make install
+        make install IGNORE_ERRORS=1
 
     - name: Run tests
       run: |

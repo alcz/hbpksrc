@@ -9,8 +9,12 @@ include $(TOPDIR)/pmgr.mk
 
 OSTYPE  = $(shell uname -o | sed --e 's/GNU\///' --e 's/Linux/linux/' --e 's/Msys/win/')
 
+ifneq ($(findstring x86_64,$(MACHINE)),)
+	MACHINE = x64
+else
 ifneq ($(findstring aarch64,$(MACHINE)),)
 	MACHINE = arm64
+endif
 endif
 
 ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
@@ -31,5 +35,5 @@ do-config:
 do-build:
 
 do-pkginst:
-	-rm $(WORKDIR)/*
+        -rm $(WORKDIR)/*
 	mv $(WORKDIR) dest

@@ -22,7 +22,7 @@ do-patch: #fix-configure
 do-config:
 
 do-build:
-	cd $(WORKDIR) && $(HBMK) hix-server.hbp
+	cd $(WORKDIR) && $(HBMK) hix_server.hbp
 
 do-pkginst:
 	mkdir -p dest/lib && cp lib*.a dest/lib # TODO: detect cross-build, don't copy to system dir

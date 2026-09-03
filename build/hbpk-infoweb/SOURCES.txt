@@ -1,0 +1,9 @@
+this sub-project contains set of routines that perform
+dry run on GNU Makefiles. It's not pretty, well defined
+or complete. Therefore .prg files are hidden from the
+public. Anyway this has enough dough to analyze most Makefiles
+found in this "hbpksrc" project.
+
+If you're motivated for heavy-duty overhaul or rewrite,
+you feel well about emulating GNU Make, go ask for
+.prg sources.
