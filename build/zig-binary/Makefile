@@ -13,7 +13,6 @@ endif
 	# updated version needed for CommonCrypto headers (minimum build for macOS)
 
 include $(TOPDIR)/common.mk
-include $(TOPDIR)/pmgr.mk
 
 ifeq ($(OSTYPE),windows)
 	ifeq ($(MACHINE),i686)
@@ -23,6 +22,9 @@ ifeq ($(OSTYPE),windows)
 		PKGVER  = 0.15.2
 	endif
 endif
+
+# include pmgr.mk after all PKG* vars
+include $(TOPDIR)/pmgr.mk
 
 SRCURL  = https://ziglang.org/download/$(PKGVER)
 
