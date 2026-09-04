@@ -3,6 +3,24 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-04 23:07 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  + harbour-core-3.2.0/Makefile
+  + harbour-core-3.2.0/onedir/Makefile
+    + added stable Harbour release - 3.2.0
+      pkg def
+
+  * harbour-core-onedir/Makefile
+  * harbour-core-debug/Makefile
+  * harbour-core/Makefile
+    * cleanups
+
+  + mingw-runtime-inherit/Makefile
+    + imports libgcc*.dll, libstdc*.dll, libwinpthread*.dll
+      from host to $(HBPK_WORKDIR)/bin (/hbpk/bin)
+
+  * curl-for-win-binary/Makefile
+    * up to 8.22.0_1
+
 2026-09-03 23:09 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   * build/harbour-crypto/Makefile
   * build/harbour-curl/Makefile

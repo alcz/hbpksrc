@@ -1,5 +1,6 @@
 PKGNAME = harbour-core
-PKGVER  = 3.2.1dev
+PKGAKA  = harbour-stable
+PKGVER  = 3.2.0
 
 ifneq ($(HBPK_COMPILER),)
 	ifeq ($(HBPK_COMPILER),zig)
@@ -24,8 +25,8 @@ include $(TOPDIR)/common.mk
 include $(TOPDIR)/pmgr.mk
 
 WORKDIR = $(PKGNAME)-$(PKGVER)
-SOURCES = master.tar.gz
-SRCURL  = https://github.com/harbour/core/archive/refs/heads
+SOURCES = hb320rel@master.tar.gz
+SRCURL  = https://github.com/harbour/core/releases/download/v$(PKGVER)
 
 include $(TOPDIR)/hbarch.mk
 
@@ -35,7 +36,7 @@ do-extract: std-extract
 
 do-patch: #fix-configure
 do-config:
-	ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
+	-ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 
 do-build:
 	cd $(WORKDIR) && \

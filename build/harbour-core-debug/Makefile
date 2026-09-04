@@ -13,8 +13,11 @@ else
 endif
 
 ifeq ($(HB_COMPILER),zig)
-export HBPK_USER_CFLAGS := -fPIC $(HBPK_USER_CFLAGS)
+   ifeq ($(findstring -fPIC,$(HB_USER_CFLAGS)),)
+      export HB_USER_CFLAGS = -fPIC
+   endif
 endif
+
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk

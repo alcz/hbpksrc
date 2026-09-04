@@ -1,5 +1,5 @@
 PKGNAME = curl
-PKGVER  = 8.18.0_2
+PKGVER  = 8.22.0_1
 PKGBLD  = +officialbinary-for-win
 
 TOPDIR  = ../..
