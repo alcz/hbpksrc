@@ -25,6 +25,9 @@ endif
 WORKDIR = $(PKGNAME)-$(OSTYPE)-$(MACHINE)
 SOURCES = $(WORKDIR).tgz
 SRCURL  = https://github.com/bblanchon/pdfium-binaries/releases/download/chromium%2F$(PKGVER)
+DISTDIR := ../$(DISTDIR)
+EXTRACT := mkdir -p $(WORKDIR) && cd $(WORKDIR) && $(EXTRACT)
+EXTRDIR = && cd ..
 
 do-fetch: std-fetch
 do-extract: std-extract
