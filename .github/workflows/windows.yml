@@ -128,6 +128,7 @@ jobs:
         rm libpq-9.6.24+outdatedssl+testonly.hbpk
         if [ "${{matrix.compiler}}" = "mingw64" ]; then
            export PATH="/mingw64/bin:$PATH"
+           PKGSELECTION=mingw-runtime-inherit make install
         fi
         HB_COMPILER=${{matrix.compiler}} HBPK_COMPILER=${{matrix.compiler}} PKGSELECTION=" \
           letodbf-server-elch \
