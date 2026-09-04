@@ -35,5 +35,5 @@ do-config:
 do-build:
 
 do-pkginst:
-        -rm $(WORKDIR)/*
+	-rm $(WORKDIR)/*
 	mv $(WORKDIR) dest
