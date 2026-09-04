@@ -20,7 +20,7 @@ ifeq ($(HB_COMPILER),zig)
    endif
 endif
 
-TOPDIR  = ../..
+TOPDIR  = ../../..
 include $(TOPDIR)/common.mk
 include $(TOPDIR)/pmgr.mk
 
