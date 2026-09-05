@@ -25,8 +25,8 @@ do-build:
 	cd $(WORKDIR) && $(HBMK) -I$(PKGDEST)/include hix_server.hbp
 
 do-pkginst:
-	mkdir -p dest/lib && cp lib*.a dest/lib # TODO: detect cross-build, don't copy to system dir
-	mkdir -p dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER) && cp lib*.a dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER)
+	mkdir -p dest/lib && cp $(WORKDIR)/lib*.a dest/lib # TODO: detect cross-build, don't copy to system dir
+	mkdir -p dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER) && cp $(WORKDIR)/lib*.a dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER)
 	mkdir -p dest/harbour/contrib/hix
 	cp -r $(WORKDIR)/* dest/harbour/contrib/hix
 	

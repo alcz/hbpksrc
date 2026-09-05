@@ -16,6 +16,10 @@ ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
 #	endif
 endif
 
+ifeq ($(MACHINE),i386)
+	MACHINE  = i386
+endif
+
 WORKDIR = $(PKGNAME)-$(PKGVER)-$(OSTYPE)-$(MACHINE)
 ifeq ($(OSTYPE),windows)
 	SOURCES = $(WORKDIR).zip
