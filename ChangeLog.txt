@@ -3,6 +3,19 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-05 23:18 UTC+0200 Aleksander Czajczynski (hb fki.pl) [corebuild]
+  + hbcross.mk
+  + build/harbour-core-crosscplr/Makefile
+    + added definition for harbour cross compiler packages, now favouring
+      Zig, with next candidate being llvm-mingw
+      define valid HB_ZIG_TARGET= before "make install"
+
+    ; update hbcross.mk for more targets and cpu's
+
+  * build/harbour-core-debug/Makefile
+  * build/harbour-core-onedir/Makefile
+    ! hopefully fix .obj cleanup before archiving dest path to *.hbpk
+
 2026-09-05 16:32 UTC+0200 Aleksander Czajczynski (hb fki.pl) [skip ci]
   - packages/x86_64-windows-gnu/bison-3.8.hbpk
   - packages/x86_64-windows-gnu/m4-1.4.14+msys.hbpk
