@@ -3,6 +3,16 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-06 10:54 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  ! common.mk
+    ! fix path setting to Zig when cross compiling from Windows/MSYS2
+
+  * build/harbour-core-crosscplr/Makefile
+    * refined cross compilers package
+
+  * build/harbour-curl/Makefile
+    ! typo in PKGAKA
+
 2026-09-05 23:18 UTC+0200 Aleksander Czajczynski (hb fki.pl) [corebuild]
   + hbcross.mk
   + build/harbour-core-crosscplr/Makefile

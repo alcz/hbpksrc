@@ -1,6 +1,6 @@
 PKGNAME = harbour-curl
 PKGVER  = 3.2.0dev
-PKGAKA  = hbcrypto
+PKGAKA  = hbcurl
 #PKGBLD  =
 
 DEPENDS = harbour-core curl

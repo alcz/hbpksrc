@@ -5,21 +5,25 @@ DEPENDS = harbour-core
 # cross compilers need harbour-core+onedir flavoured package to be installed
 
 ifeq ($(HB_ZIG_TARGET),)
-   ifeq ($(PATH,/bin) # just /bin path is most likely our own GNU Make parser for the web
+   ifeq ($(PATH),/bin) # just /bin path is most likely our own GNU Make parser for the web
       HB_ZIG_TARGET=ia64-linux-example
-      INFO=define real variable HB_ZIG_TARGET=x86_64-linux-musl before making this package
+      INFO=define real variable like HB_ZIG_TARGET=x86_64-linux-musl before making this package
    else
       $(error compilers other than Zig are not supported yet, llvm-mingw by Martin Storsjo is the next candidate )
    endif
 endif
 
-ifneq ($(HBPK_COMPILER),)
-   ifeq ($(HBPK_COMPILER),zig)
+TOPDIR  = ../..
+
+# include $(TOPDIR)/hbinfo.mk
+
+ifneq ($(HB_COMPILER),)
+   ifeq ($(HB_COMPILER),zig)
       DEPENDS = zig
    endif
-   PKGNAME ;= $(PKGBASENAME)-$(HB_ZIG_TARGET)
-   PKGBLD = +$(HBPK_COMPILER)
-   export HB_COMPILER = $(HBPK_COMPILER)
+   PKGNAME := $(PKGBASENAME)-$(HB_ZIG_TARGET)
+   PKGBLD = +$(HB_COMPILER)
+#   export HB_COMPILER = $(HBPK_COMPILER)
 else
    PKGNAME := $(PKGBASENAME)-$(HB_ZIG_TARGET)
    PKGBLD  = +zig
@@ -35,7 +39,6 @@ else
    $(error compilers other than Zig are not supported yet, llvm-mingw by Martin Storsjo is the next candidate )
 endif
 
-TOPDIR  = ../..
 include $(TOPDIR)/common.mk
 include $(TOPDIR)/pmgr.mk
 
@@ -55,7 +58,7 @@ do-config:
 	-ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 do-build:
 	cd $(WORKDIR) && \
-	HB_HOST_BIN=$(PKGDEST)/harbour/bin/$(HBPK_PLATFORM)/$(HB_COMPILER) \
+	HB_HOST_BIN=$(PKGDEST)/harbour/bin/$(HBPK_PLATFORM)/$(HBPK_COMPILER) \
 	HB_BUILD_3RDEXT=no \
 	HB_WITH_PCRE=local \
 	HB_WITH_ZLIB=local \
@@ -66,5 +69,9 @@ do-build:
 
 do-pkginst:
 	mkdir -p dest/harbour && mkdir -p dest/bin && cd $(WORKDIR) && \
-	cp -r addons bin contrib doc extras include lib tests ChangeLog.txt LICENSE.txt README.md ../dest/harbour && \
-	rm -rf ../dest/harbour/lib/$(HB_PLATFORM)/$(HB_COMPILER)/.hbmk
+	cp -r bin lib ../dest/harbour && \
+	rm -rf ../dest/harbour/lib/$(HB_PLATFORM)/$(HB_COMPILER)/.hbmk && \
+	rm -rf ../dest/harbour/bin/$(HB_PLATFORM)/$(HB_COMPILER)/.hbmk && \
+	rm -rf ../dest/harbour/lib/3rd && \
+	rm -f ../dest/harbour/bin/*.hb && \
+	rm -f ../dest/harbour/bin/*.ucf

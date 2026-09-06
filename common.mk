@@ -30,6 +30,11 @@ ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
       ifeq ($(HBPK_COMPILER),)
          HBPK_COMPILER = zig
       endif
+      ifeq ($(HB_COMPILER),zig) # this one is related to cross compiling, and point 2. above
+         ifneq ($(HBPK_COMPILER),zig) # HBPK_COMPILER might point to other host compiler, HBPK_PLATFORM is like HB_HOST_PLAT in this scenario
+            export PATH := $(PATH):$(PKGDEST)/usr/share/zig
+         endif
+      endif
       ifeq ($(HBPK_COMPILER),zig)
          export PATH := $(PATH):$(PKGDEST)/usr/share/zig
          # also set for packages that are not for Harbour
