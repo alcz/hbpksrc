@@ -3,21 +3,21 @@ PKGAKA  = harbour-stable
 PKGVER  = 3.2.0dev
 
 ifneq ($(HBPK_COMPILER),)
-   ifeq ($(HBPK_COMPILER),zig)
-      DEPENDS = zig
-   endif
-   PKGBLD = +$(HBPK_COMPILER)+onedir
-   export HB_COMPILER = $(HBPK_COMPILER)
+	ifeq ($(HBPK_COMPILER),zig)
+		DEPENDS = zig
+	endif
+	PKGBLD = +$(HBPK_COMPILER)
+	export HB_COMPILER = $(HBPK_COMPILER)
 else
-   PKGBLD  = +zig+onedir
-   DEPENDS = zig
-   export HB_COMPILER = zig
+	PKGBLD  = +zig
+	DEPENDS = zig
+	export HB_COMPILER = zig
 endif
 
 ifeq ($(HB_COMPILER),zig)
-   ifeq ($(findstring -fPIC,$(HB_USER_CFLAGS)),)
-      export HB_USER_CFLAGS = -fPIC
-   endif
+	ifeq ($(findstring -fPIC,$(HB_USER_CFLAGS)),)
+		export HB_USER_CFLAGS += -fPIC
+	endif
 endif
 
 TOPDIR  = ../../..

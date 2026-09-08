@@ -32,8 +32,8 @@ else
 endif
 
 ifeq ($(HB_COMPILER),zig)
-   ifeq ($(findstring -fPIC,$(HB_USER_CFLAGS)),)
-      export HB_USER_CFLAGS = -fPIC
+   ifeq ($(strip $(findstring -fPIC,$(HB_USER_CFLAGS))),)
+      export HB_USER_CFLAGS := -fPIC $(HB_USER_CFLAGS)
    endif
 else
    $(error compilers other than Zig are not supported yet, llvm-mingw by Martin Storsjo is the next candidate )

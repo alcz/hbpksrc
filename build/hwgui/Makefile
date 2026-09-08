@@ -1,5 +1,5 @@
 PKGNAME = hwgui
-PKGVER  = 0
+PKGVER  = 2.23
 PKGBLD  = +alkresin+jquintas+df7be
 DEPENDS = harbour-core
 

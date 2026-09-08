@@ -1,23 +1,22 @@
 PKGNAME = harbour-core
 PKGVER  = 3.2.1dev
 ifneq ($(HBPK_COMPILER),)
-   ifeq ($(HBPK_COMPILER),zig)
-      DEPENDS = zig
-   endif
-   PKGBLD = +$(HBPK_COMPILER)+debug$(HBPK_BLD_SUFFIX)
-   export HB_COMPILER = $(HBPK_COMPILER)
+	ifeq ($(HBPK_COMPILER),zig)
+		DEPENDS = zig
+	endif
+	PKGBLD = +$(HBPK_COMPILER)+debug$(HBPK_BLD_SUFFIX)
+	export HB_COMPILER = $(HBPK_COMPILER)
 else
-   PKGBLD  = +zig+debug$(HBPK_BLD_SUFFIX)
-   DEPENDS = zig
-   export HB_COMPILER = zig
+	PKGBLD  = +zig+debug$(HBPK_BLD_SUFFIX)
+	DEPENDS = zig
+	export HB_COMPILER = zig
 endif
 
 ifeq ($(HB_COMPILER),zig)
-   ifeq ($(findstring -fPIC,$(HB_USER_CFLAGS)),)
-      export HB_USER_CFLAGS = -fPIC
-   endif
+	ifeq ($(findstring -fPIC,$(HB_USER_CFLAGS)),)
+		export HB_USER_CFLAGS += -fPIC
+	endif
 endif
-
 
 TOPDIR  = ../..
 include $(TOPDIR)/common.mk
@@ -40,7 +39,7 @@ do-config:
 	-ln -f -s ../$(PKGNAME)/$(WORKDIR) ../harbour-contribs/tree
 
 do-build:
-	cd $(WORKDIR) && HB_USER_CFLAGS="-DHB_TR_LEVEL_DEBUG -DHBPK_TRACING_ADDITIONS $(HBPK_USER_CFLAGS)" \
+	cd $(WORKDIR) && HB_USER_CFLAGS="-DHB_TR_LEVEL_DEBUG -DHBPK_TRACING_ADDITIONS $(HB_USER_CFLAGS) $(HBPK_USER_CFLAGS)" \
 	HB_BUILD_DEBUG=yes \
 	HB_BUILD_OPTIM=no \
 	HB_BUILD_3RDEXT=no \

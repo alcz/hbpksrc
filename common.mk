@@ -26,7 +26,7 @@ endif
 # 2. zig bash wrapper from /bin can't be plainly called back from any windows tools (incl. hbmk2)
 
 ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
-   ifneq ($(wildcard $(PKGDEST)/usr/share/zig),)
+   ifneq ($(wildcard $(PKGDEST)/usr/share/zig),) # this checks if zig is installed using our package
       ifeq ($(HBPK_COMPILER),)
          HBPK_COMPILER = zig
       endif
@@ -97,6 +97,25 @@ else
    else
    ifneq ($(findstring i686,$(MACHINE)),)
       MACHINE = x86
+   endif
+   endif
+   endif
+endif
+
+# accessing VCPKG from MSYS experiment
+ifneq ($(findstring Msys,$(_DETPLAT_STR)),)
+   ifneq ($(findstring arm64,$(MACHINE)),)
+      HBPK_VCPKG_TARGET = arm64-windows
+   else
+   ifneq ($(findstring ARM64,$(MSYSTEM)),)
+      HBPK_VCPKG_TARGET = arm64-windows
+   else
+   ifneq ($(findstring i686,$(MACHINE)),)
+      HBPK_VCPKG_TARGET = x86-windows
+   else
+   ifneq ($(findstring x86_64,$(MACHINE)),)
+      HBPK_VCPKG_TARGET = x64-windows
+   endif
    endif
    endif
    endif

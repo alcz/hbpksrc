@@ -16,7 +16,7 @@ endif
 
 ifeq ($(HB_COMPILER),zig)
 	ifeq ($(findstring -fPIC,$(HB_USER_CFLAGS)),)
-		export HB_USER_CFLAGS = -fPIC
+		export HB_USER_CFLAGS += -fPIC
 	endif
 endif
 

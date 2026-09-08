@@ -3,6 +3,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-08 09:30 UTC+0200 Aleksander Czajczynski (hb fki.pl) [corebuild]
+  * build/harbour-core-3.2.0/Makefile
+  * build/harbour-core-3.2.0/onedir/Makefile
+  * build/harbour-core-crosscplr/Makefile
+  * build/harbour-core-debug/Makefile
+  * build/harbour-core-onedir/Makefile
+    * double -fPIC check fix retry
+
+  * build/hwgui/Makefile
+    * declare HwGUI version as 2.23
+
+  * common.mk
+    + VCPKG experiment
+
 2026-09-06 10:54 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   ! common.mk
     ! fix path setting to Zig when cross compiling from Windows/MSYS2
