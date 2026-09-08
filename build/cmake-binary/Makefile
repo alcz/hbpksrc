@@ -16,8 +16,14 @@ ifneq ($(findstring Darwin,$(_DETPLAT_STR)),)
 #	endif
 endif
 
-ifeq ($(MACHINE),i386)
+ifeq ($(MACHINE),i686)
 	MACHINE  = i386
+else
+ifeq ($(MACHINE),aarch64)
+	ifeq ($(OSTYPE),windows)
+		MACHINE  = arm64
+	endif
+endif
 endif
 
 WORKDIR = $(PKGNAME)-$(PKGVER)-$(OSTYPE)-$(MACHINE)

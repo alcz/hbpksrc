@@ -45,15 +45,16 @@ jobs:
         pacman -S --noconfirm mingw-w64-clang-aarch64-github-cli
         pacman -S --noconfirm mingw-w64-clang-aarch64-tools-git
         pacman -S --noconfirm bzip2 xz unzip patch diffutils make git
+        pacman -S --noconfirm mingw-w64-clang-aarch64-openssl openssl-devel
 
-    - name: Installing dependencies
-      shell: cmd
-      run: |
-        vcpkg.exe install openssl:arm64-windows
-        # Zig cannot build openssl on ARM64
-        # MingW64-GCC does not target this platform (still OpenSSL looks for binutils)
-        # next best-effort is to try inheriting a prebuilt package
-        dir /s c:\vcpkg\packages\openssl-windows_arm64-windows
+        #  - name: Installing OpenSSL for ARM64 (alternatively with VCPKG)
+        # shell: cmd
+        # run: |
+        # vcpkg.exe install openssl:arm64-windows
+        # ! Zig cannot build openssl on ARM64
+        # ! MingW64-GCC does not target this platform (still OpenSSL looks for binutils)
+        # ! next best-effort is to try inheriting a prebuilt package
+        # dir /s C:\vcpkg\packages\openssl_arm64-windows
 
     - name: Get previous successful run ID
       id: get_run
@@ -164,10 +165,9 @@ jobs:
           cd ../build
         else
           cd hbpksrc/build
-          HBPK_OPENSSL_OPTS="mingwarm64 no-tests no-apps" \
-          WINDRES=windres-rc PKGSELECTION="zlib openssl cmake-binary" make install
+          PKGSELECTION="zlib openssl-inherit cmake-binary" make install
         fi
-        OPENSSL_ROOT_DIR="/opt/hbpk" \
+        OPENSSL_ROOT_DIR="/clangarm64" \
         PKGSELECTION=" \
           harbour-ssl \
           libcotp \

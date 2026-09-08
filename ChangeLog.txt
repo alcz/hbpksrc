@@ -3,6 +3,17 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-09-08 16:32 UTC+0200 Aleksander Czajczynski (hb fki.pl)
+  + openssl-inherit/Makefile
+  * .github/workflows/windows-arm64.yml
+  * build/harbour-ssl/Makefile
+    * inherit OpenSSL binary for Windows on ARM64 from MSYS2, plain
+      source code is unbuildable with Zig, nor MingW-GCC (doesn't
+      exist on this platform)
+
+  * build/cmake-binary/Makefile
+    * cmake bin name on ARM64 Windows
+
 2026-09-08 09:30 UTC+0200 Aleksander Czajczynski (hb fki.pl) [corebuild]
   * build/harbour-core-3.2.0/Makefile
   * build/harbour-core-3.2.0/onedir/Makefile

@@ -21,6 +21,12 @@ ifeq (,$(wildcard ../harbour-contribs/tree/contrib/.))
 	_CONTRIB_MV := rm -f $(WORKDIR) && mv core-master $(WORKDIR)
 endif
 
+ifeq ($(MSYSTEM),CLANGARM64)
+	export HB_WITH_OPENSSL = /clangarm64/include
+else
+	export HB_WITH_OPENSSL = $(PKGDEST)/include
+endif
+
 include $(TOPDIR)/hbinfo.mk
 
 do-fetch: std-fetch
@@ -34,7 +40,7 @@ do-config:
 
 do-build:
 	cd $(WORKDIR)/contrib/hbssl && \
-	HB_WITH_OPENSSL=$(PKGDEST)/include $(HBMK) hbssl.hbp
+	$(HBMK) hbssl.hbp
 do-pkginst:
 	mkdir -p dest/harbour/lib/$(HBPK_PLATFORM)/$(HBPK_COMPILER) && mkdir -p dest/lib && \
 	mkdir -p dest/harbour/contrib/hbssl
