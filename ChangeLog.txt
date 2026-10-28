@@ -3,6 +3,20 @@
    Entries may not always be in chronological/commit order.
    See license at the end of file. */
 
+2026-10-28 18:07 UTC+0100 Aleksander Czajczynski (hb fki.pl)
+  * hbpk-hmake/hbpk-hmake.prg
+    * AI was instructed to make the program build Harbour (1st stage
+      build requires a make utility), after fixing few obstacles and
+      some useful tips from me, here is the result.
+      "hmake" is now able to build Harbour instead of GNU Make,
+      though the target objective is to support the usage of it to
+      build Harbour 3rd party .prg code from Makefile definitions
+      without the need of MSYS2 and GNU Make - requiring only hmake
+      and busybox-w32 (small tools). Especially that now we could
+      fine-tune subcalling busybox shell when executing from random
+      Windows environmet without forking GNU Make itself.
+      (lightly tested on Windows and also on Linux)
+
 2026-10-28 17:49 UTC+0100 Aleksander Czajczynski (hb fki.pl)
   + hbpk-hmake/Makefile
   + hbpk-hmake/hbpk-hmake.hbp
@@ -11,7 +25,7 @@
       from Pascal code, original source was from the 
       repo of French gentleman Sylvain Maltais. Code looked like
       50 to 60% of needed functionality, Pascal looking as quite
-      straight to be translated to .prg.
+      straightforward to be translated to .prg.
 
 2026-09-08 16:32 UTC+0200 Aleksander Czajczynski (hb fki.pl)
   + openssl-inherit/Makefile

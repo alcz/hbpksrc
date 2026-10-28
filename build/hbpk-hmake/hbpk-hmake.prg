@@ -14,13 +14,15 @@
  * Note : Harbour n'accepte pas "AS type" apres la liste de parametres d'une FUNCTION ;
  *        le type de retour est donc indique en commentaire : FUNCTION f( x AS NUMERIC ) /* AS LOGICAL */
  *
- * Compilation :  hbmk2 hbpk-hmake.prg -o hmake
+ * Compilation :  hbmk2 make.prg -o make
  */
 
 #include "fileio.ch"
 #include "set.ch"
 
-REQUEST HB_GT_STD_DEFAULT   /* sortie standard sans sequences d'ecran */
+REQUEST HB_GT_CGI_DEFAULT   /* sortie standard sans sequences d'ecran */
+
+ANNOUNCE RDDSYS
 
 #define ORG_DEFAULT   1
 #define ORG_ENV       2
@@ -53,6 +55,9 @@ STATIC s_aRecCmds   := {}
 STATIC s_cDefaultGoal := ""
 STATIC s_hExport := { => }      /* variables exportees vers les commandes (hb_SetEnv) */
 STATIC s_lExportAll := .F.
+STATIC s_aVpath := {}          /* vpath : { motif, { repertoires } } */
+STATIC s_lDblNow := .F.       /* la regle en cours de lecture utilise :: */
+STATIC s_aCallFrames := {}     /* pile des arguments de $(call) : { nom, $1, $2, ... } */
 
 /* ----- Etat de l'expansion ----- */
 STATIC s_cAutoTarget := ""
@@ -98,6 +103,7 @@ PROCEDURE Main()
    s_aIfActive[ 1 ] := .T.
    s_nIfTop := 1
 
+   ParseArgs( EnvFlagsArgs() )         /* MAKEFLAGS herite d'un make parent */
    ParseArgs( hb_AParams() )
 
    IF s_lWantHelp
@@ -241,18 +247,23 @@ STATIC PROCEDURE ShowHelp()
    PutOut( "  --warn-undefined-variables   Avertit des variables non definies" )
    PutOut( "  VAR=valeur                   Definit une variable (priorite maximale)" )
    PutOut( "  --help, /?                   Affiche cette aide" )
+   PutOut( "" )
+   PutOut( "Windows : SHELL := busybox sh   (ou MAKE_SHELL_MODE=posix|cmd|auto) choisit le shell ;" )
+   PutOut( "          en mode cmd, les / des chemins de programmes sont convertis en \." )
 
    RETURN
 
+/* Ecriture directe sur stdout/stderr (sans passer par la couche GT, qui peut retarder
+   ou reordonner le texte par rapport a la sortie des commandes lancees) */
 STATIC PROCEDURE PutOut( cS AS STRING )
 
-   OutStd( cS + hb_eol() )
+   FWrite( hb_GetStdOut(), cS + hb_eol() )
 
    RETURN
 
 STATIC PROCEDURE PutErr( cS AS STRING )
 
-   OutErr( cS + hb_eol() )
+   FWrite( hb_GetStdErr(), cS + hb_eol() )
 
    RETURN
 
@@ -405,19 +416,6 @@ STATIC FUNCTION FileTime( cN AS STRING ) /* AS NUMERIC */
 
    RETURN 0
 
-STATIC FUNCTION TmpName() /* AS STRING */
-
-   LOCAL hF
-   LOCAL cN AS STRING
-
-   cN := ""
-   hF := hb_FTempCreateEx( @cN, NIL, "make", ".tmp" )
-   IF hF != F_ERROR
-      FClose( hF )
-   ENDIF
-
-   RETURN cN
-
 STATIC PROCEDURE TouchFile( cN AS STRING )
 
    LOCAL hF
@@ -437,41 +435,195 @@ STATIC FUNCTION MkFExpand( cW AS STRING ) /* AS STRING */
 
    LOCAL cS AS STRING
 
-   cS := hb_DirSepDel( hb_cwd() )
    IF InSet( Left( cW, 1 ), "/\" ) .OR. SubStr( cW, 2, 1 ) == ":"
-      RETURN cW
+      RETURN StrTran( cW, "\", "/" )
    ENDIF
+   cS := StrTran( hb_DirSepDel( hb_cwd() ), "\", "/" )   /* "/" partout : sur dans les deux modes de shell */
 
-   RETURN cS + hb_ps() + cW
+   RETURN cS + "/" + StrTran( cW, "\", "/" )
 
 /* ------------------------- Execution de commandes ------------------------- */
 
-STATIC FUNCTION RunCmd( cCmd AS STRING ) /* AS NUMERIC */
+/*
+ * Mode de shell : "posix" (sh, bash, busybox sh ...) ou "cmd" (cmd.exe).
+ *   - hors Windows : toujours "posix"
+ *   - sous Windows : MAKE_SHELL_MODE=cmd|posix|auto (defaut auto) ; en auto, le mode est
+ *     "posix" si un mot de $(SHELL) est sh, bash, ash, dash, zsh, ksh, mksh ou busybox
+ *     (ex. SHELL := busybox sh  ou  SHELL := C:/tools/busybox.exe sh), sinon "cmd".
+ *   - $(.SHELLFLAGS) donne les options du shell posix (defaut -c).
+ * La conversion / -> \ n'a lieu qu'en mode "cmd" (voir CmdFixSlashes).
+ */
+STATIC FUNCTION ShellVar() /* AS STRING */
 
+   IF FindVar( "SHELL" ) == 0
+      RETURN ""
+   ENDIF
+
+   RETURN MkTrim( VarValue( "SHELL", 0 ) )
+
+STATIC FUNCTION ShellMode() /* AS STRING */
+
+   LOCAL cMode AS STRING
+   LOCAL cSh AS STRING
+   LOCAL cW AS STRING
+   LOCAL cB AS STRING
+   LOCAL nP AS NUMERIC
+
+   IF hb_ps() == "/"
+      RETURN "posix"
+   ENDIF
+   cMode := "auto"
+   IF FindVar( "MAKE_SHELL_MODE" ) > 0
+      cMode := Lower( MkTrim( VarValue( "MAKE_SHELL_MODE", 0 ) ) )
+   ENDIF
+   IF cMode == "cmd" .OR. cMode == "posix"
+      RETURN cMode
+   ENDIF
+   cSh := ShellVar()
+   nP := 1
+   DO WHILE NextWord( cSh, @nP, @cW )
+      cB := Lower( NotDirPart( StrTran( cW, '"', "" ) ) )
+      IF Right( cB, 4 ) == ".exe"
+         cB := Left( cB, Len( cB ) - 4 )
+      ENDIF
+      IF ( "|" + cB + "|" ) $ "|sh|bash|ash|dash|zsh|ksh|mksh|busybox|"
+         RETURN "posix"
+      ENDIF
+   ENDDO
+
+   RETURN "cmd"
+
+/* Ligne de lancement du shell posix ; la commande voyage dans HBMAKE_CMD (pas de
+   probleme de guillemets) et le shell la relit avec eval. */
+STATIC FUNCTION ShellLine() /* AS STRING */
+
+   LOCAL cSh AS STRING
+   LOCAL cFlags AS STRING
+   LOCAL cQ AS STRING
+
+   cQ := Chr( 34 )
+   cSh := ShellVar()
+   IF cSh == ""
+      cSh := "sh"
+   ENDIF
+   IF " " $ cSh .AND. ! Left( cSh, 1 ) == cQ .AND. FileTime( cSh ) > 0
+      cSh := cQ + cSh + cQ           /* chemin d'executable contenant des espaces */
+   ENDIF
+   cFlags := "-c"
+   IF FindVar( ".SHELLFLAGS" ) > 0
+      cFlags := MkTrim( VarValue( ".SHELLFLAGS", 0 ) )
+   ENDIF
+   IF hb_ps() == "\"
+      /* CreateProcess : analyse de la ligne de commande a la MSVCRT */
+      RETURN cSh + " " + cFlags + " " + cQ + "eval " + "\" + cQ + "$HBMAKE_CMD" + "\" + cQ + cQ
+   ENDIF
+
+   RETURN cSh + " " + cFlags + " 'eval " + cQ + "$HBMAKE_CMD" + cQ + "'"
+
+/* Mode cmd.exe : cmd.exe lit "/" comme un debut d'option. On convertit donc seulement
+   - le premier mot de chaque commande (apres &&, ||, &, |) : le chemin du programme ;
+   - pour les commandes internes (copy, del, mkdir, cd ...), les arguments qui sont des
+     chemins (contiennent / mais ne sont pas des options comme /s, /q, /y).
+   Les arguments des programmes externes ne sont pas touches (la plupart acceptent /). */
+STATIC FUNCTION CmdFixSlashes( cCmd AS STRING ) /* AS STRING */
+
+   LOCAL cOut AS STRING
+   LOCAL cW AS STRING
+   LOCAL cQ AS STRING
+   LOCAL nI AS NUMERIC
+   LOCAL nJ AS NUMERIC
+   LOCAL nQ AS NUMERIC
+   LOCAL lPos AS LOGICAL
+   LOCAL lBuiltin AS LOGICAL
+
+   cQ := Chr( 34 )
+   cOut := ""
+   lPos := .T.
+   lBuiltin := .F.
+   nI := 1
+   DO WHILE nI <= Len( cCmd )
+      DO WHILE nI <= Len( cCmd ) .AND. IsBlankCh( SubStr( cCmd, nI, 1 ) )
+         cOut += SubStr( cCmd, nI, 1 )
+         nI++
+      ENDDO
+      nJ := nI
+      DO WHILE nJ <= Len( cCmd ) .AND. ! IsBlankCh( SubStr( cCmd, nJ, 1 ) )
+         nJ++
+      ENDDO
+      IF nJ > nI
+         cW := SubStr( cCmd, nI, nJ - nI )
+         IF lPos .AND. Left( cW, 1 ) == cQ .AND. ( Len( cW ) == 1 .OR. ! Right( cW, 1 ) == cQ )
+            /* programme entre guillemets contenant des espaces */
+            nQ := At( cQ, SubStr( cCmd, nI + 1 ) )
+            IF nQ > 0
+               nJ := nI + 1 + nQ
+               cW := SubStr( cCmd, nI, nJ - nI )
+            ENDIF
+         ENDIF
+         IF cW == "&&" .OR. cW == "||" .OR. cW == "&" .OR. cW == "|"
+            lPos := .T.
+            lBuiltin := .F.
+            cOut += cW
+         ELSEIF lPos
+            cOut += StrTran( cW, "/", "\" )
+            lBuiltin := ( "|" + Lower( StrTran( cW, cQ, "" ) ) + "|" ) $ ;
+               "|copy|move|del|erase|type|mkdir|md|rmdir|rd|ren|rename|cd|chdir|dir|more|"
+            lPos := .F.
+         ELSEIF lBuiltin .AND. "/" $ cW .AND. ! ( Left( cW, 1 ) == "/" .AND. At( "/", SubStr( cW, 2 ) ) == 0 )
+            cOut += StrTran( cW, "/", "\" )
+         ELSE
+            cOut += cW
+         ENDIF
+         nI := nJ
+      ENDIF
+   ENDDO
+
+   RETURN cOut
+
+/* Execute une commande avec le shell choisi. Avec un 2e parametre passe par reference,
+   la sortie standard est capturee ; sinon elle est heritee. */
+STATIC FUNCTION ShellExec( cCmd AS STRING, cOut ) /* AS NUMERIC */
+
+   LOCAL lCap AS LOGICAL
    LOCAL nRet AS NUMERIC
 
-   nRet := hb_run( cCmd )
+   lCap := PCount() >= 2
+   IF ShellMode() == "cmd"
+      cCmd := CmdFixSlashes( cCmd )
+      IF lCap
+         nRet := hb_processRun( GetEnv( "COMSPEC" ) + " /C " + cCmd, , @cOut )
+      ELSE
+         nRet := hb_run( cCmd )
+      ENDIF
+   ELSE
+      hb_SetEnv( "HBMAKE_CMD", cCmd )
+      IF lCap
+         nRet := hb_processRun( ShellLine(), , @cOut )
+      ELSE
+         nRet := hb_processRun( ShellLine() )
+      ENDIF
+      hb_SetEnv( "HBMAKE_CMD", "" )
+   ENDIF
    IF nRet < 0
       nRet := 127
-   ELSEIF hb_ps() == "/" .AND. nRet >= 256
-      nRet := Int( nRet / 256 )      /* hb_run() rend le statut brut de wait() sous Unix */
    ENDIF
 
    RETURN nRet
 
+STATIC FUNCTION RunCmd( cCmd AS STRING ) /* AS NUMERIC */
+   RETURN ShellExec( cCmd )
+
 STATIC FUNCTION ShellOutput( cCmd AS STRING ) /* AS STRING */
 
-   LOCAL cTmp AS STRING
-   LOCAL cData AS STRING
+   LOCAL cOut AS STRING
    LOCAL cL AS STRING
    LOCAL cR AS STRING
 
-   cTmp := TmpName()
-   RunCmd( cCmd + ' > "' + cTmp + '"' )
+   ExportEnv()
+   cOut := ""
+   ShellExec( cCmd, @cOut )
    cR := ""
-   cData := hb_MemoRead( cTmp )
-   FErase( cTmp )
-   FOR EACH cL IN hb_ATokens( StrTran( cData, Chr( 13 ), "" ), Chr( 10 ) )
+   FOR EACH cL IN hb_ATokens( StrTran( cOut, Chr( 13 ), "" ), Chr( 10 ) )
       IF ! cR == ""
          cR += " "
       ENDIF
@@ -580,12 +732,17 @@ STATIC FUNCTION ReplaceAll( cS AS STRING, cOld AS STRING, cNew AS STRING ) /* AS
    RETURN StrTran( cS, cOld, cNew )
 
 /* Separe des arguments aux virgules de premier niveau */
-STATIC FUNCTION SplitArgs( cA AS STRING, nMax AS NUMERIC, nN AS NUMERIC ) /* AS ARRAY */
+STATIC FUNCTION SplitArgs( cA AS STRING, nMax AS NUMERIC, nN AS NUMERIC, cOpen ) /* AS ARRAY */
 
    LOCAL aArgs AS ARRAY
    LOCAL nI AS NUMERIC
    LOCAL nD AS NUMERIC
    LOCAL cC AS STRING
+   LOCAL cClose AS STRING
+
+   /* GNU make : seules les parentheses du meme type que celle de $( ou ${ comptent */
+   cOpen := iif( cOpen == NIL, "(", cOpen )
+   cClose := iif( cOpen == "(", ")", "}" )
 
    aArgs := Array( 6 )
    AFill( aArgs, "" )
@@ -593,9 +750,9 @@ STATIC FUNCTION SplitArgs( cA AS STRING, nMax AS NUMERIC, nN AS NUMERIC ) /* AS 
    nD := 0
    FOR nI := 1 TO Len( cA )
       cC := SubStr( cA, nI, 1 )
-      IF cC == "(" .OR. cC == "{"
+      IF cC == cOpen
          nD++
-      ELSEIF cC == ")" .OR. cC == "}"
+      ELSEIF cC == cClose
          nD--
       ENDIF
       IF cC == "," .AND. nD == 0 .AND. nN < nMax
@@ -702,9 +859,73 @@ STATIC FUNCTION IsFuncName( cN AS STRING ) /* AS LOGICAL */
    RETURN ( "|" + cN + "|" ) $ ;
       "|subst|patsubst|strip|findstring|filter|filter-out|sort|word|wordlist|words|firstword|" + ;
       "lastword|addprefix|addsuffix|basename|suffix|notdir|dir|abspath|realpath|wildcard|shell|" + ;
-      "if|foreach|origin|info|warning|error|"
+      "if|foreach|call|eval|origin|info|warning|error|"
 
-STATIC FUNCTION EvalFunc( cFn AS STRING, cA AS STRING, nDepth AS NUMERIC ) /* AS STRING */
+/* Separe tous les arguments aux virgules de premier niveau (nombre illimite) */
+STATIC FUNCTION SplitAll( cA AS STRING, cOpen ) /* AS ARRAY */
+
+   LOCAL aArgs AS ARRAY
+   LOCAL nI AS NUMERIC
+   LOCAL nD AS NUMERIC
+   LOCAL cC AS STRING
+   LOCAL cClose AS STRING
+
+   cOpen := iif( cOpen == NIL, "(", cOpen )
+   cClose := iif( cOpen == "(", ")", "}" )
+
+   aArgs := { "" }
+   nD := 0
+   FOR nI := 1 TO Len( cA )
+      cC := SubStr( cA, nI, 1 )
+      IF cC == cOpen
+         nD++
+      ELSEIF cC == cClose
+         nD--
+      ENDIF
+      IF cC == "," .AND. nD == 0
+         AAdd( aArgs, "" )
+      ELSE
+         aArgs[ Len( aArgs ) ] += cC
+      ENDIF
+   NEXT
+
+   RETURN aArgs
+
+/* $(call var,arg1,arg2,...) : $(0)=var, $(1)=arg1, ... ; var peut aussi etre une fonction */
+STATIC FUNCTION CallFunc( cA AS STRING, nDepth AS NUMERIC, cOpen ) /* AS STRING */
+
+   LOCAL aAll AS ARRAY
+   LOCAL aFrame AS ARRAY
+   LOCAL cName AS STRING
+   LOCAL cR AS STRING
+   LOCAL cJoin AS STRING
+   LOCAL nI AS NUMERIC
+
+   aAll := SplitAll( cA, cOpen )
+   cName := MkTrim( Expand( aAll[ 1 ], nDepth + 1 ) )
+   aFrame := { cName }
+   FOR nI := 2 TO Len( aAll )
+      AAdd( aFrame, Expand( aAll[ nI ], nDepth + 1 ) )
+   NEXT
+   cR := ""
+   AAdd( s_aCallFrames, aFrame )
+   IF IsFuncName( cName )
+      cJoin := ""
+      FOR nI := 2 TO Len( aFrame )
+         IF nI > 2
+            cJoin += ","
+         ENDIF
+         cJoin += StrTran( aFrame[ nI ], "$", "$$" )      /* deja developpes : pas de 2e expansion */
+      NEXT
+      cR := EvalFunc( cName, cJoin, nDepth + 1 )
+   ELSEIF FindVar( cName ) > 0
+      cR := VarValue( cName, nDepth + 1 )
+   ENDIF
+   ASize( s_aCallFrames, Len( s_aCallFrames ) - 1 )
+
+   RETURN cR
+
+STATIC FUNCTION EvalFunc( cFn AS STRING, cA AS STRING, nDepth AS NUMERIC, cOpen ) /* AS STRING */
 
    LOCAL aArgs AS ARRAY
    LOCAL nN AS NUMERIC
@@ -726,7 +947,7 @@ STATIC FUNCTION EvalFunc( cFn AS STRING, cA AS STRING, nDepth AS NUMERIC ) /* AS
    cStem := ""
 
    IF cFn == "if"
-      aArgs := SplitArgs( cA, 3, @nN )
+      aArgs := SplitArgs( cA, 3, @nN, cOpen )
       IF ! Empty( MkTrim( Expand( aArgs[ 1 ], nDepth + 1 ) ) )
          cR := Expand( aArgs[ 2 ], nDepth + 1 )
       ELSEIF nN >= 3
@@ -735,8 +956,12 @@ STATIC FUNCTION EvalFunc( cFn AS STRING, cA AS STRING, nDepth AS NUMERIC ) /* AS
       RETURN cR
    ENDIF
 
+   IF cFn == "call"
+      RETURN CallFunc( cA, nDepth, cOpen )
+   ENDIF
+
    IF cFn == "foreach"
-      aArgs := SplitArgs( cA, 3, @nN )
+      aArgs := SplitArgs( cA, 3, @nN, cOpen )
       cS1 := MkTrim( Expand( aArgs[ 1 ], nDepth + 1 ) )
       cLst := Expand( aArgs[ 2 ], nDepth + 1 )
       nP := 1
@@ -751,13 +976,13 @@ STATIC FUNCTION EvalFunc( cFn AS STRING, cA AS STRING, nDepth AS NUMERIC ) /* AS
    ENDIF
 
    IF ( "|" + cFn + "|" ) $ "|strip|sort|words|firstword|lastword|basename|suffix|notdir|dir|" + ;
-         "abspath|realpath|wildcard|shell|info|warning|error|origin|"
+         "abspath|realpath|wildcard|shell|info|warning|error|origin|eval|"
       nN := 1
       aArgs := Array( 6 )
       AFill( aArgs, "" )
       aArgs[ 1 ] := Expand( cA, nDepth + 1 )
    ELSE
-      aArgs := SplitArgs( cA, 3, @nN )
+      aArgs := SplitArgs( cA, 3, @nN, cOpen )
       FOR nI := 1 TO nN
          aArgs[ nI ] := Expand( aArgs[ nI ], nDepth + 1 )
       NEXT
@@ -895,6 +1120,9 @@ STATIC FUNCTION EvalFunc( cFn AS STRING, cA AS STRING, nDepth AS NUMERIC ) /* AS
          cR := OriginName( s_aVars[ nK ][ "org" ], "file" )
       ENDIF
 
+   CASE cFn == "eval"
+      EvalText( aArgs[ 1 ] )
+
    CASE cFn == "info"
       PutOut( aArgs[ 1 ] )
 
@@ -921,6 +1149,14 @@ STATIC FUNCTION VarValue( cName AS STRING, nDepth AS NUMERIC ) /* AS STRING */
    LOCAL cR AS STRING
    LOCAL cW AS STRING
    LOCAL cD AS STRING
+   LOCAL aFrame AS ARRAY
+
+   /* $(0) $(1) ... : arguments du $(call) en cours */
+   IF Len( s_aCallFrames ) > 0 .AND. IsInt( cName )
+      aFrame := s_aCallFrames[ Len( s_aCallFrames ) ]
+      nI := Int( Val( cName ) ) + 1
+      RETURN iif( nI <= Len( aFrame ), aFrame[ nI ], "" )
+   ENDIF
 
    IF Len( cName ) == 1 .OR. ( Len( cName ) == 2 .AND. InSet( SubStr( cName, 2, 1 ), "DF" ) )
       cC := Left( cName, 1 )
@@ -968,13 +1204,13 @@ STATIC FUNCTION VarValue( cName AS STRING, nDepth AS NUMERIC ) /* AS STRING */
    IF s_aVars[ nI ][ "simple" ]
       RETURN s_aVars[ nI ][ "val" ]
    ENDIF
-   IF nDepth > 40
+   IF nDepth > 300
       Die( "Recursive variable '" + cName + "' references itself (eventually).  Stop." )
    ENDIF
 
    RETURN Expand( s_aVars[ nI ][ "val" ], nDepth + 1 )
 
-STATIC FUNCTION EvalRef( cContent AS STRING, nDepth AS NUMERIC ) /* AS STRING */
+STATIC FUNCTION EvalRef( cContent AS STRING, nDepth AS NUMERIC, cOpen ) /* AS STRING */
 
    LOCAL nP AS NUMERIC
    LOCAL nQ AS NUMERIC
@@ -1002,7 +1238,7 @@ STATIC FUNCTION EvalRef( cContent AS STRING, nDepth AS NUMERIC ) /* AS STRING */
          DO WHILE nP <= Len( cContent ) .AND. IsBlankCh( SubStr( cContent, nP, 1 ) )
             nP++
          ENDDO
-         RETURN EvalFunc( cFn, SubStr( cContent, nP ), nDepth )
+         RETURN EvalFunc( cFn, SubStr( cContent, nP ), nDepth, cOpen )
       ENDIF
    ENDIF
 
@@ -1050,7 +1286,7 @@ STATIC FUNCTION Expand( cS AS STRING, nDepth AS NUMERIC ) /* AS STRING */
    LOCAL cOp AS STRING
    LOCAL cCl AS STRING
 
-   IF nDepth > 50
+   IF nDepth > 400
       RETURN cS
    ENDIF
    cR := ""
@@ -1089,7 +1325,7 @@ STATIC FUNCTION Expand( cS AS STRING, nDepth AS NUMERIC ) /* AS STRING */
             ELSE
                cCnt := SubStr( cS, nStart, nI - nStart - 1 )
             ENDIF
-            cR += EvalRef( cCnt, nDepth )
+            cR += EvalRef( cCnt, nDepth, cOp )
          ELSE
             cR += VarValue( cC, nDepth )
             nI++
@@ -1175,9 +1411,13 @@ STATIC FUNCTION AddRule( cT AS STRING, cPre AS STRING, cOrdPre AS STRING, lIsPat
          "ccnt"    => 0, ;
          "ispat"   => lIsPat, ;
          "builtin" => lBuiltin, ;
+         "dcolon"  => s_lDblNow, ;
          "line"    => s_nLineNo } )
       nIdx := Len( s_aRules )
    ELSE
+      IF s_lDblNow
+         s_aRules[ nIdx ][ "dcolon" ] := .T.
+      ENDIF
       s_aRules[ nIdx ][ "pre" ]    := MkTrim( s_aRules[ nIdx ][ "pre" ] + " " + cP )
       s_aRules[ nIdx ][ "ordpre" ] := MkTrim( s_aRules[ nIdx ][ "ordpre" ] + " " + cOrdPre )
    ENDIF
@@ -1245,7 +1485,9 @@ STATIC FUNCTION Classify( cL AS STRING, nP1 AS NUMERIC, nOpLen AS NUMERIC, cOp A
          nI += 2
          LOOP
       ENDIF
-      IF nD > 0 .AND. ( cC == ")" .OR. cC == "}" )
+      IF nD > 0 .AND. InSet( cC, "({" )
+         nD++                       /* parenthese nue dans une reference : $(info a (b) c) */
+      ELSEIF nD > 0 .AND. ( cC == ")" .OR. cC == "}" )
          nD--
       ELSEIF nD == 0
          IF cC == "="
@@ -1386,17 +1628,26 @@ STATIC FUNCTION TopColon( cS AS STRING ) /* AS NUMERIC */
 
    LOCAL nI AS NUMERIC
    LOCAL nD AS NUMERIC
+   LOCAL cC AS STRING
 
    nD := 0
-   FOR nI := 1 TO Len( cS )
-      IF SubStr( cS, nI, 1 ) == "$" .AND. nI < Len( cS ) .AND. InSet( SubStr( cS, nI + 1, 1 ), "({" )
+   nI := 1
+   DO WHILE nI <= Len( cS )
+      cC := SubStr( cS, nI, 1 )
+      IF cC == "$" .AND. nI < Len( cS ) .AND. InSet( SubStr( cS, nI + 1, 1 ), "({" )
          nD++
-      ELSEIF nD > 0 .AND. InSet( SubStr( cS, nI, 1 ), ")}" )
+         nI += 2                    /* saute "$(" d'un coup */
+         LOOP
+      ENDIF
+      IF nD > 0 .AND. InSet( cC, "({" )
+         nD++                       /* parenthese nue dans une reference */
+      ELSEIF nD > 0 .AND. InSet( cC, ")}" )
          nD--
-      ELSEIF nD == 0 .AND. SubStr( cS, nI, 1 ) == ":"
+      ELSEIF nD == 0 .AND. cC == ":"
          RETURN nI
       ENDIF
-   NEXT
+      nI++
+   ENDDO
 
    RETURN 0
 
@@ -1419,6 +1670,7 @@ STATIC PROCEDURE DoRule( cL AS STRING, nColon AS NUMERIC )
    LOCAL nIdx AS NUMERIC
    LOCAL nQ AS NUMERIC
    LOCAL lStatic AS LOGICAL
+   LOCAL lDbl AS LOGICAL
 
    cPreS := ""
    cOrdS := ""
@@ -1430,8 +1682,10 @@ STATIC PROCEDURE DoRule( cL AS STRING, nColon AS NUMERIC )
    s_aCurRules := {}
    cLeft := Expand( Left( cL, nColon - 1 ), 0 )
    cRight := SubStr( cL, nColon + 1 )
+   lDbl := .F.
    IF Len( cRight ) > 0 .AND. Left( cRight, 1 ) == ":"
       cRight := SubStr( cRight, 2 )
+      lDbl := .T.
    ENDIF
 
    /* commande en ligne apres ; */
@@ -1464,6 +1718,7 @@ STATIC PROCEDURE DoRule( cL AS STRING, nColon AS NUMERIC )
       ENDIF
    ENDIF
 
+   s_lDblNow := lDbl
    nI := 1
    DO WHILE NextWord( cLeft, @nI, @cW )
       IF lStatic
@@ -1491,6 +1746,7 @@ STATIC PROCEDURE DoRule( cL AS STRING, nColon AS NUMERIC )
          AAdd( s_aCurRules, nIdx )
       ENDIF
    ENDDO
+   s_lDblNow := .F.
    IF ! cInlCmd == ""
       AddRecipe( cInlCmd )
    ENDIF
@@ -1628,27 +1884,8 @@ STATIC FUNCTION FindInclude( cNm AS STRING ) /* AS STRING */
 
 STATIC PROCEDURE ParseFile( cName AS STRING, nDepth AS NUMERIC, lOptional AS LOGICAL )
 
-   LOCAL hF AS HASH
    LOCAL aLines AS ARRAY
-   LOCAL cL AS STRING
-   LOCAL cT AS STRING
-   LOCAL cDir AS STRING
-   LOCAL cRest AS STRING
-   LOCAL cNm AS STRING
-   LOCAL cW AS STRING
    LOCAL cFull AS STRING
-   LOCAL cBody AS STRING
-   LOCAL cOp AS STRING
-   LOCAL cSaveFile AS STRING
-   LOCAL nSaveLine AS NUMERIC
-   LOCAL lRecipe AS LOGICAL
-   LOCAL lCond AS LOGICAL
-   LOCAL nP1 AS NUMERIC
-   LOCAL nOpLen AS NUMERIC
-   LOCAL nK AS NUMERIC
-   LOCAL nI AS NUMERIC
-   LOCAL nOrg AS NUMERIC
-   LOCAL nBase AS NUMERIC
 
    cFull := FindInclude( cName )
    IF cFull == ""
@@ -1661,6 +1898,55 @@ STATIC PROCEDURE ParseFile( cName AS STRING, nDepth AS NUMERIC, lOptional AS LOG
    IF Len( aLines ) > 0 .AND. aLines[ Len( aLines ) ] == ""
       ASize( aLines, Len( aLines ) - 1 )
    ENDIF
+   ParseLines( aLines, cFull, nDepth )
+
+   RETURN
+
+/* $(eval texte) : le texte est analyse comme un fragment de makefile */
+STATIC PROCEDURE EvalText( cText AS STRING )
+
+   LOCAL aLines AS ARRAY
+   LOCAL aSaveRules AS ARRAY
+   LOCAL aSaveRec AS ARRAY
+
+   aLines := hb_ATokens( StrTran( cText, Chr( 13 ), "" ), Chr( 10 ) )
+   IF Len( aLines ) > 0 .AND. aLines[ Len( aLines ) ] == ""
+      ASize( aLines, Len( aLines ) - 1 )
+   ENDIF
+   FlushRecipe()
+   aSaveRules := s_aCurRules
+   aSaveRec := s_aRecCmds
+   ParseLines( aLines, s_cCurFile, 0 )
+   s_aCurRules := aSaveRules
+   s_aRecCmds := aSaveRec
+
+   RETURN
+
+STATIC PROCEDURE ParseLines( aLines AS ARRAY, cFull AS STRING, nDepth AS NUMERIC )
+
+   LOCAL hF AS HASH
+   LOCAL cL AS STRING
+   LOCAL cT AS STRING
+   LOCAL cDir AS STRING
+   LOCAL cRest AS STRING
+   LOCAL cNm AS STRING
+   LOCAL cW AS STRING
+   LOCAL cBody AS STRING
+   LOCAL cOp AS STRING
+   LOCAL cSaveFile AS STRING
+   LOCAL nSaveLine AS NUMERIC
+   LOCAL lRecipe AS LOGICAL
+   LOCAL lCond AS LOGICAL
+   LOCAL nP1 AS NUMERIC
+   LOCAL nOpLen AS NUMERIC
+   LOCAL nK AS NUMERIC
+   LOCAL nI AS NUMERIC
+   LOCAL nOrg AS NUMERIC
+   LOCAL nBase AS NUMERIC
+   LOCAL aD AS ARRAY
+   LOCAL aNew AS ARRAY
+   LOCAL aV
+
    hF := { "lines" => aLines, "pos" => 1 }
 
    cSaveFile := s_cCurFile
@@ -1703,8 +1989,9 @@ STATIC PROCEDURE ParseFile( cName AS STRING, nDepth AS NUMERIC, lOptional AS LOG
 
       IF cDir == "ifdef" .OR. cDir == "ifndef" .OR. cDir == "ifeq" .OR. cDir == "ifneq"
          FlushRecipe()
-         IF s_nIfTop >= MAX_IF + 1
-            Die( "conditionnelles trop imbriquees.  Stop." )
+         IF s_nIfTop + 1 > Len( s_aIfActive )      /* imbrication illimitee */
+            ASize( s_aIfActive, Len( s_aIfActive ) + 32 )
+            ASize( s_aIfDone, Len( s_aIfDone ) + 32 )
          ENDIF
          lCond := .F.
          IF s_aIfActive[ s_nIfTop ]
@@ -1773,7 +2060,24 @@ STATIC PROCEDURE ParseFile( cName AS STRING, nDepth AS NUMERIC, lOptional AS LOG
          s_lExportAll := .T.
          LOOP
       ENDIF
-      IF cDir == "vpath" .OR. cDir == "VPATH"
+      IF cDir == "vpath"
+         cRest := Expand( cRest, 0 )
+         nI := 1
+         IF ! NextWord( cRest, @nI, @cW )
+            s_aVpath := {}                          /* vpath seul : efface tout */
+         ELSE
+            aD := SplitDirs( SubStr( cRest, nI ) )
+            aNew := {}
+            FOR EACH aV IN s_aVpath
+               IF ! ( Len( aD ) == 0 .AND. aV[ 1 ] == cW )
+                  AAdd( aNew, aV )
+               ENDIF
+            NEXT
+            IF Len( aD ) > 0
+               AAdd( aNew, { cW, aD } )
+            ENDIF
+            s_aVpath := aNew
+         ENDIF
          LOOP
       ENDIF
 
@@ -1835,8 +2139,13 @@ STATIC PROCEDURE ParseFile( cName AS STRING, nDepth AS NUMERIC, lOptional AS LOG
       CASE nK == 2
          DoRule( cT, nP1 )
       OTHERWISE
-         Warn( s_cCurFile + ":" + IntStr( s_nLineNo ) + ": *** missing separator.  Stop." )
-         MkHalt( 2 )
+         /* GNU make : une ligne qui s'etend en rien ($(info ...), $(warning ...)) est valide */
+         FlushRecipe()
+         s_aCurRules := {}
+         IF ! Empty( MkTrim( Expand( cT, 0 ) ) )
+            Warn( s_cCurFile + ":" + IntStr( s_nLineNo ) + ": *** missing separator.  Stop." )
+            MkHalt( 2 )
+         ENDIF
       ENDCASE
    ENDDO
    FlushRecipe()
@@ -1849,6 +2158,59 @@ STATIC PROCEDURE ParseFile( cName AS STRING, nDepth AS NUMERIC, lOptional AS LOG
    RETURN
 
 /* ------------------------- Moteur de production ------------------------- */
+
+/* Repertoires d'une liste "a:b c" (separateur : sous Unix, ; sous Windows, ou blanc) */
+STATIC FUNCTION SplitDirs( cS AS STRING ) /* AS ARRAY */
+
+   LOCAL aR AS ARRAY
+   LOCAL cW AS STRING
+   LOCAL cD AS STRING
+   LOCAL nP AS NUMERIC
+
+   aR := {}
+   nP := 1
+   DO WHILE NextWord( cS, @nP, @cW )
+      FOR EACH cD IN hb_ATokens( cW, iif( hb_ps() == "\", ";", ":" ) )
+         IF ! cD == ""
+            AAdd( aR, cD )
+         ENDIF
+      NEXT
+   ENDDO
+
+   RETURN aR
+
+/* Recherche vpath / VPATH : le repertoire est ajoute devant le nom COMPLET (comme GNU make) */
+STATIC FUNCTION VpathFind( cName AS STRING ) /* AS STRING */
+
+   LOCAL aV
+   LOCAL cD AS STRING
+   LOCAL cC AS STRING
+   LOCAL cStem AS STRING
+
+   cStem := ""
+   IF cName == "" .OR. ( Len( s_aVpath ) == 0 .AND. FindVar( "VPATH" ) == 0 )
+      RETURN ""
+   ENDIF
+   FOR EACH aV IN s_aVpath
+      IF PatMatch( aV[ 1 ], cName, @cStem )
+         FOR EACH cD IN aV[ 2 ]
+            cC := cD + iif( InSet( Right( cD, 1 ), "/\" ), "", "/" ) + cName
+            IF FileTime( cC ) > 0
+               RETURN cC
+            ENDIF
+         NEXT
+      ENDIF
+   NEXT
+   IF FindVar( "VPATH" ) > 0
+      FOR EACH cD IN SplitDirs( VarValue( "VPATH", 0 ) )
+         cC := cD + iif( InSet( Right( cD, 1 ), "/\" ), "", "/" ) + cName
+         IF FileTime( cC ) > 0
+            RETURN cC
+         ENDIF
+      NEXT
+   ENDIF
+
+   RETURN ""
 
 STATIC FUNCTION FindBuilt( cT AS STRING ) /* AS NUMERIC */
 
@@ -1911,7 +2273,7 @@ STATIC FUNCTION CanMake( cW AS STRING, nD AS NUMERIC ) /* AS LOGICAL */
 
    nRi := 0
    cStem := ""
-   IF FileTime( cW ) > 0
+   IF FileTime( cW ) > 0 .OR. ! VpathFind( cW ) == ""
       RETURN .T.
    ENDIF
    IF IsPhony( cW )
@@ -1925,6 +2287,52 @@ STATIC FUNCTION CanMake( cW AS STRING, nD AS NUMERIC ) /* AS LOGICAL */
    ENDIF
 
    RETURN .F.
+
+/* MAKEFLAGS : options transmises aux $(MAKE) enfants (ex. "kn -- VAR=val") */
+STATIC FUNCTION MakeFlags() /* AS STRING */
+
+   LOCAL cF AS STRING
+   LOCAL cV AS STRING
+
+   cF := ""
+   cF += iif( s_lAlways, "B", "" ) + iif( s_lIgnore, "i", "" ) + iif( s_lKeep, "k", "" )
+   cF += iif( s_lDry, "n", "" ) + iif( s_lQuestion, "q", "" ) + iif( s_lSilent, "s", "" )
+   cF += iif( s_lTouch, "t", "" ) + iif( s_lNoRules, "r", "" ) + iif( s_lNoVars, "R", "" )
+   cF += iif( s_lEnvOver, "e", "" )
+   cV := ""
+   AEval( s_aCmdVars, {| c | cV += " " + c } )
+
+   RETURN cF + iif( cV == "", "", " --" + cV )
+
+/* Relit MAKEFLAGS de l'environnement sous forme d'arguments de ligne de commande */
+STATIC FUNCTION EnvFlagsArgs() /* AS ARRAY */
+
+   LOCAL cE AS STRING
+   LOCAL cW AS STRING
+   LOCAL aOut AS ARRAY
+   LOCAL nP AS NUMERIC
+   LOCAL nW AS NUMERIC
+   LOCAL lVars AS LOGICAL
+
+   cE := GetEnv( "MAKEFLAGS" )
+   aOut := {}
+   lVars := .F.
+   nP := 1
+   nW := 0
+   DO WHILE NextWord( cE, @nP, @cW )
+      nW++
+      IF cW == "--"
+         lVars := .T.
+      ELSEIF lVars .OR. ( At( "=", cW ) > 1 .AND. ! Left( cW, 1 ) == "-" )
+         AAdd( aOut, cW )
+      ELSEIF Left( cW, 1 ) == "-"
+         AAdd( aOut, cW )
+      ELSEIF nW == 1
+         AAdd( aOut, "-" + cW )
+      ENDIF
+   ENDDO
+
+   RETURN aOut
 
 /* Publie les variables exportees dans l'environnement des commandes (hb_SetEnv) */
 STATIC PROCEDURE ExportEnv()
@@ -1952,6 +2360,7 @@ STATIC PROCEDURE ExportEnv()
          hb_SetEnv( cName, iif( hV[ "simple" ], hV[ "val" ], Expand( hV[ "val" ], 0 ) ) )
       ENDIF
    NEXT
+   hb_SetEnv( "MAKEFLAGS", MakeFlags() )
    /* niveau de recursion pour les $(MAKE) enfants */
    nI := FindVar( "MAKELEVEL" )
    hb_SetEnv( "MAKELEVEL", hb_NToS( iif( nI > 0, Val( s_aVars[ nI ][ "val" ] ), 0 ) + 1 ) )
@@ -2010,6 +2419,9 @@ STATIC FUNCTION RunRecipe( cT AS STRING, nFirst AS NUMERIC, nCnt AS NUMERIC ) /*
             LOOP
          ENDIF
          s_lDidRun := .T.
+         IF s_lDry
+            ExportEnv()       /* commande forcee ($(MAKE)) sous -n : l'enfant doit recevoir MAKEFLAGS */
+         ENDIF
          nCode := RunCmd( cCmd )
          IF nCode != 0
             IF lIgn
@@ -2040,6 +2452,8 @@ STATIC FUNCTION UpdateTarget( cT AS STRING, cParent AS STRING, nDepth AS NUMERIC
    LOCAL cW AS STRING
    LOCAL cStem AS STRING
    LOCAL cImp AS STRING
+   LOCAL cV AS STRING
+   LOCAL cPreR AS STRING
    LOCAL nTTime AS NUMERIC
    LOCAL nNewest AS NUMERIC
    LOCAL nPTime AS NUMERIC
@@ -2133,8 +2547,16 @@ STATIC FUNCTION UpdateTarget( cT AS STRING, cParent AS STRING, nDepth AS NUMERIC
    cFirst := ""
    cAll := ""
    cPlus := ""
+   cPreR := ""
    nP := 1
    DO WHILE NextWord( cPre, @nP, @cW )
+      IF FileTime( cW ) == 0
+         cV := VpathFind( cW )
+         IF ! cV == ""
+            cW := cV                   /* trouve via vpath : le chemin trouve remplace le nom */
+         ENDIF
+      ENDIF
+      cPreR += " " + cW
       IF ! UpdateTarget( cW, cT, nDepth + 1 )
          lFailed := .T.
       ENDIF
@@ -2156,8 +2578,12 @@ STATIC FUNCTION UpdateTarget( cT AS STRING, cParent AS STRING, nDepth AS NUMERIC
          cAll += " " + cW
       ENDIF
    ENDDO
+   cPre := MkTrim( cPreR )
    nP := 1
    DO WHILE NextWord( cOrdP, @nP, @cW )
+      IF FileTime( cW ) == 0 .AND. ! VpathFind( cW ) == ""
+         cW := VpathFind( cW )
+      ENDIF
       IF ! UpdateTarget( cW, cT, nDepth + 1 )
          lFailed := .T.
       ENDIF
@@ -2173,8 +2599,21 @@ STATIC FUNCTION UpdateTarget( cT AS STRING, cParent AS STRING, nDepth AS NUMERIC
       nTTime := 1000000000000
    ELSE
       nTTime := FileTime( cT )
+      IF nTTime == 0 .AND. ! lPhon
+         cV := VpathFind( cT )          /* cible presente ailleurs (vpath $(LIB_NAME) $(LIB_DIR)) */
+         IF ! cV == ""
+            nTTime := FileTime( cV )
+         ENDIF
+      ENDIF
    ENDIF
    lNeed := lPhon .OR. s_lAlways .OR. nTTime == 0 .OR. nNewest > nTTime .OR. lPreUpd
+   /* regle :: sans prerequis : la commande est toujours executee (ex. dir.mk de Harbour) */
+   nX := FindExplicit( cT )
+   IF nX > 0 .AND. lHasCmd
+      IF s_aRules[ nX ][ "dcolon" ] .AND. Empty( MkTrim( cPre ) )
+         lNeed := .T.
+      ENDIF
+   ENDIF
    IF ! lNeed
       s_aBuilt[ nB ][ "state" ] := 2
       s_aBuilt[ nB ][ "time" ] := nTTime
@@ -2309,24 +2748,31 @@ STATIC PROCEDURE BuiltinRule( cT AS STRING, cPre AS STRING, cCmd AS STRING )
 
 STATIC PROCEDURE ImportEnv()
 
-   LOCAL cTmp AS STRING
    LOCAL cData AS STRING
    LOCAL cLine AS STRING
    LOCAL nEq AS NUMERIC
 
-   /* Harbour ne sait pas enumerer l'environnement : on passe par "env" / "set" */
-   cTmp := TmpName()
-   RunCmd( iif( hb_ps() == "\", "set", "env" ) + ' > "' + cTmp + '"' )
-   cData := hb_MemoRead( cTmp )
-   FErase( cTmp )
+   /* Harbour ne sait pas enumerer l'environnement : on lit la sortie de "env" / "set" */
+   cData := ""
+   IF hb_ps() == "\"
+      hb_processRun( GetEnv( "COMSPEC" ) + " /C set", , @cData )
+   ELSE
+      hb_processRun( "env", , @cData )
+   ENDIF
    FOR EACH cLine IN hb_ATokens( StrTran( cData, Chr( 13 ), "" ), Chr( 10 ) )
       nEq := At( "=", cLine )
-      IF nEq > 1
+      IF nEq > 1 .AND. ! Left( cLine, nEq - 1 ) == "SHELL" .AND. ! Left( cLine, nEq - 1 ) == "MAKEFLAGS"   /* ignores : $SHELL ; MAKEFLAGS est relu par EnvFlagsArgs */
          s_hExport[ Left( cLine, nEq - 1 ) ] := .T.
          IF s_lEnvOver
             SetVar( Left( cLine, nEq - 1 ), SubStr( cLine, nEq + 1 ), .F., ORG_ENVOVER )
          ELSE
             SetVar( Left( cLine, nEq - 1 ), SubStr( cLine, nEq + 1 ), .F., ORG_ENV )
+         ENDIF
+         /* Windows : les noms de variables d'environnement ne tiennent pas compte de la casse
+            (la variable s'appelle "Path" mais les makefiles utilisent $(PATH)) */
+         IF hb_ps() == "\" .AND. ! Upper( Left( cLine, nEq - 1 ) ) == Left( cLine, nEq - 1 ) ;
+               .AND. FindVar( Upper( Left( cLine, nEq - 1 ) ) ) == 0
+            SetVar( Upper( Left( cLine, nEq - 1 ) ), SubStr( cLine, nEq + 1 ), .F., iif( s_lEnvOver, ORG_ENVOVER, ORG_ENV ) )
          ENDIF
       ENDIF
    NEXT
@@ -2354,9 +2800,10 @@ STATIC PROCEDURE InitBuiltins()
       SetVar( "LINK.c", "$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)", .F., ORG_DEFAULT )
       SetVar( "OUTPUT_OPTION", "-o $@", .F., ORG_DEFAULT )
    ENDIF
-   SetVar( "MAKE", s_cProgName, .F., ORG_DEFAULT )
+   SetVar( "MAKE", StrTran( s_cProgName, "\", "/" ), .F., ORG_DEFAULT )
+   SetVar( "MAKE_VERSION", "4.4", .F., ORG_DEFAULT )
    SetVar( "MAKELEVEL", hb_NToS( Int( Val( GetEnv( "MAKELEVEL" ) ) ) ), .F., ORG_DEFAULT )
-   cS := hb_DirSepDel( hb_cwd() )
+   cS := StrTran( hb_DirSepDel( hb_cwd() ), "\", "/" )
    SetVar( "CURDIR", cS, .T., ORG_DEFAULT )
    IF hb_ps() == "\"
       cShell := GetEnv( "COMSPEC" )
@@ -2364,6 +2811,7 @@ STATIC PROCEDURE InitBuiltins()
       cShell := "/bin/sh"
    ENDIF
    SetVar( "SHELL", cShell, .F., ORG_DEFAULT )
+   SetVar( "MAKEFLAGS", MakeFlags(), .T., ORG_DEFAULT )
 
    IF ! s_lNoRules
       s_aSuffixes := {}
